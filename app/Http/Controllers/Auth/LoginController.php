@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class AuthenticatedSessionController extends Controller
+class LoginController extends Controller
 {
     use ResponseHelper;
     /**

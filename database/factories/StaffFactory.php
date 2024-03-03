@@ -7,7 +7,6 @@ namespace Database\Factories;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 
 /**
  * @extends Factory<\App\Models\Staff>
@@ -40,9 +39,10 @@ final class StaffFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Staff $staff) {
-            $role = Role::inRandomOrder()->first();
-
-            $staff->assignRole($role->name);
+            $staff->assignRole(fake()->randomElement([
+                'Academic Staff',
+                'Support',
+            ]));
         });
     }
 }

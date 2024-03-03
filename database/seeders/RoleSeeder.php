@@ -42,9 +42,8 @@ class RoleSeeder extends Seeder
                 ],
             ],
             [
-                'name' => 'QA coordinator',
-                'permissions' => [
-                ],
+                'name' => 'QA Coordinator',
+                'permissions' => [],
             ],
         ];
 
