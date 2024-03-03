@@ -31,4 +31,9 @@ class Department extends Model
     {
         return 'slug';
     }
+
+    public function staffs()
+    {
+        return $this->hasMany(Staff::class);
+    }
 }

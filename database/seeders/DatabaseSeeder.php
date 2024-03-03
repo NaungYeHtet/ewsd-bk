@@ -15,7 +15,12 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class
         ]);
-        // \App\Models\User::factory(10)->create();
+        $this->command->info('Seeding Department factory...');
+        \App\Models\Department::factory(10)->create();
+        $this->command->info('Department factory seeded.');
+        $this->command->info('Seeding Staff factory...');
+        \App\Models\Staff::factory(50)->create();
+        $this->command->info('Staff factory seeded.');
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
