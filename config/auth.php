@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'admin',
-        'passwords' => 'admins',
+        'guard' => 'staff',
+        'passwords' => 'staffs',
     ],
 
     /*
@@ -36,9 +36,9 @@ return [
     */
 
     'guards' => [
-        'admin' => [
+        'staff' => [
             'driver' => 'sanctum',
-            'provider' => 'admins',
+            'provider' => 'staffs',
         ],
     ],
 
@@ -60,9 +60,9 @@ return [
     */
 
     'providers' => [
-        'admins' => [
+        'staffs' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Admin::class,
+            'model' => App\Models\Staff::class,
         ],
 
         // 'users' => [
@@ -91,8 +91,8 @@ return [
     */
 
     'passwords' => [
-        'admins' => [
-            'provider' => 'admins',
+        'staffs' => [
+            'provider' => 'staffs',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

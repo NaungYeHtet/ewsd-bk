@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Admin::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Staff::class)->constrained('staffs')->cascadeOnDelete();
             $table->morphs('commentable');
             $table->text('content');
             $table->boolean('is_anonymous')->default(false);

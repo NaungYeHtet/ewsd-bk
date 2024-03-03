@@ -9,9 +9,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class Admin extends Authenticatable
+class Staff extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
+
+    protected $table = 'staffs';
 
     /**
      * The attributes that are mass assignable.

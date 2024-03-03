@@ -4,22 +4,41 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\StaffResource;
+use App\Models\Staff;
+use App\Traits\ResponseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthenticatedSessionController extends Controller
 {
+    use ResponseHelper;
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): Response
+    public function store(LoginRequest $request)
     {
-        $request->authenticate();
+        $staff = Staff::where('email', $request->email)->first();
 
-        $request->session()->regenerate();
+        if (! $staff) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
 
-        return response()->noContent();
+        if (!Hash::check($request->password, $staff->password)) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        return $this->responseSuccess(data: [
+            'token' => $staff->createToken('AUTH TOKEN')->plainTextToken,
+            'staff' => new StaffResource($staff),
+        ]);
     }
 
     /**
