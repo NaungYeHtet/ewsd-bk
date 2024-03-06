@@ -39,10 +39,7 @@ final class StaffFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Staff $staff) {
-            $staff->assignRole(fake()->randomElement([
-                'Academic Staff',
-                'Support',
-            ]));
+            // $staff->assignRole(fake()->randomElement());
         });
     }
 }

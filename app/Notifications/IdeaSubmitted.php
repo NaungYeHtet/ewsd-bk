@@ -37,7 +37,7 @@ class IdeaSubmitted extends Notification
     {
         return (new MailMessage)
                     ->line('A new idea has been submitted.')
-                    ->action('See Idea', url('/'))
+                    ->action('See Idea', config('app.url') . '/ideas/' . $this->idea->slug)
                     ->line($this->idea->title);
     }
 

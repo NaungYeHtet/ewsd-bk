@@ -35,6 +35,6 @@ class Category extends Model
 
     public function ideas(): MorphToMany
     {
-        return $this->morphedByMany(Idea::class, 'categoriables');
+        return $this->morphedByMany(Idea::class, 'categoriable');
     }
 }

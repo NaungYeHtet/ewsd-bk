@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('title');
             $table->text('content');
-            $table->json('files')->nullable();
+            $table->string('file')->nullable();
             $table->boolean('is_anonymous')->default(false);
             
             $table->softDeletes();

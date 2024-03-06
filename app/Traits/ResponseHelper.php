@@ -6,11 +6,7 @@ trait ResponseHelper
 {
     protected function responseSuccess(array $data = [], string $message = 'Success', int $status = 200): \Illuminate\Http\JsonResponse
     {
-        return response()->json([
-            'data' => $data,
-            'message' => $message,
-            'status' => $status,
-        ], $status);
+        return response()->json($data, $status);
     }
 
     protected function responseError(string $message = 'Internal Server Error', array $data = [], int $code = 500): \Illuminate\Http\JsonResponse
@@ -18,7 +14,6 @@ trait ResponseHelper
         return response()->json([
             'data' => $data,
             'message' => $message,
-            'status' => $code,
         ], $code);
     }
 }

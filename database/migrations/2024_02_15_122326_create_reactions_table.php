@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('reactions', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(\App\Models\Staff::class)->constrained('staffs')->cascadeOnDelete();
-            $table->string('reaction_type');
+            $table->string('type');
             $table->morphs('reactionable');
             $table->timestamps();
         });

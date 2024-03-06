@@ -2,22 +2,27 @@
 
 namespace App\Models;
 
+use App\Enums\ReactionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Comment extends Model
+class Reaction extends Model
 {
     use HasFactory;
 
-    public function commentable(): MorphTo
-    {
-        return $this->morphTo();
-    }
+    protected $casts = [
+        'type' => ReactionType::class,
+    ];
 
     public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class);
+    }
+
+    public function reactionable(): MorphTo
+    {
+        return $this->morphTo();
     }
 }

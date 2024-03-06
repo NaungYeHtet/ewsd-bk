@@ -9,13 +9,13 @@ use App\Models\Staff;
 use App\Traits\ResponseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
     use ResponseHelper;
+
     /**
      * Handle an incoming authentication request.
      */
@@ -29,7 +29,7 @@ class LoginController extends Controller
             ]);
         }
 
-        if (!Hash::check($request->password, $staff->password)) {
+        if (! Hash::check($request->password, $staff->password)) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);

@@ -30,4 +30,15 @@ final class DepartmentFactory extends Factory
             'name' => fake()->word,
         ];
     }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Department $department) {
+            $coordinator = \App\Models\Staff::factory()->create([
+                'department_id' => $department->id,
+            ]);
+
+            $coordinator->assignRole('QA Coordinator');
+        });
+    }
 }

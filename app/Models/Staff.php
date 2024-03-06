@@ -58,6 +58,11 @@ class Staff extends Authenticatable
         return $this->hasMany(Idea::class);
     }
 
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);

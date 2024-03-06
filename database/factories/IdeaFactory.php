@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Events\IdeaSubmitted;
 use App\Models\Idea;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,10 +26,8 @@ final class IdeaFactory extends Factory
     public function definition(): array
     {
         return [
-            'staff_id' => \App\Models\Staff::whereHas('roles', function(Builder $query) {
-                $query->whereIn('name', ['Academic Staff', 'Support']);
-            })->random(),
-            'title' => fake()->title,
+            'staff_id' => \App\Models\Staff::all()->random(),
+            'title' => fake()->sentence,
             'content' => fake()->text,
             'is_anonymous' => fake()->boolean,
         ];
@@ -42,6 +39,16 @@ final class IdeaFactory extends Factory
             $categories = \App\Models\Category::inRandomOrder()->limit(rand(1, 3))->get();
 
             $idea->categories()->attach($categories);
+
+            \App\Models\Reaction::factory()->count(rand(0, 20))->create([
+                'reactionable_id' => $idea->id,
+                'reactionable_type' => $idea->getMorphClass(),
+            ]);
+
+            \App\Models\Comment::factory()->count(rand(0, 10))->create([
+                'commentable_id' => $idea->id,
+                'commentable_type' => $idea->getMorphClass(),
+            ]);
 
             IdeaSubmitted::dispatch($idea);
         });
