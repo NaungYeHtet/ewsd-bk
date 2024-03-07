@@ -61,9 +61,9 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        $department = $department->staffs()->first();
+        $staff = $department->staffs()->first();
 
-        if ($department) {
+        if ($staff) {
             return $this->responseError('Department cannot be deleted because it has staffs', code: 400);
         }
 
