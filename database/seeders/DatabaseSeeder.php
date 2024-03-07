@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,11 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Seeding Department factory...');
         \App\Models\Department::factory(10)->create();
         $this->command->info('Department factory seeded.');
+
+        $filepath = storage_path('app/public/images/avatars');
+        if (File::exists($filepath)) {
+            File::cleanDirectory($filepath);
+        }
 
         $this->call([
             StaffSeeder::class,

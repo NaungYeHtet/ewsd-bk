@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 /**
@@ -25,11 +26,17 @@ final class StaffFactory extends Factory
      */
     public function definition(): array
     {
+        $filepath = storage_path('app/public/images/avatars');
+        if (! File::exists($filepath)) {
+            File::makeDirectory($filepath);
+        }
+
         return [
             'department_id' => \App\Models\Department::all()->random(),
             'username' => fake()->userName,
             'name' => fake()->name,
             'email' => fake()->safeEmail,
+            'avatar' => fake()->optional()->image($filepath, 260, 260, 'animals', false),
             'email_verified_at' => fake()->optional()->dateTime(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),

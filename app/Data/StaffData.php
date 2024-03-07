@@ -5,6 +5,7 @@ namespace App\Data;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Optional;
 
 class StaffData extends Data
 {
@@ -17,6 +18,7 @@ class StaffData extends Data
         public string $email,
         #[Rule(['string', 'max:255'])]
         public string $username,
+        public string|Optional|null $avatar,
     ) {
     }
 }

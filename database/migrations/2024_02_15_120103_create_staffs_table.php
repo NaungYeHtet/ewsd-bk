@@ -17,9 +17,11 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Department::class)->nullable()->constrained();
 
             $table->string('username')->unique();
+            $table->string('avatar')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->dateTime('last_logged_in_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

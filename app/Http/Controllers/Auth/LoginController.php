@@ -36,10 +36,18 @@ class LoginController extends Controller
             ]);
         }
 
+        $isFirstLogin = ! (bool) $staff->last_logged_in_at;
+
+        $staff->update([
+            'last_logged_in_at' => now(),
+        ]);
+
         return $this->responseSuccess(data: [
             'token' => $staff->createToken('AUTH TOKEN')->plainTextToken,
             'staff' => StaffData::from($staff),
+            // 'staffs' => StaffData::collect(Staff::all()),
             'sidebarData' => SidebarData::getData($staff),
+            'isFirstLogin' => $isFirstLogin,
         ]);
     }
 
