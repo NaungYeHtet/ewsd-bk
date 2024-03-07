@@ -16,14 +16,15 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleSeeder::class,
         ]);
-        $this->command->info('Seeding Department factory...');
-        \App\Models\Department::factory(10)->create();
-        $this->command->info('Department factory seeded.');
 
         $filepath = storage_path('app/public/images/avatars');
         if (File::exists($filepath)) {
             File::cleanDirectory($filepath);
         }
+
+        $this->command->info('Seeding Department factory...');
+        \App\Models\Department::factory(10)->create();
+        $this->command->info('Department factory seeded.');
 
         $this->call([
             StaffSeeder::class,
