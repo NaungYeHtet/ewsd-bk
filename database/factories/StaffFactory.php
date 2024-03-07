@@ -28,7 +28,7 @@ final class StaffFactory extends Factory
     {
         $filepath = storage_path('app/public/images/avatars');
         if (! File::exists($filepath)) {
-            File::makeDirectory($filepath);
+            File::makeDirectory($filepath, 0777, true);
         }
 
         return [
