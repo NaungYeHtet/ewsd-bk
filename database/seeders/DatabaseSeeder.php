@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
         ]);
 
-        $filepath = storage_path('app/public/images/avatars');
-        if (File::exists($filepath)) {
-            File::cleanDirectory($filepath);
-        }
+        // $filepath = storage_path('app/public/images/avatars');
+        // if (File::exists($filepath)) {
+        //     File::cleanDirectory($filepath);
+        // }
 
         $this->command->info('Seeding Department factory...');
         \App\Models\Department::factory(10)->create();

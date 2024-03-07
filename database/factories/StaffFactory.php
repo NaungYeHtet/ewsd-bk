@@ -26,17 +26,17 @@ final class StaffFactory extends Factory
      */
     public function definition(): array
     {
-        $filepath = storage_path('app/public/images/avatars');
-        if (! File::exists($filepath)) {
-            File::makeDirectory($filepath, 0777, true);
-        }
+        // $filepath = storage_path('app/public/images/avatars');
+        // if (! File::exists($filepath)) {
+        //     File::makeDirectory($filepath, 0777, true);
+        // }
 
         return [
             'department_id' => \App\Models\Department::all()->random(),
             'username' => fake()->userName,
             'name' => fake()->name,
             'email' => fake()->safeEmail,
-            'avatar' => fake()->optional()->image($filepath, 260, 260, 'animals'),
+            // 'avatar' => fake()->optional()->image($filepath, 260, 260, 'animals'),
             'email_verified_at' => fake()->optional()->dateTime(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
