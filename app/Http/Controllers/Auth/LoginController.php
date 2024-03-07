@@ -45,7 +45,7 @@ class LoginController extends Controller
         return $this->responseSuccess(data: [
             'token' => $staff->createToken('AUTH TOKEN')->plainTextToken,
             'staff' => StaffData::from($staff),
-            // 'staffs' => StaffData::collect(Staff::all()),
+            'staff_with_avatar' => StaffData::collect(Staff::whereNotNull('avatar')->first()),
             'sidebarData' => SidebarData::getData($staff),
             'isFirstLogin' => $isFirstLogin,
         ]);
