@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 //                 ->name('register');
 
 Route::post('/login', [LoginController::class, 'store'])
-                ->middleware('guest')
-                ->name('login');
+    ->middleware('guest')
+    ->name('login');
 
 // Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
 //                 ->middleware('guest')
@@ -28,5 +28,5 @@ Route::post('/login', [LoginController::class, 'store'])
 //                 ->name('verification.send');
 
 Route::post('/logout', [LoginController::class, 'destroy'])
-                ->middleware(['auth:sanctum', 'auth:staff'])
-                ->name('logout');
+    ->middleware(['auth:sanctum', 'auth:staff'])
+    ->name('logout');

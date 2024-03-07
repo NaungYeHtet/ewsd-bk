@@ -33,7 +33,7 @@ class SidebarData extends Data
                     '/',
                     '/create',
                 ],
-            ],[
+            ], [
                 'title' => 'Category',
                 'icon' => 'bar-chart-horizontal',
                 'url' => '/categories',

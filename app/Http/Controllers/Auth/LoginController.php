@@ -6,7 +6,6 @@ use App\Data\SidebarData;
 use App\Data\StaffData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Resources\StaffResource;
 use App\Models\Staff;
 use App\Traits\ResponseHelper;
 use Illuminate\Http\Request;

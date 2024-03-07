@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('content');
             $table->string('file')->nullable();
             $table->boolean('is_anonymous')->default(false);
-            
+
             $table->softDeletes();
             $table->timestamps();
         });

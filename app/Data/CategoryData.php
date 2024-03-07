@@ -2,14 +2,9 @@
 
 namespace App\Data;
 
-use App\Models\Idea;
-use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Attributes\Validation\Mimes;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Optional;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CategoryData extends Data
 {

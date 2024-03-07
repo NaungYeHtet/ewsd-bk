@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\Idea;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -36,9 +35,9 @@ class IdeaSubmitted extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('A new idea has been submitted.')
-                    ->action('See Idea', config('app.url') . '/ideas/' . $this->idea->slug)
-                    ->line($this->idea->title);
+            ->line('A new idea has been submitted.')
+            ->action('See Idea', config('app.url').'/ideas/'.$this->idea->slug)
+            ->line($this->idea->title);
     }
 
     /**

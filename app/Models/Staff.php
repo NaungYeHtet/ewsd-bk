@@ -15,7 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class Staff extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasRoles, Notifiable, HasUuids;
+    use HasApiTokens, HasFactory, HasRoles, HasUuids, Notifiable;
 
     protected $table = 'staffs';
 

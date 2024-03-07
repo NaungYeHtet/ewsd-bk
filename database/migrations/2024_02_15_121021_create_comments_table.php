@@ -17,7 +17,7 @@ return new class extends Migration
             $table->morphs('commentable');
             $table->text('content');
             $table->boolean('is_anonymous')->default(false);
-            
+
             $table->softDeletes();
             $table->timestamps();
         });

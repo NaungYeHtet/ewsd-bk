@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Data\CategoryData;
 use App\Http\Requests\IndexRequest;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\PaginatedDataCollection;

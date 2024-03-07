@@ -6,10 +6,8 @@ use App\Data\IdeaData;
 use App\Http\Requests\IndexRequest;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
-use App\Http\Resources\IdeaResource;
 use App\Models\Idea;
 use Illuminate\Database\Eloquent\Builder;
-use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class IdeaController extends Controller

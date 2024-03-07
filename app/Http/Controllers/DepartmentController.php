@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\DepartmentData;
 use App\Http\Requests\IndexRequest;
-use App\Http\Requests\StoreDepartmentRequest;
-use App\Http\Requests\UpdateDepartmentRequest;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\LaravelData\PaginatedDataCollection;
 
 class DepartmentController extends Controller
 {
@@ -20,16 +20,20 @@ class DepartmentController extends Controller
         })->paginate($request->perpage ?? 5);
 
         return $this->responseSuccess([
-            'results' => CategoryData::collect($categories, PaginatedDataCollection::class),
+            'results' => DepartmentData::collect($categories, PaginatedDataCollection::class),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreDepartmentRequest $request)
+    public function store(DepartmentData $data)
     {
-        //
+        $department = Department::create($data->all());
+
+        return $this->responseSuccess([
+            'result' => DepartmentData::from($department),
+        ], 'Department created successfully', 201);
     }
 
     /**
@@ -43,9 +47,13 @@ class DepartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateDepartmentRequest $request, Department $department)
+    public function update(DepartmentData $data, Department $department)
     {
-        //
+        $department->update($data->all());
+
+        return $this->responseSuccess([
+            'result' => DepartmentData::from($department->refresh()),
+        ], 'Department updated successfully');
     }
 
     /**
@@ -53,6 +61,14 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        $department = $department->staffs()->first();
+
+        if ($department) {
+            return $this->responseError('Department cannot be deleted because it has staffs', code: 400);
+        }
+
+        $department->delete();
+
+        return $this->responseSuccess(message: 'Department deleted successfully');
     }
 }

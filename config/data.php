@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
 
 return [
@@ -107,9 +106,9 @@ return [
     'ignore_invalid_partials' => false,
 
     /**
-    * When using the `make:data` command, the package will use these settings to generate
-    * the data classes. You can override these settings by passing options to the command.
-    */
+     * When using the `make:data` command, the package will use these settings to generate
+     * the data classes. You can override these settings by passing options to the command.
+     */
     'commands' => [
         /*
          * Provides default configuration for the `make:data` command. These settings can be overridden with options
