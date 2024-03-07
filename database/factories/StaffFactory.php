@@ -36,7 +36,7 @@ final class StaffFactory extends Factory
             'username' => fake()->userName,
             'name' => fake()->name,
             'email' => fake()->safeEmail,
-            'avatar' => fake()->optional()->image($filepath, 260, 260, 'animals', false),
+            'avatar' => fake()->optional()->image($filepath, 260, 260, 'animals'),
             'email_verified_at' => fake()->optional()->dateTime(),
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
