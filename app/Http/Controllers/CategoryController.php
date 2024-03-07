@@ -29,9 +29,9 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(CategoryData $data)
     {
-        $category = Category::create($request->validated());
+        $category = Category::create($data->all());
 
         return $this->responseSuccess([
             'result' => CategoryData::from($category),
@@ -49,12 +49,12 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update(CategoryData $data, Category $category)
     {
-        $category->update($request->validated());
+        $category->update($data->all());
 
         return $this->responseSuccess([
-            'result' => CategoryData::from($category),
+            'result' => CategoryData::from($category->refresh()),
         ], 'Category updated successfully');
     }
 

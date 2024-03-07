@@ -8,6 +8,7 @@ use Spatie\LaravelData\Attributes\Validation\Mimes;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
+use Spatie\LaravelData\Optional;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CategoryData extends Data
@@ -15,7 +16,7 @@ class CategoryData extends Data
     public function __construct(
         #[Rule(['required', 'string', 'min:5', 'max:255'])]
         public string $name,
-        public string $slug,
+        public string|Optional $slug,
     ) {
     }
 }
