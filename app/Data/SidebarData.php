@@ -57,9 +57,9 @@ class SidebarData extends Data
         $permissions = [];
 
         $staff->can('list '.$key) && array_push($permissions, '/');
-        $staff->can('create '.$key) && array_push($permissions, 'create');
-        $staff->can('update '.$key) && array_push($permissions, 'update');
-        $staff->can('delete '.$key) && array_push($permissions, 'delete');
+        $staff->can('create '.$key) && array_push($permissions, '/create');
+        $staff->can('update '.$key) && array_push($permissions, '/update');
+        $staff->can('delete '.$key) && array_push($permissions, '/delete');
 
         return $permissions;
     }
