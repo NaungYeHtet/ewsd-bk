@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Data\IdeaData;
-use App\Http\Requests\IndexIdeaRequest;
+use App\Http\Requests\IndexRequest;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\Http\Resources\IdeaResource;
@@ -17,7 +17,7 @@ class IdeaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(IndexIdeaRequest $request)
+    public function index(IndexRequest $request)
     {
         $ideas = Idea::where(function (Builder $query) use ($request) {
             $query->where('title', 'like', '%'.$request->search.'%')

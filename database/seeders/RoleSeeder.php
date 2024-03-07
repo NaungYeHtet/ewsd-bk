@@ -52,16 +52,16 @@ class RoleSeeder extends Seeder
                 Permission::firstOrCreate(
                     [
                         'name' => $permission,
-                        'guard_name' => 'web',
+                        'guard_name' => 'staff',
                     ],
                     [
                         'name' => $permission,
-                        'guard_name' => 'web',
+                        'guard_name' => 'staff',
                     ]
                 );
             }
 
-            Role::firstOrCreate(
+            $createdRole = Role::firstOrCreate(
                 [
                     'name' => $role['name'],
                 ],
@@ -69,6 +69,8 @@ class RoleSeeder extends Seeder
                     'name' => $role['name'],
                 ]
             );
+
+            $createdRole->syncPermissions($role['permissions']);
         }
     }
 }
