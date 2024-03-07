@@ -13,6 +13,8 @@ class Category extends Model
     use HasFactory;
     use HasSlug;
 
+    public $fillable = ['name'];
+
     /**
      * Get the options for generating the slug.
      */

@@ -31,7 +31,11 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        
+        $category = Category::create($request->validated());
+
+        return $this->responseSuccess([
+            'result' => CategoryData::from($category),
+        ], 'Category created successfully', 201);
     }
 
     /**
@@ -47,7 +51,11 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $category->update($request->validated());
+
+        return $this->responseSuccess([
+            'result' => CategoryData::from($category),
+        ], 'Category updated successfully');
     }
 
     /**
@@ -55,6 +63,14 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $idea = $category->ideas()->first();
+
+        if ($idea) {
+            return $this->responseError('Category cannot be deleted because it has ideas', code: 400);
+        }
+
+        $category->delete();
+
+        return $this->responseSuccess(message: 'Category deleted successfully');
     }
 }

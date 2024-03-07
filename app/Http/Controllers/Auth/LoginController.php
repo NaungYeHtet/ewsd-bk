@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Data\SidebarData;
+use App\Data\StaffData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\StaffResource;
@@ -38,7 +39,7 @@ class LoginController extends Controller
 
         return $this->responseSuccess(data: [
             'token' => $staff->createToken('AUTH TOKEN')->plainTextToken,
-            'staff' => new StaffResource($staff),
+            'staff' => StaffData::from($staff),
             'sidebarData' => SidebarData::getData($staff),
         ]);
     }

@@ -6,6 +6,8 @@ trait ResponseHelper
 {
     protected function responseSuccess(array $data = [], string $message = 'Success', int $status = 200): \Illuminate\Http\JsonResponse
     {
+        $data['message'] = $message;
+
         return response()->json($data, $status);
     }
 
