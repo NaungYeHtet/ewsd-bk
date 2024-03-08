@@ -53,6 +53,16 @@ class Staff extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+
     public function generatorConfig(&$generator)
     {
         $generator->setConfig('separator', '_');

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Data\StaffData;
 use App\Http\Requests\IndexRequest;
 use App\Http\Requests\StoreStaffRequest;
+use App\Http\Requests\UpdateStaffRequest;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelData\PaginatedDataCollection;
@@ -74,7 +74,7 @@ class StaffController extends Controller
 
             $staff = Staff::create([
                 'name' => $request->name,
-                'email1' => $request->email,
+                'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'avatar' => $fileName,
             ]);
@@ -102,9 +102,39 @@ class StaffController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Staff $staff)
+    public function update(UpdateStaffRequest $request, Staff $staff)
     {
-        //
+        $role = Role::where('name', $request->role)->first();
+
+        if (! $role) {
+            return $this->responseError('Role not found', code: 400);
+        }
+
+        $staff = DB::transaction(function () use ($request, $staff) {
+            if ($request->hasFile('avatar')) {
+                Storage::disk('public')->delete($staff->avatar);
+
+                $file = $request->file('avatar');
+                $ext = $file->extension();
+                $staff->avatar = $file->storeAs('/images/avatars', uniqid().'.'.$ext, ['disk' => 'public']);
+            }
+
+            $staff->name = $request->name;
+
+            if ($request->has('password')) {
+                $staff->password = bcrypt($request->password);
+            }
+
+            $staff->save();
+            $staff->refresh();
+            $staff->syncRoles([$request->role]);
+
+            return $staff;
+        }, 5);
+
+        return $this->responseSuccess([
+            'staff' => StaffData::from($staff),
+        ], 'Staff created successfully', 201);
     }
 
     /**
