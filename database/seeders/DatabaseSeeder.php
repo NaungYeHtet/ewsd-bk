@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->command->info('Seeding Staff factory...');
-        \App\Models\Staff::factory(50)->create();
+        \App\Models\Staff::factory(50)->assignRole()->create();
         $this->command->info('Staff factory seeded.');
 
         $this->command->info('Seeding Category factory...');

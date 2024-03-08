@@ -2,6 +2,7 @@
 
 namespace App\Data;
 
+use App\Enums\ReactionType;
 use App\Models\Idea;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\Validation\Mimes;
@@ -23,7 +24,7 @@ class IdeaData extends Data
         public Lazy|StaffData $staff,
         public array $reactionsCount,
         public int $commentsCount,
-        public ?string $currentReaction,
+        public ?ReactionType $currentReaction,
     ) {
     }
 

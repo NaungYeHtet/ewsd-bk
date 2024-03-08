@@ -12,10 +12,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use TaylorNetwork\UsernameGenerator\FindSimilarUsernames;
+use TaylorNetwork\UsernameGenerator\GeneratesUsernames;
 
 class Staff extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasRoles, HasUuids, Notifiable;
+    use FindSimilarUsernames, GeneratesUsernames, HasApiTokens, HasFactory, HasRoles, HasUuids, Notifiable;
 
     protected $table = 'staffs';
 
@@ -28,6 +30,7 @@ class Staff extends Authenticatable
         'name',
         'email',
         'password',
+        'username',
     ];
 
     /**
@@ -49,6 +52,11 @@ class Staff extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function generatorConfig(&$generator)
+    {
+        $generator->setConfig('separator', '_');
+    }
 
     public function department(): BelongsTo
     {

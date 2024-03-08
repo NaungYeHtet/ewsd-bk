@@ -13,6 +13,13 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
+        $globalPermissions = [
+            'list idea',
+            'create idea',
+            'update idea',
+            'delete idea',
+        ];
+
         $roles = [
             [
                 'name' => 'Admin',
@@ -45,10 +52,20 @@ class RoleSeeder extends Seeder
                 'name' => 'QA Coordinator',
                 'permissions' => [],
             ],
+            [
+                'name' => 'Academic Staff',
+                'permissions' => [],
+            ],
+            [
+                'name' => 'Support',
+                'permissions' => [],
+            ]
         ];
 
         foreach ($roles as $role) {
-            foreach ($role['permissions'] as $permission) {
+            $allPermissions = array_merge($globalPermissions, $role['permissions']);
+
+            foreach ($allPermissions as $permission) {
                 Permission::firstOrCreate(
                     [
                         'name' => $permission,
@@ -70,7 +87,7 @@ class RoleSeeder extends Seeder
                 ]
             );
 
-            $createdRole->syncPermissions($role['permissions']);
+            $createdRole->syncPermissions($allPermissions);
         }
     }
 }

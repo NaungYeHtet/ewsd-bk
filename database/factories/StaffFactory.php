@@ -43,10 +43,13 @@ final class StaffFactory extends Factory
         ];
     }
 
-    public function configure(): static
+    /**
+     * Indicate that the user is suspended.
+     */
+    public function assignRole(): Factory
     {
         return $this->afterCreating(function (Staff $staff) {
-            // $staff->assignRole(fake()->randomElement());
+            $staff->assignRole(fake()->randomElement(['Academic Staff', 'Support']));
         });
     }
 }
