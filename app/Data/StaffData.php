@@ -3,6 +3,7 @@
 namespace App\Data;
 
 use App\Models\Staff;
+use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
@@ -18,7 +19,12 @@ class StaffData extends Data
         public string $email,
         public string|Optional $username,
         public string|Optional|null $avatar,
+        #[MapInputName('disabled_at')]
+        public Carbon|null $disabledAt,
+        #[MapInputName('last_logged_in_at')]
+        public Carbon|null $lastLoggedInAt,
         public Lazy|string $role,
+        public Lazy|DepartmentData $department,
     ) {
     }
 
@@ -30,7 +36,10 @@ class StaffData extends Data
             $staff->email,
             $staff->username,
             $staff->avatar,
-            Lazy::create(fn () => RoleData::from($staff->roles()->first())->name)
+            $staff->disabled_at,
+            $staff->last_logged_in_at,
+            Lazy::create(fn () => RoleData::from($staff->roles()->first())->name),
+            Lazy::create(fn () => DepartmentData::from($staff->department))
         );
     }
 }

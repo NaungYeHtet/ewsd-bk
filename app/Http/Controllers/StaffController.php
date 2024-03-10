@@ -6,6 +6,7 @@ use App\Data\StaffData;
 use App\Http\Requests\IndexRequest;
 use App\Http\Requests\StoreStaffRequest;
 use App\Http\Requests\UpdateStaffRequest;
+use App\Models\Department;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +49,7 @@ class StaffController extends Controller
             ->paginate($request->perpage ?? 5);
 
         return $this->responseSuccess([
-            'results' => StaffData::collect($staffs, PaginatedDataCollection::class)->include('role'),
+            'results' => StaffData::collect($staffs, PaginatedDataCollection::class)->include('role', 'department'),
         ]);
     }
 
@@ -63,7 +64,13 @@ class StaffController extends Controller
             return $this->responseError('Role not found', code: 400);
         }
 
-        $staff = DB::transaction(function () use ($request) {
+        $department = Department::where('slug', $request->department)->first();
+
+        if (! $department) {
+            return $this->responseError('Department not found', code: 400);
+        }
+
+        $staff = DB::transaction(function () use ($request, $department) {
             $fileName = '';
 
             if ($request->hasFile('avatar')) {
@@ -73,6 +80,7 @@ class StaffController extends Controller
             }
 
             $staff = Staff::create([
+                'department_id' => $department->id,
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
@@ -110,7 +118,13 @@ class StaffController extends Controller
             return $this->responseError('Role not found', code: 400);
         }
 
-        $staff = DB::transaction(function () use ($request, $staff) {
+        $department = Department::where('slug', $request->department)->first();
+
+        if (! $department) {
+            return $this->responseError('Department not found', code: 400);
+        }
+
+        $staff = DB::transaction(function () use ($request, $staff, $department) {
             if ($request->hasFile('avatar')) {
                 Storage::disk('public')->delete($staff->avatar);
 
@@ -120,14 +134,19 @@ class StaffController extends Controller
             }
 
             $staff->name = $request->name;
+            $staff->department_id = $department->id;
 
             if ($request->has('password')) {
                 $staff->password = bcrypt($request->password);
+                $staff->tokens()->delete();
             }
 
             $staff->save();
+
+            if (! $staff->hasRole($request->role)) {
+                $staff->syncRoles([$request->role]);
+            }
             $staff->refresh();
-            $staff->syncRoles([$request->role]);
 
             return $staff;
         }, 5);
@@ -137,11 +156,35 @@ class StaffController extends Controller
         ], 'Staff created successfully', 201);
     }
 
+    public function disable(Staff $staff)
+    {
+        $staff->update([
+            'disabled_at' => now(),
+        ]);
+
+        $staff->tokens()->delete();
+
+        return $this->responseSuccess([
+            'staff' => StaffData::from($staff->refresh()),
+        ], 'Staff disabled successfully', 200);
+    }
+
+    public function enable(Staff $staff)
+    {
+        $staff->update([
+            'disabled_at' => null,
+        ]);
+
+        return $this->responseSuccess([
+            'staff' => StaffData::from($staff->refresh()),
+        ], 'Staff enabled successfully', 200);
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Staff $staff)
     {
-        //
+        abort(404);
     }
 }

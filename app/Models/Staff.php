@@ -31,6 +31,7 @@ class Staff extends Authenticatable
         'email',
         'password',
         'username',
+        'disabled_at',
     ];
 
     /**
@@ -50,6 +51,8 @@ class Staff extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'disabled_at' => 'datetime',
+        'last_logged_in_at' => 'datetime',
         'password' => 'hashed',
     ];
 
@@ -86,5 +89,15 @@ class Staff extends Authenticatable
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Generate a username on save if one was not set.
+     */
+    public static function bootGeneratesUsernames(): void
+    {
+        static::creating(function ($model) {
+            $model->generateUsername();
+        });
     }
 }

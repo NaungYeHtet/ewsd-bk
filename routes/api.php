@@ -52,6 +52,8 @@ Route::middleware(['auth:sanctum', 'auth:staff'])->group(function () {
         Route::get('/', 'index')->can('viewAny', Staff::class);
         Route::post('/', 'store')->can('create', Staff::class);
         Route::put('/{staff}', 'update')->can('update', 'staff');
-        Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
+        Route::get('/{staff}/disable', 'disable')->can('update', 'staff');
+        Route::get('/{staff}/enable', 'enable')->can('update', 'staff');
+        // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
     });
 });

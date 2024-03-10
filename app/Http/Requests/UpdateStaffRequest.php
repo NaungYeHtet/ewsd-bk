@@ -25,6 +25,7 @@ class UpdateStaffRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:5', 'max:255'],
             'role' => ['required', 'string', 'max:255'],
+            'department' => ['required', 'string'],
             'password' => ['string', 'confirmed', Password::defaults()],
             'avatar' => ['image', 'mimes:png,jpg,jpeg,jfif'],
         ];

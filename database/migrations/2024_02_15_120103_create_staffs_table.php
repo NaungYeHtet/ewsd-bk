@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->dateTime('last_logged_in_at')->nullable();
+            $table->dateTime('disabled_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
