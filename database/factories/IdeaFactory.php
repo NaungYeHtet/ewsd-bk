@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\ReactionType;
 use App\Events\IdeaSubmitted;
 use App\Models\Idea;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -29,6 +30,7 @@ final class IdeaFactory extends Factory
             'staff_id' => \App\Models\Staff::all()->random(),
             'title' => fake()->sentence,
             'content' => fake()->text,
+            'views_count' => fake()->randomNumber(2),
             'is_anonymous' => fake()->boolean,
         ];
     }
@@ -44,6 +46,13 @@ final class IdeaFactory extends Factory
                 'reactionable_id' => $idea->id,
                 'reactionable_type' => $idea->getMorphClass(),
             ]);
+
+            $reactionsCount = [];
+            foreach(ReactionType::cases() as $reactionType) {
+                $reactionsCount[$reactionType->value] = $idea->reactions()->where('type', $reactionType->value)->count();
+            }
+            $idea->reactions_count = $reactionsCount;
+            $idea->save();
 
             \App\Models\Comment::factory()->count(rand(0, 10))->create([
                 'commentable_id' => $idea->id,

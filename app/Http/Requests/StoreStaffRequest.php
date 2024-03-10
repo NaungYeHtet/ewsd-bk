@@ -25,8 +25,8 @@ class StoreStaffRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:5', 'max:255'],
             'email' => ['required', 'string', 'email', 'unique:staffs'],
-            'role' => ['required', 'string', 'max:255'],
-            'department' => ['required', 'string'],
+            'role' => ['required', 'string', 'exists:roles,name'],
+            'department' => ['required', 'string', 'exists:departments,slug'],
             'password' => ['required', 'string', 'confirmed', Password::defaults()],
             'avatar' => ['image', 'mimes:png,jpg,jpeg,jfif'],
         ];

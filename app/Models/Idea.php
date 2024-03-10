@@ -18,6 +18,19 @@ class Idea extends Model
     use HasSlug;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'title',
+        'content',
+        'file',
+        'is_anonymous',
+        'reactions_count',
+    ];
+
+    /**
      * Get the options for generating the slug.
      */
     public function getSlugOptions(): SlugOptions
@@ -36,6 +49,11 @@ class Idea extends Model
     {
         return 'slug';
     }
+
+    protected $casts = [
+        'reactions_count' => 'array',
+        'is_anonymous' => 'boolean',
+    ];
 
     public function staff(): BelongsTo
     {

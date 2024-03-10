@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->string('file')->nullable();
+            $table->json('reactions_count')->nullable();
+            $table->unsignedInteger('views_count')->default(0);
             $table->boolean('is_anonymous')->default(false);
 
             $table->softDeletes();

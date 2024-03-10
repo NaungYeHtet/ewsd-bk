@@ -44,7 +44,7 @@ Route::middleware(['auth:sanctum', 'auth:staff'])->group(function () {
         Route::delete('/{department}', 'destroy')->can('delete', 'department');
     });
     Route::prefix('categories')->controller(CategoryController::class)->group(function () {
-        Route::get('/', 'index')->can('viewAny', Category::class);
+        Route::get('/', 'index');
         Route::post('/', 'store')->can('create', Category::class);
         Route::put('/{category}', 'update')->can('update', 'category');
         Route::delete('/{category}', 'destroy')->can('delete', 'category');

@@ -72,7 +72,7 @@ class StaffSeeder extends Seeder
             $staff['department_id'] = \App\Models\Department::inRandomOrder()->first()->id;
             $staff = \App\Models\Staff::create($staff);
             $staff->refresh();
-            $qaCoordinator->assignRole(fake()->randomElement(['Support', 'Academic Staff']));
+            $staff->assignRole(fake()->randomElement(['Support', 'Academic Staff']));
         }
     }
 }

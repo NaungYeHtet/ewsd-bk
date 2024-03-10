@@ -58,19 +58,7 @@ class StaffController extends Controller
      */
     public function store(StoreStaffRequest $request)
     {
-        $role = Role::where('name', $request->role)->first();
-
-        if (! $role) {
-            return $this->responseError('Role not found', code: 400);
-        }
-
-        $department = Department::where('slug', $request->department)->first();
-
-        if (! $department) {
-            return $this->responseError('Department not found', code: 400);
-        }
-
-        $staff = DB::transaction(function () use ($request, $department) {
+        $staff = DB::transaction(function () use ($request) {
             $fileName = '';
 
             if ($request->hasFile('avatar')) {
@@ -80,7 +68,7 @@ class StaffController extends Controller
             }
 
             $staff = Staff::create([
-                'department_id' => $department->id,
+                'department_id' => Department::findBySlug($request->department),
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
@@ -112,19 +100,7 @@ class StaffController extends Controller
      */
     public function update(UpdateStaffRequest $request, Staff $staff)
     {
-        $role = Role::where('name', $request->role)->first();
-
-        if (! $role) {
-            return $this->responseError('Role not found', code: 400);
-        }
-
-        $department = Department::where('slug', $request->department)->first();
-
-        if (! $department) {
-            return $this->responseError('Department not found', code: 400);
-        }
-
-        $staff = DB::transaction(function () use ($request, $staff, $department) {
+        $staff = DB::transaction(function () use ($request, $staff) {
             if ($request->hasFile('avatar')) {
                 Storage::disk('public')->delete($staff->avatar);
 
@@ -134,7 +110,7 @@ class StaffController extends Controller
             }
 
             $staff->name = $request->name;
-            $staff->department_id = $department->id;
+            $staff->department_id = Department::findBySlug($request->department)->id;
 
             if ($request->has('password')) {
                 $staff->password = bcrypt($request->password);

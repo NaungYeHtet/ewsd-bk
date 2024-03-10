@@ -11,7 +11,7 @@ class StoreIdeaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class StoreIdeaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string', 'max:500'],
+            'file' => ['nullable', 'file', 'max:2048'],
+            'is_anonymous' => ['required', 'boolean'],
+            'category' => ['required', 'exists:categories,slug'],
         ];
     }
 }
