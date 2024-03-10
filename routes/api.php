@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\PasswordRuleController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Models\Category;
@@ -55,5 +56,9 @@ Route::middleware(['auth:sanctum', 'auth:staff'])->group(function () {
         Route::get('/{staff}/disable', 'disable')->can('update', 'staff');
         Route::get('/{staff}/enable', 'enable')->can('update', 'staff');
         // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
+    });
+    Route::prefix('password-rules')->controller(PasswordRuleController::class)->group(function () { 
+        Route::get('/', 'index');
+        Route::post('/', 'update');
     });
 });
