@@ -36,6 +36,8 @@ class RoleSeeder extends Seeder
                     'update academic start date',
                     'update closure date',
                     'update final closure date',
+                    'list password rule',
+                    'update password rule',
                 ],
             ],
             [

@@ -59,7 +59,7 @@ final class IdeaFactory extends Factory
                 'commentable_type' => $idea->getMorphClass(),
             ]);
 
-            IdeaSubmitted::dispatch($idea);
+            // IdeaSubmitted::dispatch($idea);
         });
     }
 }

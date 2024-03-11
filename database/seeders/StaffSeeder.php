@@ -47,7 +47,7 @@ class StaffSeeder extends Seeder
             [
                 'username' => 'naungyehtet_qac',
                 'name' => 'Naung Ye Htet (QA Coordinator)',
-                'email' => 'naungyehtet.qac@gmail.com',
+                'email' => 'naungyehtet717@gmail.com',
             ],
         ];
 

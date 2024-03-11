@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Traits\HasUuids;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 use TaylorNetwork\UsernameGenerator\FindSimilarUsernames;
 use TaylorNetwork\UsernameGenerator\GeneratesUsernames;
 
-class Staff extends Authenticatable
+class Staff extends Authenticatable implements MustVerifyEmail
 {
     use FindSimilarUsernames, GeneratesUsernames, HasApiTokens, HasFactory, HasRoles, HasUuids, Notifiable;
 
@@ -32,6 +33,7 @@ class Staff extends Authenticatable
         'password',
         'username',
         'disabled_at',
+        'last_logged_in_at'
     ];
 
     /**

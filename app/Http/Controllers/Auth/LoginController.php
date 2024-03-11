@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\Staff;
 use App\Traits\ResponseHelper;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -36,9 +37,9 @@ class LoginController extends Controller
             ]);
         }
 
-        $isFirstLogin = ! (bool) $staff->last_logged_in_at;
+        $verified = $staff->hasVerifiedEmail();
 
-        $staff->update([
+        ! $verified ? event(new Registered($staff)) : $staff->update([
             'last_logged_in_at' => now(),
         ]);
 
@@ -47,7 +48,7 @@ class LoginController extends Controller
             'staff' => StaffData::from($staff),
             // 'staff_with_avatar' => StaffData::from(Staff::whereNotNull('avatar')->first()),
             'sidebarData' => SidebarData::getData($staff),
-            'isFirstLogin' => $isFirstLogin,
+            'isFirstLogin' => ! $verified,
         ]);
     }
 

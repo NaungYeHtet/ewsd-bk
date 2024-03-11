@@ -80,7 +80,7 @@ class IdeaController extends Controller
             $idea->categories()->attach($category->id);
             $idea->refresh();
 
-            // IdeaSubmitted::dispatch($idea);
+            IdeaSubmitted::dispatch($idea);
             return $idea;
         });
 

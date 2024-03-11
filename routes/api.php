@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware(['auth:sanctum', 'auth:staff'])->group(function () {
+Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function () {
     Route::get('roles', RoleController::class);
     Route::prefix('ideas')->controller(IdeaController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Idea::class);
@@ -58,7 +58,7 @@ Route::middleware(['auth:sanctum', 'auth:staff'])->group(function () {
         // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
     });
     Route::prefix('password-rules')->controller(PasswordRuleController::class)->group(function () { 
-        Route::get('/', 'index');
-        Route::post('/', 'update');
+        Route::get('/', 'index')->can('list password rule');
+        Route::post('/', 'update')->can('update password rule');
     });
 });
