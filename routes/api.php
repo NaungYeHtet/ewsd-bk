@@ -34,6 +34,7 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
     Route::prefix('ideas')->controller(IdeaController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Idea::class);
         Route::post('/', 'store')->can('create', Idea::class);
+        Route::get('/{idea}', 'show')->can('viewAny', Idea::class);
         Route::put('/{idea}', 'update')->can('update', 'idea');
         Route::delete('/{idea}', 'destroy')->can('delete', 'idea');
     });

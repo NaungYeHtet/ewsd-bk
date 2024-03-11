@@ -13,6 +13,7 @@ use App\Models\Idea;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class IdeaController extends Controller
@@ -46,7 +47,7 @@ class IdeaController extends Controller
             ->paginate($request->perpage ?? 5);
 
         return $this->responseSuccess([
-            'results' => IdeaData::collect($ideas, PaginatedDataCollection::class)->include('staff'),
+            'results' => IdeaData::collect($ideas, PaginatedDataCollection::class)->include('staff', 'viewsCount', 'category'),
         ]);
     }
 
@@ -81,6 +82,7 @@ class IdeaController extends Controller
             $idea->refresh();
 
             IdeaSubmitted::dispatch($idea);
+
             return $idea;
         });
 
@@ -94,7 +96,13 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
-        //
+        $idea->views()->firstOrCreate([
+            'staff_id' => auth()->id(),
+        ]);
+
+        return $this->responseSuccess([
+            'results' => IdeaData::from($idea)->include('staff', 'viewsCount', 'category'),
+        ]);
     }
 
     /**
@@ -102,7 +110,40 @@ class IdeaController extends Controller
      */
     public function update(UpdateIdeaRequest $request, Idea $idea)
     {
-        //
+        $idea = DB::transaction(function () use ($request, $idea) {
+            $fileName = $idea->file;
+
+            if ($request->hasFile('file')) {
+                if($idea->file){
+                    Storage::disk('public')->delete($idea->file);
+                }
+
+                $file = $request->file('file');
+                $ext = $file->extension();
+                $fileName = $file->storeAs('/images/files', uniqid().'.'.$ext, ['disk' => 'public']);
+            }
+
+            $idea->update([
+                'title' => $request->title,
+                'content' => $request->content,
+                'file' => $fileName,
+                'is_anonymous' => $request->is_anonymous,
+            ]);
+
+            $idea->refresh();
+            $category = Category::findBySlug($request->category);
+
+            $idea->categories()->sync($category->id);
+            $idea->refresh();
+
+            // IdeaUpdated::dispatch($idea);
+
+            return $idea;
+        });
+
+        return $this->responseSuccess([
+            'result' => IdeaData::from($idea),
+        ], 'Idea updated successfully');
     }
 
     /**
@@ -110,6 +151,18 @@ class IdeaController extends Controller
      */
     public function destroy(Idea $idea)
     {
-        //
+        DB::transaction(function () use ($idea) {
+            if($idea->file){
+                Storage::disk('public')->delete($idea->file);
+            }
+
+            $idea->categories()->detach();
+            $idea->comments()->delete();
+            $idea->reactions()->delete();
+            $idea->views()->delete();
+            $idea->delete();
+        });
+
+        return $this->responseSuccess([], 'Idea deleted successfully');
     }
 }

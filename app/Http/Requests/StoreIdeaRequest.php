@@ -24,7 +24,7 @@ class StoreIdeaRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string', 'max:500'],
-            'file' => ['nullable', 'file', 'max:2048'],
+            'file' => ['file', 'max:2048'],
             'is_anonymous' => ['required', 'boolean'],
             'category' => ['required', 'exists:categories,slug'],
         ];

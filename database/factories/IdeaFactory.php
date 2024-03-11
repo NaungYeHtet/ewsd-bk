@@ -30,7 +30,6 @@ final class IdeaFactory extends Factory
             'staff_id' => \App\Models\Staff::all()->random(),
             'title' => fake()->sentence,
             'content' => fake()->text,
-            'views_count' => fake()->randomNumber(2),
             'is_anonymous' => fake()->boolean,
         ];
     }
@@ -48,7 +47,7 @@ final class IdeaFactory extends Factory
             ]);
 
             $reactionsCount = [];
-            foreach(ReactionType::cases() as $reactionType) {
+            foreach (ReactionType::cases() as $reactionType) {
                 $reactionsCount[$reactionType->value] = $idea->reactions()->where('type', $reactionType->value)->count();
             }
             $idea->reactions_count = $reactionsCount;
@@ -57,6 +56,11 @@ final class IdeaFactory extends Factory
             \App\Models\Comment::factory()->count(rand(0, 10))->create([
                 'commentable_id' => $idea->id,
                 'commentable_type' => $idea->getMorphClass(),
+            ]);
+
+            \App\Models\View::factory()->count(rand(0, 10))->create([
+                'viewable_id' => $idea->id,
+                'viewable_type' => $idea->getMorphClass(),
             ]);
 
             // IdeaSubmitted::dispatch($idea);

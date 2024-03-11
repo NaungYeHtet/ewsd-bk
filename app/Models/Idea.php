@@ -37,7 +37,9 @@ class Idea extends Model
     {
         return SlugOptions::create()
             ->generateSlugsFrom('title')
-            ->saveSlugsTo('slug');
+            ->saveSlugsTo('slug')
+            ->slugsShouldBeNoLongerThan(50)
+            ->doNotGenerateSlugsOnUpdate();
     }
 
     /**
@@ -73,6 +75,11 @@ class Idea extends Model
     public function reactions(): MorphMany
     {
         return $this->morphMany(Reaction::class, 'reactionable');
+    }
+
+    public function views(): MorphMany
+    {
+        return $this->morphMany(View::class, 'viewable');
     }
 
     protected function currentReaction(): Attribute

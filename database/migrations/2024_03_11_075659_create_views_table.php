@@ -11,18 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ideas', function (Blueprint $table) {
+        Schema::create('views', function (Blueprint $table) {
             $table->id();
+            $table->morphs('viewable');
             $table->foreignIdFor(\App\Models\Staff::class)->constrained('staffs')->cascadeOnDelete();
-
-            $table->string('slug')->unique();
-            $table->string('title');
-            $table->text('content');
-            $table->string('file')->nullable();
-            $table->json('reactions_count')->nullable();
-            $table->boolean('is_anonymous')->default(false);
-
-            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -32,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ideas');
+        Schema::dropIfExists('views');
     }
 };
