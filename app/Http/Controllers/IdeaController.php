@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Data\IdeaData;
 use App\Enums\ReactionType;
 use App\Events\IdeaSubmitted;
+use App\Exports\IdeasExport;
+use App\Http\Requests\ExportRequest;
 use App\Http\Requests\IndexRequest;
 use App\Http\Requests\ReactIdeaRequest;
 use App\Http\Requests\StoreIdeaRequest;
@@ -12,13 +14,17 @@ use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Category;
 use App\Models\Idea;
 use App\Models\Staff;
+use App\Traits\Zippable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class IdeaController extends Controller
 {
+    use Zippable;
+
     /**
      * Display a listing of the resource.
      */
@@ -50,6 +56,16 @@ class IdeaController extends Controller
         return $this->responseSuccess([
             'results' => IdeaData::collect($ideas, PaginatedDataCollection::class)->include('staff', 'viewsCount', 'category'),
         ]);
+    }
+
+    public function export(ExportRequest $request)
+    {
+        return Excel::download(new IdeasExport, 'ideas.xlsx');
+    }
+
+    public function downloadFiles(ExportRequest $request)
+    {
+        return response()->download($this->getZippableFileName('public/images/files', 'idea-uploads'))->deleteFileAfterSend(true);
     }
 
     /**

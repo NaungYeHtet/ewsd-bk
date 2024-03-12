@@ -37,6 +37,8 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
     Route::get('roles', RoleController::class);
     Route::prefix('ideas')->controller(IdeaController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Idea::class);
+        Route::get('/export', 'export')->can('export', Idea::class);
+        Route::get('/download-files', 'downloadFiles')->can('export', Idea::class);
         Route::post('/', 'store')->can('create', Idea::class);
         Route::get('/{idea}', 'show')->can('viewAny', Idea::class);
         Route::put('/{idea}', 'update')->can('update', 'idea');
@@ -46,6 +48,7 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
     Route::prefix('ideas/{idea}/comments')->controller(IdeaCommentController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Comment::class);
         Route::post('/', 'store')->can('create', Comment::class);
+        Route::get('/export', 'export')->can('export', Comment::class);
         Route::put('/{comment}', 'update')->can('update', 'comment');
         Route::delete('/{comment}', 'destroy')->can('delete', 'comment');
     })->scopeBindings();
