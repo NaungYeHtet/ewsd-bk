@@ -15,6 +15,16 @@ class Reaction extends Model
 
     protected $primaryKey = 'uuid';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'type',
+        'staff_id',
+    ];
+
     protected $casts = [
         'type' => ReactionType::class,
     ];

@@ -157,7 +157,10 @@ class IdeaController extends Controller
                 'type' => $request->type,
             ]);
 
-            $idea->reactions_count[$request->type] = $exist ? $idea->reactions_count[$request->type] - 1 : $idea->reactions_count[$request->type] + 1;
+            $currentReactionsCount = $idea->reactions_count;
+
+            $currentReactionsCount[$request->type] = $exist ? $currentReactionsCount[$request->type] - 1 : $currentReactionsCount[$request->type] + 1;
+            $idea->reactions_count = $currentReactionsCount;
             $idea->save();
         });
 
