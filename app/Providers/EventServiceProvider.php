@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\IdeaSubmitted::class => [
             \App\Listeners\SendIdeaSubmittedNotification::class,
         ],
+        \App\Events\CommentSubmitted::class => [
+            \App\Listeners\SendCommentSubmittedNotification::class,
+        ],
     ];
 
     /**

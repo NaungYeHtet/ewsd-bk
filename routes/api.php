@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\IdeaCommentController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\PasswordRuleController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Department;
 use App\Models\Idea;
 use App\Models\Staff;
@@ -37,7 +39,14 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::get('/{idea}', 'show')->can('viewAny', Idea::class);
         Route::put('/{idea}', 'update')->can('update', 'idea');
         Route::delete('/{idea}', 'destroy')->can('delete', 'idea');
+        Route::get('/{idea}/react', 'react')->can('react', 'idea');
     });
+    Route::prefix('ideas/{idea}/comments')->controller(IdeaCommentController::class)->group(function () {
+        Route::get('/', 'index')->can('viewAny', Comment::class);
+        Route::post('/', 'store')->can('create', Comment::class);
+        Route::put('/{comment}', 'update')->can('update', 'comment');
+        Route::delete('/{comment}', 'destroy')->can('delete', 'comment');
+    })->scopeBindings();
     Route::prefix('departments')->controller(DepartmentController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Department::class);
         Route::post('/', 'store')->can('create', Department::class);
@@ -58,7 +67,7 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::get('/{staff}/enable', 'enable')->can('update', 'staff');
         // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
     });
-    Route::prefix('password-rules')->controller(PasswordRuleController::class)->group(function () { 
+    Route::prefix('password-rules')->controller(PasswordRuleController::class)->group(function () {
         Route::get('/', 'index')->can('list password rule');
         Route::post('/', 'update')->can('update password rule');
     });

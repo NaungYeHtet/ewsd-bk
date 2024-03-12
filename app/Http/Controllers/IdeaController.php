@@ -6,6 +6,7 @@ use App\Data\IdeaData;
 use App\Enums\ReactionType;
 use App\Events\IdeaSubmitted;
 use App\Http\Requests\IndexRequest;
+use App\Http\Requests\ReactIdeaRequest;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Category;
@@ -114,7 +115,7 @@ class IdeaController extends Controller
             $fileName = $idea->file;
 
             if ($request->hasFile('file')) {
-                if($idea->file){
+                if ($idea->file) {
                     Storage::disk('public')->delete($idea->file);
                 }
 
@@ -146,13 +147,32 @@ class IdeaController extends Controller
         ], 'Idea updated successfully');
     }
 
+    public function react(Idea $idea, ReactIdeaRequest $request)
+    {
+        DB::transaction(function () use ($request, $idea) {
+            $exist = $idea->reactions()->where('staff_id', auth()->id())->where('type', $request->type)->first();
+
+            $exist ? $exist->delete() : $idea->reactions()->create([
+                'staff_id' => auth()->id(),
+                'type' => $request->type,
+            ]);
+
+            $idea->reactions_count[$request->type] = $exist ? $idea->reactions_count[$request->type] - 1 : $idea->reactions_count[$request->type] + 1;
+            $idea->save();
+        });
+
+        return $this->responseSuccess([
+            'result' => IdeaData::from($idea),
+        ], 'React successfully');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Idea $idea)
     {
         DB::transaction(function () use ($idea) {
-            if($idea->file){
+            if ($idea->file) {
                 Storage::disk('public')->delete($idea->file);
             }
 

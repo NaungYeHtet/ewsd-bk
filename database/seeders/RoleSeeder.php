@@ -18,6 +18,11 @@ class RoleSeeder extends Seeder
             'create idea',
             'update idea',
             'delete idea',
+            'react idea',
+            'list comment',
+            'create comment',
+            'update comment',
+            'delete comment',
         ];
 
         $roles = [

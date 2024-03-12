@@ -22,7 +22,7 @@ class StaffSeeder extends Seeder
         foreach ($admins as $admin) {
             $admin['password'] = bcrypt('password@123');
             $admin['department_id'] = \App\Models\Department::inRandomOrder()->first()->id;
-            $admin = \App\Models\Staff::create($admin);
+            $admin = \App\Models\Staff::factory()->create($admin);
             $admin->refresh();
             $admin->assignRole('Admin');
         }
@@ -38,7 +38,7 @@ class StaffSeeder extends Seeder
         foreach ($qaManagers as $qaManager) {
             $qaManager['password'] = bcrypt('password@123');
             $qaManager['department_id'] = \App\Models\Department::inRandomOrder()->first()->id;
-            $qaManager = \App\Models\Staff::create($qaManager);
+            $qaManager = \App\Models\Staff::factory()->create($qaManager);
             $qaManager->refresh();
             $qaManager->assignRole('QA Manager');
         }
@@ -54,7 +54,7 @@ class StaffSeeder extends Seeder
         foreach ($qaCoordinators as $qaCoordinator) {
             $qaCoordinator['password'] = bcrypt('password@123');
             $qaCoordinator['department_id'] = \App\Models\Department::inRandomOrder()->first()->id;
-            $qaCoordinator = \App\Models\Staff::create($qaCoordinator);
+            $qaCoordinator = \App\Models\Staff::factory()->create($qaCoordinator);
             $qaCoordinator->refresh();
             $qaCoordinator->assignRole('QA Coordinator');
         }
@@ -70,7 +70,7 @@ class StaffSeeder extends Seeder
         foreach ($staffs as $staff) {
             $staff['password'] = bcrypt('password@123');
             $staff['department_id'] = \App\Models\Department::inRandomOrder()->first()->id;
-            $staff = \App\Models\Staff::create($staff);
+            $staff = \App\Models\Staff::factory()->create($staff);
             $staff->refresh();
             $staff->assignRole(fake()->randomElement(['Support', 'Academic Staff']));
         }

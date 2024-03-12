@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Comment;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -10,25 +11,27 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class FirstLoggedIn
+class CommentSubmitted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * The authenticated user.
-     *
-     * @var \Illuminate\Contracts\Auth\Authenticatable
+     * Create a new event instance.
      */
-    public $user;
+    public function __construct(public Comment $comment)
+    {
+        //
+    }
 
     /**
-     * Create a new event instance.
+     * Get the channels the event should broadcast on.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
-     * @return void
+     * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function __construct($user)
+    public function broadcastOn(): array
     {
-        $this->user = $user;
+        return [
+            new PrivateChannel('channel-name'),
+        ];
     }
 }

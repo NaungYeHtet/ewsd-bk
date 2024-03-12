@@ -25,6 +25,14 @@ class IdeaPolicy
     }
 
     /**
+     * Determine whether the user can react the idea.
+     */
+    public function react(Staff $staff, Idea $idea): bool
+    {
+        return $staff->can('react idea');
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(Staff $staff): bool

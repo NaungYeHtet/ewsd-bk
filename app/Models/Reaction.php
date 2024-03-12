@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ReactionType;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,7 +11,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Reaction extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
+
+    protected $primaryKey = 'uuid';
 
     protected $casts = [
         'type' => ReactionType::class,

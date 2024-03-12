@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reactions', function (Blueprint $table) {
-            $table->id();
+            $table->uuid()->primary();
             $table->foreignIdFor(\App\Models\Staff::class)->constrained('staffs')->cascadeOnDelete();
             $table->string('type');
             $table->morphs('reactionable');

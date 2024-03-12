@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid')->unique();
             $table->foreignIdFor(\App\Models\Staff::class)->constrained('staffs')->cascadeOnDelete();
             $table->morphs('commentable');
             $table->text('content');
