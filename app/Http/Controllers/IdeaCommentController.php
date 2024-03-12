@@ -33,6 +33,10 @@ class IdeaCommentController extends Controller
         $comment = DB::transaction(function () use ($idea, $data) {
             $staff = Staff::find(auth()->id());
 
+            $idea->views()->firstOrCreate([
+                'staff_id' => $staff->id(),
+            ]);
+
             $comment = $idea->comments()->create([
                 'content' => $data->content,
                 'is_anonymous' => $data->isAnonymous,

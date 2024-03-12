@@ -152,6 +152,10 @@ class IdeaController extends Controller
         DB::transaction(function () use ($request, $idea) {
             $exist = $idea->reactions()->where('staff_id', auth()->id())->where('type', $request->type)->first();
 
+            $idea->views()->firstOrCreate([
+                'staff_id' => auth()->id(),
+            ]);
+
             $exist ? $exist->delete() : $idea->reactions()->create([
                 'staff_id' => auth()->id(),
                 'type' => $request->type,

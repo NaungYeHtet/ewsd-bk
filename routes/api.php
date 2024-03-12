@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcademicDateController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\IdeaCommentController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\PasswordRuleController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
+use App\Models\AcademicDate;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Department;
@@ -65,6 +67,13 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::put('/{staff}', 'update')->can('update', 'staff');
         Route::get('/{staff}/disable', 'disable')->can('update', 'staff');
         Route::get('/{staff}/enable', 'enable')->can('update', 'staff');
+        // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
+    });
+    Route::prefix('academic-dates')->controller(AcademicDateController::class)->group(function () {
+        Route::get('/', 'index')->can('viewAny', AcademicDate::class);
+        Route::post('/', 'store')->can('create', AcademicDate::class);
+        Route::put('/{date}', 'update')->can('update', 'date');
+        Route::delete('/{date}', 'destroy')->can('delete', 'date');
         // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
     });
     Route::prefix('password-rules')->controller(PasswordRuleController::class)->group(function () {
