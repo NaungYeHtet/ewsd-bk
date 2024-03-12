@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
+use App\Models\AcademicDate;
 use App\Models\Idea;
 use App\Models\Staff;
-use Illuminate\Auth\Access\Response;
 
 class IdeaPolicy
 {
@@ -29,7 +29,7 @@ class IdeaPolicy
      */
     public function react(Staff $staff, Idea $idea): bool
     {
-        return $staff->can('react idea');
+        return $staff->can('react idea') && AcademicDate::isDateBetweenStartAndFinalClosureDate();
     }
 
     /**
@@ -37,7 +37,7 @@ class IdeaPolicy
      */
     public function create(Staff $staff): bool
     {
-        return $staff->can('create idea');
+        return $staff->can('create idea') && AcademicDate::isDateBetweenStartAndClosureDate();
     }
 
     /**
@@ -45,7 +45,9 @@ class IdeaPolicy
      */
     public function update(Staff $staff, Idea $idea): bool
     {
-        return $staff->can('update idea') && $staff->id === $idea->staff_id;
+        return $staff->can('update idea') &&
+        $staff->id === $idea->staff_id &&
+        AcademicDate::isDateBetweenStartAndClosureDate();
     }
 
     /**
@@ -53,6 +55,8 @@ class IdeaPolicy
      */
     public function delete(Staff $staff, Idea $idea): bool
     {
-        return ($staff->can('delete idea') && $staff->id === $idea->staff_id) || $staff->hasRole('Admin');
+        return ($staff->can('delete idea') &&
+            $staff->id === $idea->staff_id && AcademicDate::isDateBetweenStartAndFinalClosureDate()) ||
+            $staff->hasRole('Admin');
     }
 }

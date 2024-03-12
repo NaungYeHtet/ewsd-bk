@@ -20,4 +20,17 @@ class AcademicDate extends Model
         'final_closure_date' => 'date',
     ];
 
+    public static function isDateBetweenStartAndClosureDate($date = null): bool
+    {
+        $date = $date ?? now();
+
+        return AcademicDate::where('start_date', '<=', $date)->where('closure_date', '>=', $date)->exists();
+    }
+
+    public static function isDateBetweenStartAndFinalClosureDate($date = null): bool
+    {
+        $date = $date ?? now();
+
+        return AcademicDate::where('start_date', '<=', $date)->where('final_closure_date', '>=', $date)->exists();
+    }
 }

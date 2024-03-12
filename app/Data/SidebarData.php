@@ -2,9 +2,11 @@
 
 namespace App\Data;
 
+use App\Models\Idea;
 use App\Models\Staff;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
+use Spatie\LaravelData\Optional;
 
 class SidebarData extends Data
 {
@@ -14,6 +16,8 @@ class SidebarData extends Data
         public string $icon,
         public string $url,
         public array $permissions,
+        public array|Optional $reactionPermissions,
+        public array|Optional $commentPermissions,
     ) {
     }
 
@@ -29,10 +33,9 @@ class SidebarData extends Data
                 'title' => 'Idea',
                 'icon' => 'mail-question',
                 'url' => '/staffs',
-                'permissions' => [
-                    '/',
-                    '/create',
-                ],
+                'permissions' => Idea::getCrudPermissions($staff),
+                'reactionPermissions' => Idea::getReactionPermissions($staff),
+                'commentPermissions' => Idea::getCommentPermissions($staff),
             ], [
                 'title' => 'Category',
                 'icon' => 'bar-chart-horizontal',

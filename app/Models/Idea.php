@@ -114,4 +114,65 @@ class Idea extends Model
             get: fn () => $this->comments()->count()
         );
     }
+
+    public static function getCrudPermissions(Staff $staff): array
+    {
+        $permissions = [];
+
+        if ($staff->can('list idea')) {
+            $permissions[] = '/';
+        }
+
+        if ($staff->can('create idea') && AcademicDate::isDateBetweenStartAndClosureDate()) {
+            $permissions[] = '/create';
+        }
+
+        if ($staff->can('update idea') && AcademicDate::isDateBetweenStartAndClosureDate()) {
+            $permissions[] = '/update';
+        }
+
+        if (($staff->can('delete idea') && AcademicDate::isDateBetweenStartAndFinalClosureDate()) || $staff->hasRole('Admin')) {
+            $permissions[] = '/delete';
+        }
+
+        return $permissions;
+    }
+
+    public static function getCommentPermissions(Staff $staff): array
+    {
+        $permissions = [];
+
+        if ($staff->can('list comment')) {
+            $permissions[] = '/';
+        }
+
+        if (AcademicDate::isDateBetweenStartAndFinalClosureDate()) {
+            if ($staff->can('create comment')) {
+                $permissions[] = '/create';
+            }
+            if ($staff->can('update comment')) {
+                $permissions[] = '/update';
+            }
+            if ($staff->can('delete comment')) {
+                $permissions[] = '/delete';
+            }
+        }
+
+        if ($staff->hasRole('Admin')) {
+            $permissions[] = '/delete';
+        }
+
+        return $permissions;
+    }
+
+    public static function getReactionPermissions(Staff $staff): array
+    {
+        $permissions = [];
+
+        if ($staff->can('react idea') && AcademicDate::isDateBetweenStartAndFinalClosureDate()) {
+            $permissions[] = '/react';
+        }
+
+        return $permissions;
+    }
 }

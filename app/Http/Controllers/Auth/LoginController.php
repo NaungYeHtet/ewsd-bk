@@ -47,7 +47,6 @@ class LoginController extends Controller
             'token' => $staff->createToken('AUTH TOKEN')->plainTextToken,
             'staff' => StaffData::from($staff),
             // 'staff_with_avatar' => StaffData::from(Staff::whereNotNull('avatar')->first()),
-            'sidebarData' => SidebarData::getData($staff),
             'isFirstLogin' => ! $verified,
         ]);
     }

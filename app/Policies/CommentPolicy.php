@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\AcademicDate;
 use App\Models\Comment;
 use App\Models\Staff;
 
@@ -28,7 +29,7 @@ class CommentPolicy
      */
     public function create(Staff $staff): bool
     {
-        return $staff->can('create comment');
+        return $staff->can('create comment') && AcademicDate::isDateBetweenStartAndFinalClosureDate();
     }
 
     /**
@@ -36,7 +37,8 @@ class CommentPolicy
      */
     public function update(Staff $staff, Comment $comment): bool
     {
-        return $staff->can('update comment') && $comment->staff->id == $staff->id;
+        return $staff->can('update comment') &&
+        $comment->staff->id == $staff->id && AcademicDate::isDateBetweenStartAndFinalClosureDate();
     }
 
     /**
@@ -44,6 +46,6 @@ class CommentPolicy
      */
     public function delete(Staff $staff, Comment $comment): bool
     {
-        return ($staff->can('delete comment') && $comment->staff->id == $staff->id) || $staff->hasRole('Admin');
+        return ($staff->can('delete comment') && $comment->staff->id == $staff->id && AcademicDate::isDateBetweenStartAndFinalClosureDate()) || $staff->hasRole('Admin');
     }
 }
