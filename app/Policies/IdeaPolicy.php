@@ -17,6 +17,14 @@ class IdeaPolicy
     }
 
     /**
+     * Determine whether the user can react the idea.
+     */
+    public function export(Staff $staff): bool
+    {
+        return $staff->can('export idea');
+    }
+
+    /**
      * Determine whether the user can view the model.
      */
     public function view(Staff $staff, Idea $idea): bool

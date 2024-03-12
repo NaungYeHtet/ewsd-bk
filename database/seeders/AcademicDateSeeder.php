@@ -12,18 +12,18 @@ class AcademicDateSeeder extends Seeder
     public function run(): void
     {
         $dates = [
-            [
-                'academic_year' => '2020-2021',
-                'start_date' => '2020-02-01',
-                'closure_date' => '2020-06-01',
-                'final_closure_date' => '2021-01-31',
-            ],
-            [
-                'academic_year' => '2021-2022',
-                'start_date' => '2021-02-01',
-                'closure_date' => '2021-06-01',
-                'final_closure_date' => '2022-01-31',
-            ],
+            // [
+            //     'academic_year' => '2020-2021',
+            //     'start_date' => '2020-02-01',
+            //     'closure_date' => '2020-06-01',
+            //     'final_closure_date' => '2021-01-31',
+            // ],
+            // [
+            //     'academic_year' => '2021-2022',
+            //     'start_date' => '2021-02-01',
+            //     'closure_date' => '2021-06-01',
+            //     'final_closure_date' => '2022-01-31',
+            // ],
             [
                 'academic_year' => '2022-2023',
                 'start_date' => '2022-02-01',

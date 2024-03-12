@@ -14,7 +14,7 @@ class IdeasExport implements FromQuery, WithHeadings, WithMapping
 {
     public function query()
     {
-        return Idea::query();
+        return Idea::orderBy('created_at', 'desc');
     }
 
     public function headings(): array
@@ -27,9 +27,10 @@ class IdeasExport implements FromQuery, WithHeadings, WithMapping
             'Title',
             'Content',
             'Uploaded File',
-            'Thumbs Up count',
-            'Thumbs Down count',
-            'Comments count',
+            'Thumbs Up Count',
+            'Thumbs Down Count',
+            'Comments Count',
+            'Views Count',
             'Posted At',
         ];
     }
@@ -43,7 +44,7 @@ class IdeasExport implements FromQuery, WithHeadings, WithMapping
         $academicDate = AcademicDate::where('start_date', '<=', $idea->created_at)->where('closure_date', '>=', $idea->created_at)->first();
 
         return [
-            $academicDate ? $academicDate->name : null,
+            $academicDate ? $academicDate->academic_year : null,
             $staff->name,
             $staff->email,
             $staff->department->name,
@@ -53,6 +54,7 @@ class IdeasExport implements FromQuery, WithHeadings, WithMapping
             $idea->reactions_count['THUMBS_UP'],
             $idea->reactions_count['THUMBS_DOWN'],
             $idea->comments_count,
+            $idea->views()->count(),
             Date::dateTimeToExcel($idea->created_at),
         ];
     }

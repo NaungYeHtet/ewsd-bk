@@ -37,6 +37,12 @@ final class IdeaFactory extends Factory
     public function configure(): static
     {
         return $this->afterCreating(function (Idea $idea) {
+            $academicDate = \App\Models\AcademicDate::inRandomOrder()->first();
+
+            $randDate = fake()->dateTimeBetween($academicDate->start_date, $academicDate->closure_date);
+            $idea->created_at = $randDate;
+            $idea->updated_at = $randDate;
+
             $categories = \App\Models\Category::inRandomOrder()->limit(rand(1, 3))->get();
 
             $idea->categories()->attach($categories);
@@ -44,6 +50,7 @@ final class IdeaFactory extends Factory
             \App\Models\Reaction::factory()->count(rand(0, 20))->create([
                 'reactionable_id' => $idea->id,
                 'reactionable_type' => $idea->getMorphClass(),
+                'created_at' => fake()->dateTimeBetween($academicDate->start_date, $academicDate->final_closure_date),
             ]);
 
             $reactionsCount = [];
@@ -56,11 +63,13 @@ final class IdeaFactory extends Factory
             \App\Models\Comment::factory()->count(rand(0, 10))->create([
                 'commentable_id' => $idea->id,
                 'commentable_type' => $idea->getMorphClass(),
+                'created_at' => fake()->dateTimeBetween($academicDate->start_date, $academicDate->final_closure_date),
             ]);
 
             \App\Models\View::factory()->count(rand(0, 10))->create([
                 'viewable_id' => $idea->id,
                 'viewable_type' => $idea->getMorphClass(),
+                'created_at' => fake()->dateTimeBetween($academicDate->start_date, $academicDate->final_closure_date),
             ]);
 
             // IdeaSubmitted::dispatch($idea);
