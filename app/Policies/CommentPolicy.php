@@ -25,6 +25,14 @@ class CommentPolicy
     }
 
     /**
+     * Determine whether the user can react the idea.
+     */
+    public function export(Staff $staff): bool
+    {
+        return $staff->can('export comment');
+    }
+
+    /**
      * Determine whether the user can create models.
      */
     public function create(Staff $staff): bool

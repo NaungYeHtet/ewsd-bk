@@ -13,7 +13,6 @@ trait ResponseHelper
     {
         $data['message'] = $message;
         if (Auth::check()) {
-            $data['sidebarData'] = SidebarData::getData(auth()->user());
             $data['currentAcademic'] = AcademicDateData::from(AcademicDate::where('start_date', '<=', now())->where('final_closure_date', '>=', now())->first())->except('isActive');
         }
 

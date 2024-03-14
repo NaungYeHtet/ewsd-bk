@@ -58,11 +58,6 @@ class IdeaController extends Controller
         ]);
     }
 
-    public function export(ExportRequest $request)
-    {
-        return Excel::download(new IdeasExport, 'ideas.xlsx');
-    }
-
     public function downloadFiles(ExportRequest $request)
     {
         return response()->download($this->getZippableFileName('public/images/files', 'idea-uploads'))->deleteFileAfterSend(true);

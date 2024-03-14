@@ -27,7 +27,6 @@ class UpdateStaffRequest extends FormRequest
             'role' => ['required', 'string', 'exists:role,name'],
             'department' => ['required', 'string', 'exists:departments,slug'],
             'password' => ['string', 'confirmed', Password::defaults()],
-            'avatar' => ['image', 'mimes:png,jpg,jpeg,jfif'],
         ];
     }
 }

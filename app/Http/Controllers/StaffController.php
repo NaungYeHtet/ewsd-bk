@@ -121,6 +121,7 @@ class StaffController extends Controller
 
             if (! $staff->hasRole($request->role)) {
                 $staff->syncRoles([$request->role]);
+                $staff->tokens()->delete();
             }
             $staff->refresh();
 
@@ -129,7 +130,7 @@ class StaffController extends Controller
 
         return $this->responseSuccess([
             'staff' => StaffData::from($staff),
-        ], 'Staff created successfully', 201);
+        ], 'Staff updated successfully', 200);
     }
 
     public function disable(Staff $staff)

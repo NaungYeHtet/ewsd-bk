@@ -26,29 +26,29 @@ class SidebarData extends Data
         return self::collect([
             [
                 'title' => 'Dashboard',
-                'icon' => 'layout-dashboard',
+                'icon' => 'LayoutDashboard',
                 'url' => '/',
                 'permissions' => ['/'],
             ], [
                 'title' => 'Idea',
-                'icon' => 'mail-question',
+                'icon' => 'MailQuestion',
                 'url' => '/staffs',
                 'permissions' => Idea::getCrudPermissions($staff),
                 'reactionPermissions' => Idea::getReactionPermissions($staff),
                 'commentPermissions' => Idea::getCommentPermissions($staff),
             ], [
                 'title' => 'Category',
-                'icon' => 'bar-chart-horizontal',
+                'icon' => 'BarChartHorizontal',
                 'url' => '/categories',
                 'permissions' => self::getCrudPermissions('category', $staff),
             ], [
                 'title' => 'Department',
-                'icon' => 'building-2',
+                'icon' => 'Building2',
                 'url' => '/departments',
                 'permissions' => self::getCrudPermissions('department', $staff),
             ], [
                 'title' => 'Staff',
-                'icon' => 'users',
+                'icon' => 'Users',
                 'url' => '/staffs',
                 'permissions' => self::getCrudPermissions('staff', $staff),
             ],

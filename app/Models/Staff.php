@@ -33,7 +33,8 @@ class Staff extends Authenticatable implements MustVerifyEmail
         'password',
         'username',
         'disabled_at',
-        'last_logged_in_at'
+        'last_logged_in_at',
+        'avatar',
     ];
 
     /**

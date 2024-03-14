@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
-class ExportRequest extends FormRequest
+class UpdateProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +23,9 @@ class ExportRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => ['required', 'in:csv,xlsx'],
+            'name' => ['required', 'string', 'min:5', 'max:255'],
+            'password' => ['string', 'confirmed', Password::defaults()],
+            'avatar' => ['image', 'mimes:png,jpg,jpeg,jfif'],
         ];
     }
 }

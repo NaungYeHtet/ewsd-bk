@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Data\CommentData;
 use App\Events\CommentSubmitted;
+use App\Exports\CommentsExport;
+use App\Http\Requests\ExportRequest;
 use App\Http\Requests\IndexRequest;
 use App\Models\Comment;
 use App\Models\Idea;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class IdeaCommentController extends Controller
@@ -26,6 +29,11 @@ class IdeaCommentController extends Controller
         return $this->responseSuccess([
             'results' => CommentData::collect($ideas, PaginatedDataCollection::class)->include('staff'),
         ]);
+    }
+
+    public function export(ExportRequest $request)
+    {
+        return Excel::download(new CommentsExport, 'comments.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 
     public function store(Idea $idea, CommentData $data)

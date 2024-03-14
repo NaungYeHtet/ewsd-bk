@@ -4,8 +4,8 @@ namespace App\Data;
 
 use App\Models\Staff;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelData\Attributes\MapInputName;
-use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Optional;
@@ -20,9 +20,9 @@ class StaffData extends Data
         public string|Optional $username,
         public string|Optional|null $avatar,
         #[MapInputName('disabled_at')]
-        public Carbon|null $disabledAt,
+        public ?Carbon $disabledAt,
         #[MapInputName('last_logged_in_at')]
-        public Carbon|null $lastLoggedInAt,
+        public ?Carbon $lastLoggedInAt,
         public Lazy|string $role,
         public Lazy|DepartmentData $department,
     ) {
@@ -35,7 +35,7 @@ class StaffData extends Data
             $staff->name,
             $staff->email,
             $staff->username,
-            $staff->avatar,
+            $staff->avatar ? url('/').Storage::url($staff->avatar) : url('/').Storage::url('public/images/default-avatar.png'),
             $staff->disabled_at,
             $staff->last_logged_in_at,
             Lazy::create(fn () => RoleData::from($staff->roles()->first())->name),

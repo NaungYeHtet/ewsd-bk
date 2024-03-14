@@ -3,9 +3,11 @@
 use App\Http\Controllers\AcademicDateController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\IdeaCommentController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\PasswordRuleController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Models\AcademicDate;
@@ -35,20 +37,25 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function () {
     Route::get('roles', RoleController::class);
+    Route::get('/export-data', ExportController::class);
+    Route::prefix('profile')->controller(ProfileController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::post('/update', 'update');
+    });
     Route::prefix('ideas')->controller(IdeaController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Idea::class);
-        Route::get('/export', 'export')->can('export', Idea::class);
-        Route::get('/download-files', 'downloadFiles')->can('export', Idea::class);
+        // Route::get('/export', 'export')->can('export', Idea::class);
+        // Route::get('/download-files', 'downloadFiles')->can('export', Idea::class);
         Route::post('/', 'store')->can('create', Idea::class);
         Route::get('/{idea}', 'show')->can('viewAny', Idea::class);
         Route::put('/{idea}', 'update')->can('update', 'idea');
         Route::delete('/{idea}', 'destroy')->can('delete', 'idea');
         Route::get('/{idea}/react', 'react')->can('react', 'idea');
     });
+    // Route::get('/comments/export', [IdeaCommentController::class, 'export'])->can('export', Comment::class);
     Route::prefix('ideas/{idea}/comments')->controller(IdeaCommentController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Comment::class);
         Route::post('/', 'store')->can('create', Comment::class);
-        Route::get('/export', 'export')->can('export', Comment::class);
         Route::put('/{comment}', 'update')->can('update', 'comment');
         Route::delete('/{comment}', 'destroy')->can('delete', 'comment');
     })->scopeBindings();
