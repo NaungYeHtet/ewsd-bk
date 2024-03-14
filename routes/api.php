@@ -37,7 +37,10 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function () {
     Route::get('roles', RoleController::class);
-    Route::get('/export-data', ExportController::class);
+    Route::prefix('export')->controller(ExportController::class)->group(function () {
+        Route::get('/{date}/data', 'data');
+        Route::get('/{date}/files', 'files');
+    });
     Route::prefix('profile')->controller(ProfileController::class)->group(function () {
         Route::get('/', 'index');
         Route::post('/update', 'update');

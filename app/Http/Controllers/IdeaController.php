@@ -58,11 +58,6 @@ class IdeaController extends Controller
         ]);
     }
 
-    public function downloadFiles(ExportRequest $request)
-    {
-        return response()->download($this->getZippableFileName('public/images/files', 'idea-uploads'))->deleteFileAfterSend(true);
-    }
-
     /**
      * Store a newly created resource in storage.
      */
