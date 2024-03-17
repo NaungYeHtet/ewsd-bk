@@ -10,6 +10,7 @@ use App\Http\Requests\IndexRequest;
 use App\Models\Academic;
 use App\Traits\Zippable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\ValidationException;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class AcademicController extends Controller
@@ -37,13 +38,13 @@ class AcademicController extends Controller
     public function store(AcademicData $data)
     {
         if (Academic::where('start_date', '<=', $data->startDate)->where('final_closure_date', '>=', $data->startDate)->exists()) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'start_date' => ['The start date cannot overlap an existing academic year'],
             ]);
         }
 
         if (Academic::where('start_date', '<=', $data->finalClosureDate)->where('final_closure_date', '>=', $data->finalClosureDate)->exists()) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'final_closure_date' => ['The final closure date cannot overlap an existing academic year'],
             ]);
         }
@@ -74,13 +75,13 @@ class AcademicController extends Controller
     public function update(AcademicData $data, Academic $academic)
     {
         if (Academic::where('start_date', '<=', $data->startDate)->where('final_closure_date', '>=', $data->startDate)->where('uuid', '!=', $academic->uuid)->exists()) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'start_date' => ['The start date cannot overlap an existing academic year'],
             ]);
         }
 
         if (Academic::where('start_date', '<=', $data->finalClosureDate)->where('final_closure_date', '>=', $data->finalClosureDate)->where('uuid', '!=', $academic->uuid)->exists()) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'final_closure_date' => ['The final closure date cannot overlap an existing academic year'],
             ]);
         }
