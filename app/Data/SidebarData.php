@@ -8,6 +8,7 @@ use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Optional;
 
+/** @typescript */
 class SidebarData extends Data
 {
     public function __construct(
@@ -26,31 +27,37 @@ class SidebarData extends Data
         return self::collect([
             [
                 'title' => 'Dashboard',
-                'icon' => 'LayoutDashboard',
+                'icon' => 'layout-dashboard',
                 'url' => '/',
                 'permissions' => ['/'],
             ], [
                 'title' => 'Idea',
-                'icon' => 'MailQuestion',
+                'icon' => 'mail-question',
                 'url' => '/staffs',
                 'permissions' => Idea::getCrudPermissions($staff),
                 'reactionPermissions' => Idea::getReactionPermissions($staff),
                 'commentPermissions' => Idea::getCommentPermissions($staff),
+                'reportPermissions' => $staff->can('create report') ? ['/create'] : [],
             ], [
                 'title' => 'Category',
-                'icon' => 'BarChartHorizontal',
+                'icon' => 'bar-chart-horizontal',
                 'url' => '/categories',
                 'permissions' => self::getCrudPermissions('category', $staff),
             ], [
                 'title' => 'Department',
-                'icon' => 'Building2',
+                'icon' => 'building-2',
                 'url' => '/departments',
                 'permissions' => self::getCrudPermissions('department', $staff),
             ], [
                 'title' => 'Staff',
-                'icon' => 'Users',
+                'icon' => 'users',
                 'url' => '/staffs',
                 'permissions' => self::getCrudPermissions('staff', $staff),
+            ], [
+                'title' => 'Report',
+                'icon' => 'circle-alert',
+                'url' => '/reports',
+                'permissions' => self::getCrudPermissions('report', $staff),
             ],
         ], DataCollection::class)->except('key');
     }

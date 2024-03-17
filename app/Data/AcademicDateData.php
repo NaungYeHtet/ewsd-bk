@@ -10,6 +10,7 @@ use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 
+/** @typescript */
 class AcademicDateData extends Data
 {
     public function __construct(

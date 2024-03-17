@@ -23,6 +23,7 @@ class RoleSeeder extends Seeder
             'create comment',
             'update comment',
             'delete comment',
+            'create report',
         ];
 
         $roles = [
@@ -34,6 +35,8 @@ class RoleSeeder extends Seeder
                     'update staff',
                     'delete staff',
                     'view staff',
+                    'list report',
+                    'delete report',
                     'list department',
                     'create department',
                     'update department',

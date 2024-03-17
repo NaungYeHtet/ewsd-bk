@@ -84,6 +84,11 @@ class Staff extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Idea::class);
     }
 
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
+    }
+
     public function reactions(): HasMany
     {
         return $this->hasMany(Reaction::class);

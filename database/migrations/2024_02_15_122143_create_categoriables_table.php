@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categoriables', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\Category::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Category::class)->cascadeOnDelete();
             $table->morphs('categoriable');
         });
     }

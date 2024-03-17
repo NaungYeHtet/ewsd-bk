@@ -9,6 +9,7 @@ use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Optional;
 
+/** @typescript */
 class CommentData extends Data
 {
     public function __construct(

@@ -7,6 +7,7 @@ use App\Events\CommentSubmitted;
 use App\Exports\CommentsExport;
 use App\Http\Requests\ExportRequest;
 use App\Http\Requests\IndexRequest;
+use App\Http\Requests\ReportRequest;
 use App\Models\Comment;
 use App\Models\Idea;
 use App\Models\Staff;
@@ -29,11 +30,6 @@ class IdeaCommentController extends Controller
         return $this->responseSuccess([
             'results' => CommentData::collect($ideas, PaginatedDataCollection::class)->include('staff'),
         ]);
-    }
-
-    public function export(ExportRequest $request)
-    {
-        return Excel::download(new CommentsExport, 'comments.csv', \Maatwebsite\Excel\Excel::CSV);
     }
 
     public function store(Idea $idea, CommentData $data)
@@ -61,6 +57,23 @@ class IdeaCommentController extends Controller
         return $this->responseSuccess([
             'result' => CommentData::from($comment)->include('staff'),
         ], 'Comment submitted successfully');
+    }
+    
+    public function report(Idea $idea, ReportRequest $request, Comment $comment){
+        $staff = Staff::find(auth()->id());
+
+        if ($comment->reports()->where('staff_id', $staff->id)->exists()) {
+            return $this->responseError('Comment already reported', code: 400);
+        }
+
+        DB::transaction(function () use ($staff, $request, $comment) {
+            $comment->reports()->create([
+                'staff_id' => $staff->id,
+                'reason' => $request->reason,
+            ]);
+        });
+
+        return $this->responseSuccess([], 'Comment reported successfully');
     }
 
     public function update(Idea $idea, Comment $comment, CommentData $data)

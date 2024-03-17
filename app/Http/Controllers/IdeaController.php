@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Data\IdeaData;
 use App\Enums\ReactionType;
 use App\Events\IdeaSubmitted;
-use App\Exports\IdeasExport;
-use App\Http\Requests\ExportRequest;
 use App\Http\Requests\IndexRequest;
 use App\Http\Requests\ReactIdeaRequest;
+use App\Http\Requests\ReportRequest;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Category;
@@ -18,7 +17,6 @@ use App\Traits\Zippable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class IdeaController extends Controller
@@ -32,12 +30,25 @@ class IdeaController extends Controller
     {
         $request->validate([
             'sort' => ['string', 'in:popular,views'],
+            'staff' => ['exists:staffs,uuid'],
+            'category' => ['exists:categories,slug'],
         ]);
 
         $ideas = Idea::query()
-            ->when($request->has('search'), function (Builder $query) use ($request) {
-                $query->where('title', 'like', '%'.$request->search.'%')
-                    ->orWhere('content', 'like', '%'.$request->search.'%');
+            ->where(function (Builder $query) use ($request) {
+                if ($request->has('search')) {
+                    $query->where('title', 'like', '%'.$request->search.'%')
+                        ->orWhere('content', 'like', '%'.$request->search.'%');
+                }
+                if ($request->has('staff')) {
+                    $staff = Staff::where('uuid', $request->staff)->first();
+                    $query->where('is_anonymous', 0)->where('staff_id', $staff->id);
+                }
+
+                if ($request->has('category')) {
+                    $category = Category::findBySlug($request->category);
+                    $query->whereRelation('categories', 'category_id', $category->id);
+                }
             })
             ->when($request->has('sort'), function (Builder $query) use ($request) {
                 if ($request->sort == 'popular') {
@@ -151,6 +162,28 @@ class IdeaController extends Controller
         return $this->responseSuccess([
             'result' => IdeaData::from($idea),
         ], 'Idea updated successfully');
+    }
+
+    public function report(Idea $idea, ReportRequest $request)
+    {
+        $staff = Staff::find(auth()->id());
+
+        if ($idea->reports()->where('staff_id', $staff->id)->exists()) {
+            return $this->responseError('Idea already reported', code: 400);
+        }
+
+        DB::transaction(function () use ($staff, $request, $idea) {
+            $idea->views()->firstOrCreate([
+                'staff_id' => $staff->id,
+            ]);
+
+            $idea->reports()->create([
+                'staff_id' => $staff->id,
+                'reason' => $request->reason,
+            ]);
+        });
+
+        return $this->responseSuccess([], 'Idea reported successfully');
     }
 
     public function react(Idea $idea, ReactIdeaRequest $request)

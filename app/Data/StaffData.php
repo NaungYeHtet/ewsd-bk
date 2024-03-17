@@ -10,6 +10,7 @@ use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Optional;
 
+/** @typescript */
 class StaffData extends Data
 {
     public function __construct(

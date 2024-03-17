@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'staff' => \App\Models\Staff::class,
             'idea' => \App\Models\Idea::class,
+            'comment' => \App\Models\Comment::class,
         ]);
 
         Password::defaults(function () {

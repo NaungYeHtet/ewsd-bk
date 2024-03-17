@@ -11,6 +11,7 @@ use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
 
+/** @typescript */
 class IdeaData extends Data
 {
     public function __construct(

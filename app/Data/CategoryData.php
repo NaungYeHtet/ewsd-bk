@@ -6,6 +6,7 @@ use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 
+/** @typescript */
 class CategoryData extends Data
 {
     public function __construct(

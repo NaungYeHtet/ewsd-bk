@@ -28,6 +28,7 @@
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
         "spatie/laravel-ignition": "^2.0",
+        "spatie/laravel-typescript-transformer": "^2.4",
         "thedoctor0/laravel-factory-generator": "^1.3"
     },
     "autoload": {

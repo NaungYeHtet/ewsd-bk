@@ -43,7 +43,7 @@ final class IdeaFactory extends Factory
             $idea->created_at = $randDate;
             $idea->updated_at = $randDate;
 
-            $categories = \App\Models\Category::inRandomOrder()->limit(rand(1, 3))->get();
+            $categories = \App\Models\Category::inRandomOrder()->first();
 
             $idea->categories()->attach($categories);
 
@@ -71,6 +71,14 @@ final class IdeaFactory extends Factory
                 'viewable_type' => $idea->getMorphClass(),
                 'created_at' => fake()->dateTimeBetween($academicDate->start_date, $academicDate->final_closure_date),
             ]);
+
+            if (rand(0, 3) == 3) {
+                \App\Models\Report::factory()->count(rand(0, 5))->create([
+                    'reportable_id' => $idea->id,
+                    'reportable_type' => $idea->getMorphClass(),
+                    'created_at' => fake()->dateTimeBetween($idea->created_at, $academicDate->final_closure_date),
+                ]);
+            }
 
             // IdeaSubmitted::dispatch($idea);
         });

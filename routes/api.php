@@ -8,6 +8,7 @@ use App\Http\Controllers\IdeaCommentController;
 use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\PasswordRuleController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
 use App\Models\AcademicDate;
@@ -15,6 +16,7 @@ use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Department;
 use App\Models\Idea;
+use App\Models\Report;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -51,6 +53,7 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         // Route::get('/download-files', 'downloadFiles')->can('export', Idea::class);
         Route::post('/', 'store')->can('create', Idea::class);
         Route::get('/{idea}', 'show')->can('viewAny', Idea::class);
+        Route::post('/{idea}/report', 'report')->can('create', Report::class);
         Route::put('/{idea}', 'update')->can('update', 'idea');
         Route::delete('/{idea}', 'destroy')->can('delete', 'idea');
         Route::get('/{idea}/react', 'react')->can('react', 'idea');
@@ -60,6 +63,7 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::get('/', 'index')->can('viewAny', Comment::class);
         Route::post('/', 'store')->can('create', Comment::class);
         Route::put('/{comment}', 'update')->can('update', 'comment');
+        Route::post('/{comment}/report', 'report')->can('create', Report::class);
         Route::delete('/{comment}', 'destroy')->can('delete', 'comment');
     })->scopeBindings();
     Route::prefix('departments')->controller(DepartmentController::class)->group(function () {
@@ -88,6 +92,10 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::put('/{date}', 'update')->can('update', 'date');
         Route::delete('/{date}', 'destroy')->can('delete', 'date');
         // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
+    });
+    Route::prefix('reports')->controller(ReportController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::delete('/{report}', 'destroy')->can('delete', 'report');
     });
     Route::prefix('password-rules')->controller(PasswordRuleController::class)->group(function () {
         Route::get('/', 'index')->can('list password rule');

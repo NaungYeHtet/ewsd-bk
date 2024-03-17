@@ -82,6 +82,11 @@ class Idea extends Model
         return $this->morphMany(View::class, 'viewable');
     }
 
+    public function reports(): MorphMany
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
+
     protected function currentReaction(): Attribute
     {
         return Attribute::make(
