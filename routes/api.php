@@ -90,8 +90,8 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
     });
     Route::prefix('academics')->controller(ExportController::class)->group(function () {
-        Route::get('/{academic}/data', 'data')->can('export academic data');
-        Route::get('/{academic}/files', 'files')->can('export academic files');
+        Route::get('/{academic}/export-data', 'data')->can('export academic data');
+        Route::get('/{academic}/export-files', 'files')->can('export academic files');
     });
     Route::prefix('reports')->controller(ReportController::class)->group(function () {
         Route::get('/', 'index');

@@ -24,6 +24,16 @@ class SidebarData extends Data
 
     public static function getData(Staff $staff): DataCollection|array
     {
+        $exportPermissions = [];
+
+        if($staff->can('export academic data')){
+            $exportPermissions[] = '/export-data';
+        }
+        
+        if($staff->can('export academic files')){
+            $exportPermissions[] = '/export-files';
+        }
+
         return self::collect([
             [
                 'title' => 'Dashboard',
@@ -48,6 +58,12 @@ class SidebarData extends Data
                 'icon' => 'building-2',
                 'url' => '/departments',
                 'permissions' => self::getCrudPermissions('department', $staff),
+            ], [
+                'title' => 'Academic',
+                'icon' => 'graduation-cap',
+                'url' => '/academics',
+                'permissions' => self::getCrudPermissions('academic', $staff),
+                'exportPermissions' => $exportPermissions,
             ], [
                 'title' => 'Staff',
                 'icon' => 'users',
