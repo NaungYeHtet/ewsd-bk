@@ -20,7 +20,7 @@ class CategoryController extends Controller
         })->paginate($request->perpage ?? 5);
 
         return $this->responseSuccess([
-            'results' => CategoryData::collect($categories, PaginatedDataCollection::class),
+            'results' => CategoryData::collect($categories, PaginatedDataCollection::class)->include('ideasCount'),
         ]);
     }
 

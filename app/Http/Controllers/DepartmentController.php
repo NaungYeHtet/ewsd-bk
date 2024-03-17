@@ -20,7 +20,7 @@ class DepartmentController extends Controller
         })->paginate($request->perpage ?? 5);
 
         return $this->responseSuccess([
-            'results' => DepartmentData::collect($categories, PaginatedDataCollection::class),
+            'results' => DepartmentData::collect($categories, PaginatedDataCollection::class)->include('staffsCount'),
         ]);
     }
 
