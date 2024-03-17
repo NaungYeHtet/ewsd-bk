@@ -29,6 +29,7 @@ class IdeaData extends Data
         public ?ReactionType $currentReaction,
         public Lazy|CategoryData $category,
         public string $submittedAt,
+        public Lazy|string $type,
     ) {
     }
 
@@ -52,6 +53,7 @@ class IdeaData extends Data
             $idea->current_reaction,
             Lazy::create(fn () => CategoryData::from($idea->categories()->first())),
             $idea->created_at->shortRelativeDiffForHumans(),
+            $idea->getMorphClass(),
         );
     }
 }

@@ -21,6 +21,7 @@ class CommentData extends Data
         public bool|Optional $isAnonymous,
         public Lazy|StaffData|Optional $staff,
         public string|Optional $submittedAt,
+        public Lazy|string $type,
     ) {
     }
 
@@ -32,6 +33,7 @@ class CommentData extends Data
             $comment->is_anonymous,
             Lazy::create(fn () => $comment->is_anonymous ? null : StaffData::from($comment->staff)->only('name', 'avatar')),
             $comment->created_at->shortRelativeDiffForHumans(),
+            $comment->getMorphClass(),
         );
     }
 }

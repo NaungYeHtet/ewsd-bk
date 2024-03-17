@@ -7,7 +7,6 @@ use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\Validation\Rule;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Lazy;
-use Spatie\LaravelData\Optional;
 
 /** @typescript */
 class ReportData extends Data
@@ -17,8 +16,9 @@ class ReportData extends Data
         public string $id,
         #[Rule(['required', 'string', 'min:5', 'max:255'])]
         public string $reason,
-        public Lazy|Optional|StaffData $staff,
         public Lazy|IdeaData|CommentData $target,
+        public Lazy|StaffData $reportedBy,
+        public Lazy|StaffData $reportedTo,
         public string $reportedAt,
     ) {
     }
@@ -28,21 +28,22 @@ class ReportData extends Data
         return new self(
             $report->uuid,
             $report->reason,
-            Lazy::create(fn () => StaffData::from($report->staff)->only('id', 'name')),
             Lazy::create(function () use ($report) {
                 $dataInfo = match ($report->reportable->getMorphClass()) {
                     'idea' => [
                         'class' => IdeaData::class,
-                        'only' => '{title, content}'
+                        'only' => '{type, title, content}',
                     ],
                     'comment' => [
                         'class' => CommentData::class,
-                        'only' => 'content'
+                        'only' => '{type, content}',
                     ],
                 };
 
                 return $dataInfo['class']::from($report->reportable)->only($dataInfo['only']);
             }),
+            Lazy::create(fn () => StaffData::from($report->staff)->only('id', 'name')),
+            Lazy::create(fn () => StaffData::from($report->reportable->staff)->only('id', 'name')),
             $report->created_at->format('Y-m-d H:i:s'),
         );
     }
