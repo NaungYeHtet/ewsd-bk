@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use Exception;
-use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
 trait Zippable
@@ -16,7 +15,7 @@ trait Zippable
         if ($zip->open(public_path($zipFileName), ZipArchive::CREATE) === true) {
 
             foreach ($filesToZip as $file) {
-                $zip->addFile('storage/'. $file, basename($file));
+                $zip->addFile('storage/'.$file, basename($file));
             }
 
             $zip->close();

@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use App\Models\Comment;
-use App\Models\Idea;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -37,7 +36,7 @@ class CommentSubmitted extends Notification
     {
         return (new MailMessage)
             ->line('A new comment for your idea.')
-            ->action('See Comment', config('app.frontend_url').'/ideas/'.$this->comment->commentable->slug. '/comments#'. $this->comment->uuid)
+            ->action('See Comment', config('app.frontend_url').'/ideas/'.$this->comment->commentable->slug.'/comments#'.$this->comment->uuid)
             ->line($this->comment->content);
     }
 

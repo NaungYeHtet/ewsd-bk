@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Data\CommentData;
 use App\Events\CommentSubmitted;
-use App\Exports\CommentsExport;
-use App\Http\Requests\ExportRequest;
 use App\Http\Requests\IndexRequest;
 use App\Http\Requests\ReportRequest;
 use App\Models\Comment;
@@ -13,7 +11,6 @@ use App\Models\Idea;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class IdeaCommentController extends Controller
@@ -58,8 +55,9 @@ class IdeaCommentController extends Controller
             'result' => CommentData::from($comment)->include('staff'),
         ], 'Comment submitted successfully');
     }
-    
-    public function report(Idea $idea, ReportRequest $request, Comment $comment){
+
+    public function report(Idea $idea, ReportRequest $request, Comment $comment)
+    {
         $staff = Staff::find(auth()->id());
 
         if ($comment->reports()->where('staff_id', $staff->id)->exists()) {

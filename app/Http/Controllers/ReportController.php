@@ -24,13 +24,13 @@ class ReportController extends Controller
         $reports = Report::query()->when($request->has('search'), function ($query) use ($request) {
             $query->where('reason', 'like', '%'.$request->search.'%');
         })
-        ->when($request->has('type'), function ($query) use ($request) {
-            $query->whereHasMorph('reportable', [Relation::getMorphedModel($request->type)]);
-        })
-        ->when($request->has('staff'), function ($query) use ($request) {
-            $staff = Staff::where('uuid', $request->staff)->first();
-            $query->where('staff_id', $staff->id);
-        })->orderBy('created_at', 'desc')->paginate($request->perpage ?? 10);
+            ->when($request->has('type'), function ($query) use ($request) {
+                $query->whereHasMorph('reportable', [Relation::getMorphedModel($request->type)]);
+            })
+            ->when($request->has('staff'), function ($query) use ($request) {
+                $staff = Staff::where('uuid', $request->staff)->first();
+                $query->where('staff_id', $staff->id);
+            })->orderBy('created_at', 'desc')->paginate($request->perpage ?? 10);
 
         return $this->responseSuccess([
             'results' => ReportData::collect($reports, PaginatedDataCollection::class)->include('reportedBy', 'target', 'reportedTo'),

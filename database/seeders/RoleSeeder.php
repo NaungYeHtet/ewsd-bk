@@ -73,7 +73,7 @@ class RoleSeeder extends Seeder
             [
                 'name' => 'Support',
                 'permissions' => [],
-            ]
+            ],
         ];
 
         foreach ($roles as $role) {

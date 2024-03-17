@@ -26,11 +26,11 @@ class SidebarData extends Data
     {
         $exportPermissions = [];
 
-        if($staff->can('export academic data')){
+        if ($staff->can('export academic data')) {
             $exportPermissions[] = '/export-data';
         }
-        
-        if($staff->can('export academic files')){
+
+        if ($staff->can('export academic files')) {
             $exportPermissions[] = '/export-files';
         }
 

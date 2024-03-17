@@ -25,7 +25,7 @@ class Academic extends Model
     {
         return $this->hasMany(Idea::class);
     }
-    
+
     public static function isDateBetweenStartAndClosureDate($date = null): bool
     {
         $date = $date ?? now();

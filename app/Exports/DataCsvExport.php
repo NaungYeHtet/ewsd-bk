@@ -4,7 +4,6 @@ namespace App\Exports;
 
 use App\Models\Academic;
 use App\Models\Comment;
-use App\Models\Idea;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;

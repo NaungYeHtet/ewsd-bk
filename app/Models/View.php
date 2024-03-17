@@ -10,15 +10,15 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class View extends Model
 {
     use HasFactory;
-    
+
     /**
-    * The attributes that are mass assignable.
-    *
-    * @var array<int, string>
-    */
-   protected $fillable = [
-       'staff_id',
-   ];
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'staff_id',
+    ];
 
     public function viewable(): MorphTo
     {

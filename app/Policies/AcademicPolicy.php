@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Academic;
 use App\Models\Staff;
-use Illuminate\Auth\Access\Response;
 
 class AcademicPolicy
 {

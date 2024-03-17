@@ -13,6 +13,7 @@ class Report extends Model
     use HasFactory, HasUuids;
 
     protected $primaryKey = 'uuid';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -22,7 +23,7 @@ class Report extends Model
         'staff_id',
         'reason',
     ];
-    
+
     /**
      * Get the route key for the model.
      *

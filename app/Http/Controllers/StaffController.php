@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelData\PaginatedDataCollection;
-use Spatie\Permission\Models\Role;
 
 class StaffController extends Controller
 {

@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Data\AcademicData;
-use App\Data\SidebarData;
 use App\Models\Academic;
 use Illuminate\Support\Facades\Auth;
 
