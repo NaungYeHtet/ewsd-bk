@@ -33,7 +33,7 @@ class SidebarData extends Data
             ], [
                 'title' => 'Idea',
                 'icon' => 'mail-question',
-                'url' => '/staffs',
+                'url' => '/ideas',
                 'permissions' => Idea::getCrudPermissions($staff),
                 'reactionPermissions' => Idea::getReactionPermissions($staff),
                 'commentPermissions' => Idea::getCommentPermissions($staff),
