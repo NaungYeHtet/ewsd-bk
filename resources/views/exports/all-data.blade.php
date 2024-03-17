@@ -1,5 +1,5 @@
 <?php
-use App\Models\AcademicDate;
+use App\Models\Academic;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
@@ -29,14 +29,14 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
         @foreach ($ideas as $idea)
             <?php
             $staff = $idea->staff;
-            $academicDate = AcademicDate::where('start_date', '<=', $idea->created_at)
+            $academic = Academic::where('start_date', '<=', $idea->created_at)
                 ->where('closure_date', '>=', $idea->created_at)
                 ->first();
             $fileUrl = $idea->file ? url('/') . Storage::url($idea->file) : null;
             ?>
             <tr>
                 <td>{{ $idea->slug }}</td>
-                <td>{{ $academicDate ? $academicDate->academic_year : '' }}</td>
+                <td>{{ $academic ? $academic->name : '' }}</td>
                 <td>{{ $staff->name }}</td>
                 <td>{{ $staff->email }}</td>
                 <td>{{ $staff->department->name }}</td>

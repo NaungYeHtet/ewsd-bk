@@ -2,9 +2,9 @@
 
 namespace App\Traits;
 
-use App\Data\AcademicDateData;
+use App\Data\AcademicData;
 use App\Data\SidebarData;
-use App\Models\AcademicDate;
+use App\Models\Academic;
 use Illuminate\Support\Facades\Auth;
 
 trait ResponseHelper
@@ -13,7 +13,7 @@ trait ResponseHelper
     {
         $data['message'] = $message;
         if (Auth::check()) {
-            $data['currentAcademic'] = AcademicDateData::from(AcademicDate::where('start_date', '<=', now())->where('final_closure_date', '>=', now())->first())->except('isActive');
+            $data['currentAcademic'] = AcademicData::from(Academic::where('start_date', '<=', now())->where('final_closure_date', '>=', now())->first())->except('isActive');
         }
 
         return response()->json($data, $status);

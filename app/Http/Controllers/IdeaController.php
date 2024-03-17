@@ -65,7 +65,7 @@ class IdeaController extends Controller
             ->paginate($request->perpage ?? 5);
 
         return $this->responseSuccess([
-            'results' => IdeaData::collect($ideas, PaginatedDataCollection::class)->include('staff', 'viewsCount', 'category'),
+            'results' => IdeaData::collect($ideas, PaginatedDataCollection::class)->include('staff', 'viewsCount', 'category', 'academic'),
         ]);
     }
 

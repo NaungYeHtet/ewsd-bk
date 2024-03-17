@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\AcademicDate;
+use App\Models\Academic;
 use App\Models\Comment;
 use App\Models\Idea;
 use Illuminate\Contracts\View\View;
@@ -13,16 +13,16 @@ class DataCsvExport implements FromView
 {
     use Exportable;
 
-    public function __construct(protected ?AcademicDate $academicDate = null)
+    public function __construct(protected ?Academic $academic = null)
     {
-        $this->academicDate = $academicDate ?? AcademicDate::orderBy('final_closure_date', 'desc')->first();
+        $this->academic = $academic ?? Academic::orderBy('final_closure_date', 'desc')->first();
     }
 
     public function view(): View
     {
         return view('exports.all-data', [
-            'ideas' => Idea::whereBetween('created_at', [$this->academicDate->start_date, $this->academicDate->closure_date])->orderBy('created_at', 'desc')->get(),
-            'comments' => Comment::whereBetween('created_at', [$this->academicDate->start_date, $this->academicDate->final_closure_date])->orderBy('created_at', 'desc')->get(),
+            'ideas' => $this->academic->ideas()->orderBy('created_at', 'desc')->get(),
+            'comments' => Comment::whereBetween('created_at', [$this->academic->start_date, $this->academic->final_closure_date])->orderBy('created_at', 'desc')->get(),
         ]);
     }
 }

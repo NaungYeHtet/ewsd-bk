@@ -1,5 +1,5 @@
 declare namespace App.Data {
-export type AcademicDateData = {
+export type AcademicData = {
 id?: string;
 academicYear: string;
 startDate: string;

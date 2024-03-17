@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\AcademicDate;
+use App\Models\Academic;
 use App\Models\Idea;
 use App\Models\Staff;
 
@@ -37,7 +37,7 @@ class IdeaPolicy
      */
     public function react(Staff $staff, Idea $idea): bool
     {
-        return $staff->can('react idea') && AcademicDate::isDateBetweenStartAndFinalClosureDate();
+        return $staff->can('react idea') && Academic::isDateBetweenStartAndFinalClosureDate();
     }
 
     /**
@@ -45,7 +45,7 @@ class IdeaPolicy
      */
     public function create(Staff $staff): bool
     {
-        return $staff->can('create idea') && AcademicDate::isDateBetweenStartAndClosureDate();
+        return $staff->can('create idea') && Academic::isDateBetweenStartAndClosureDate();
     }
 
     /**
@@ -55,7 +55,7 @@ class IdeaPolicy
     {
         return $staff->can('update idea') &&
         $staff->id === $idea->staff_id &&
-        AcademicDate::isDateBetweenStartAndClosureDate();
+        Academic::isDateBetweenStartAndClosureDate();
     }
 
     /**
@@ -64,7 +64,7 @@ class IdeaPolicy
     public function delete(Staff $staff, Idea $idea): bool
     {
         return ($staff->can('delete idea') &&
-            $staff->id === $idea->staff_id && AcademicDate::isDateBetweenStartAndFinalClosureDate()) ||
+            $staff->id === $idea->staff_id && Academic::isDateBetweenStartAndFinalClosureDate()) ||
             $staff->hasRole('Admin');
     }
 }

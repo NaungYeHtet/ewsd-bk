@@ -2,7 +2,7 @@
 
 namespace App\Exports\Sheets;
 
-use App\Models\AcademicDate;
+use App\Models\Academic;
 use App\Models\Idea;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -13,18 +13,18 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class IdeasSheet implements FromQuery, WithHeadings, WithMapping, WithTitle
 {
-    public function __construct(protected AcademicDate $academicDate)
+    public function __construct(protected Academic $academic)
     {
     }
 
     public function query()
     {
-        return Idea::whereBetween('created_at', [$this->academicDate->start_date, $this->academicDate->closure_date])->orderBy('created_at', 'desc');
+        return Idea::whereBetween('created_at', [$this->academic->start_date, $this->academic->closure_date])->orderBy('created_at', 'desc');
     }
 
     public function title(): string
     {
-        return "Idea Data ({$this->academicDate->academic_year})";
+        return "Idea Data ({$this->academic->name})";
     }
 
     public function headings(): array
@@ -52,11 +52,11 @@ class IdeasSheet implements FromQuery, WithHeadings, WithMapping, WithTitle
     public function map($idea): array
     {
         $staff = $idea->staff;
-        $academicDate = AcademicDate::where('start_date', '<=', $idea->created_at)->where('closure_date', '>=', $idea->created_at)->first();
+        $academic = Academic::where('start_date', '<=', $idea->created_at)->where('closure_date', '>=', $idea->created_at)->first();
 
         return [
             $idea->slug,
-            $academicDate ? $academicDate->academic_year : null,
+            $academic ? $academic->name : null,
             $staff->name,
             $staff->email,
             $staff->department->name,

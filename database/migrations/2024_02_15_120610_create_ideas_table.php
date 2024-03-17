@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('ideas', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Staff::class)->constrained('staffs')->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Department::class)->constrained('staffs');
+            $table->foreignIdFor(\App\Models\Staff::class)->constrained('staffs');
+            $table->foreignIdFor(\App\Models\Academic::class)->constrained('academics', 'uuid');
 
             $table->string('slug')->unique();
             $table->string('title');

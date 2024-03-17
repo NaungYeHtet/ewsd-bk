@@ -2,7 +2,7 @@
 
 namespace App\Exports\Sheets;
 
-use App\Models\AcademicDate;
+use App\Models\Academic;
 use App\Models\Comment;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -12,18 +12,18 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class CommentsSheet implements FromQuery, WithHeadings, WithMapping, WithTitle
 {
-    public function __construct(protected AcademicDate $academicDate)
+    public function __construct(protected Academic $academic)
     {
     }
 
     public function query()
     {
-        return Comment::whereBetween('created_at', [$this->academicDate->start_date, $this->academicDate->final_closure_date])->orderBy('created_at', 'desc');
+        return Comment::whereBetween('created_at', [$this->academic->start_date, $this->academic->final_closure_date])->orderBy('created_at', 'desc');
     }
 
     public function title(): string
     {
-        return "Idea Comment Data ({$this->academicDate->academic_year})";
+        return "Idea Comment Data ({$this->academic->name})";
     }
 
     public function headings(): array

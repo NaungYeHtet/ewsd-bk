@@ -3,6 +3,7 @@
 namespace App\Data;
 
 use App\Enums\ReactionType;
+use App\Models\Academic;
 use App\Models\Idea;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -30,6 +31,7 @@ class IdeaData extends Data
         public Lazy|CategoryData $category,
         public string $submittedAt,
         public Lazy|string $type,
+        public Lazy|Academic $academic,
     ) {
     }
 
@@ -54,6 +56,7 @@ class IdeaData extends Data
             Lazy::create(fn () => CategoryData::from($idea->categories()->first())),
             $idea->created_at->shortRelativeDiffForHumans(),
             $idea->getMorphClass(),
+            Lazy::create(fn () => AcademicData::from($idea->academic)->only('name'))
         );
     }
 }

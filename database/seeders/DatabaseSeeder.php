@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-            AcademicDateSeeder::class,
+            AcademicSeeder::class,
         ]);
 
         // $filepath = storage_path('app/public/images/avatars');

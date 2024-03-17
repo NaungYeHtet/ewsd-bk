@@ -57,6 +57,16 @@ class Idea extends Model
         'is_anonymous' => 'boolean',
     ];
 
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function academic(): BelongsTo
+    {
+        return $this->belongsTo(Academic::class);
+    }
+
     public function staff(): BelongsTo
     {
         return $this->belongsTo(Staff::class);
@@ -128,15 +138,15 @@ class Idea extends Model
             $permissions[] = '/';
         }
 
-        if ($staff->can('create idea') && AcademicDate::isDateBetweenStartAndClosureDate()) {
+        if ($staff->can('create idea') && Academic::isDateBetweenStartAndClosureDate()) {
             $permissions[] = '/create';
         }
 
-        if ($staff->can('update idea') && AcademicDate::isDateBetweenStartAndClosureDate()) {
+        if ($staff->can('update idea') && Academic::isDateBetweenStartAndClosureDate()) {
             $permissions[] = '/update';
         }
 
-        if (($staff->can('delete idea') && AcademicDate::isDateBetweenStartAndFinalClosureDate()) || $staff->hasRole('Admin')) {
+        if (($staff->can('delete idea') && Academic::isDateBetweenStartAndFinalClosureDate()) || $staff->hasRole('Admin')) {
             $permissions[] = '/delete';
         }
 
@@ -151,7 +161,7 @@ class Idea extends Model
             $permissions[] = '/';
         }
 
-        if (AcademicDate::isDateBetweenStartAndFinalClosureDate()) {
+        if (Academic::isDateBetweenStartAndFinalClosureDate()) {
             if ($staff->can('create comment')) {
                 $permissions[] = '/create';
             }
@@ -174,7 +184,7 @@ class Idea extends Model
     {
         $permissions = [];
 
-        if ($staff->can('react idea') && AcademicDate::isDateBetweenStartAndFinalClosureDate()) {
+        if ($staff->can('react idea') && Academic::isDateBetweenStartAndFinalClosureDate()) {
             $permissions[] = '/react';
         }
 

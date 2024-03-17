@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AcademicDateController;
+use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ExportController;
@@ -11,7 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
-use App\Models\AcademicDate;
+use App\Models\Academic;
 use App\Models\Category;
 use App\Models\Comment;
 use App\Models\Department;
@@ -39,10 +39,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function () {
     Route::get('roles', RoleController::class);
-    Route::prefix('export')->controller(ExportController::class)->group(function () {
-        Route::get('/{date}/data', 'data');
-        Route::get('/{date}/files', 'files');
-    });
     Route::prefix('profile')->controller(ProfileController::class)->group(function () {
         Route::get('/', 'index');
         Route::post('/update', 'update');
@@ -86,12 +82,16 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::get('/{staff}/enable', 'enable')->can('update', 'staff');
         // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
     });
-    Route::prefix('academic-dates')->controller(AcademicDateController::class)->group(function () {
-        Route::get('/', 'index')->can('viewAny', AcademicDate::class);
-        Route::post('/', 'store')->can('create', AcademicDate::class);
-        Route::put('/{date}', 'update')->can('update', 'date');
-        Route::delete('/{date}', 'destroy')->can('delete', 'date');
+    Route::prefix('academics')->controller(AcademicController::class)->group(function () {
+        Route::get('/', 'index')->can('viewAny', Academic::class);
+        Route::post('/', 'store')->can('create', Academic::class);
+        Route::put('/{academic}', 'update')->can('update', 'academic');
+        Route::delete('/{academic}', 'destroy')->can('delete', 'academic');
         // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
+    });
+    Route::prefix('academics')->controller(ExportController::class)->group(function () {
+        Route::get('/{academic}/data', 'data')->can('export academic data');
+        Route::get('/{academic}/files', 'files')->can('export academic files');
     });
     Route::prefix('reports')->controller(ReportController::class)->group(function () {
         Route::get('/', 'index');

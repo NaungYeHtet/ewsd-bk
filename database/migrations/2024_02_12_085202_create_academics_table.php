@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('academic_dates', function (Blueprint $table) {
+        Schema::create('academics', function (Blueprint $table) {
             $table->uuid()->primary();
-            $table->string('academic_year');
+            $table->string('name');
             $table->date('start_date');
             $table->date('closure_date');
             $table->date('final_closure_date');
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('academic_dates');
+        Schema::dropIfExists('academics');
     }
 };
