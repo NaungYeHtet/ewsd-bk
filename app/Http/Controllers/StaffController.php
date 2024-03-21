@@ -45,6 +45,7 @@ class StaffController extends Controller
                     $query->whereIn('name', $request->roles);
                 });
             })
+            ->orderBy('created_at', 'desc')
             ->paginate($request->perpage ?? 5);
 
         return $this->responseSuccess([
