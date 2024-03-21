@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Settings\PasswordRuleSettings;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -50,6 +52,14 @@ class AppServiceProvider extends ServiceProvider
             return $this->app->environment('production')
                         ? $rule
                         : $rule;
+        });
+
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new MailMessage)
+                ->subject('Verify Your Email Address')
+                ->greeting("Welcome {$notifiable->name}")
+                ->line('Click the button below to verify your email address.')
+                ->action('Verify Email Address', $url);
         });
     }
 }

@@ -35,9 +35,12 @@ class IdeaSubmitted extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('A new idea has been submitted.')
-            ->action('See Idea', config('app.frontend_url').'/ideas/'.$this->idea->slug)
-            ->line($this->idea->title);
+            ->subject('New Idea Submitted')
+            ->greeting("Hello {$notifiable->name} | {$this->idea->department->name}")
+            ->line("A new idea has been submitted by {$this->idea->staff->name}.")
+            ->line($this->idea->title)
+            ->line($this->idea->content)
+            ->action('View Idea', config('app.frontend_url').'/ideas/'.$this->idea->slug);
     }
 
     /**

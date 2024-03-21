@@ -10,6 +10,7 @@ use App\Http\Requests\ReactIdeaRequest;
 use App\Http\Requests\ReportRequest;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
+use App\Models\Academic;
 use App\Models\Category;
 use App\Models\Idea;
 use App\Models\Staff;
@@ -86,6 +87,8 @@ class IdeaController extends Controller
             }
 
             $idea = $staff->ideas()->create([
+                'department_id' => $staff->department_id,
+                'academic_uuid' => Academic::isActive()->first()->uuid,
                 'title' => $request->title,
                 'content' => $request->content,
                 'file' => $fileName,

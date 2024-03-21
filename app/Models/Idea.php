@@ -28,6 +28,8 @@ class Idea extends Model
         'file',
         'is_anonymous',
         'reactions_count',
+        'department_id',
+        'academic_uuid',
     ];
 
     /**
@@ -64,7 +66,7 @@ class Idea extends Model
 
     public function academic(): BelongsTo
     {
-        return $this->belongsTo(Academic::class);
+        return $this->belongsTo(Academic::class, 'academic_uuid', 'uuid');
     }
 
     public function staff(): BelongsTo
