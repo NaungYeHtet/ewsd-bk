@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -34,8 +35,13 @@ class Department extends Model
         return 'slug';
     }
 
-    public function staffs()
+    public function staffs(): HasMany
     {
         return $this->hasMany(Staff::class);
+    }
+
+    public function ideas(): HasMany
+    {
+        return $this->hasMany(Idea::class);
     }
 }

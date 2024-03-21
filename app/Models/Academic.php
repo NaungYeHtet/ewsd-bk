@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,16 @@ class Academic extends Model
     public function ideas(): HasMany
     {
         return $this->hasMany(Idea::class);
+    }
+
+    public function scopeIsActive(Builder $query): void
+    {
+        $query->where('start_date', '<=', now())->where('final_closure_date', '>=', now());
+    }
+
+    public function scopeIsPrevious(Builder $query): void
+    {
+        $query->where('final_closure_date', '<', now())->orderBy('final_closure_date', 'desc');
     }
 
     public static function isDateBetweenStartAndClosureDate($date = null): bool

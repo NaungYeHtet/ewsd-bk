@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\StatisticsController;
 use App\Models\Academic;
 use App\Models\Category;
 use App\Models\Comment;
@@ -38,6 +39,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function () {
+    Route::get('statistics', StatisticsController::class);
     Route::get('roles', RoleController::class);
     Route::prefix('profile')->controller(ProfileController::class)->group(function () {
         Route::get('/', 'index');
