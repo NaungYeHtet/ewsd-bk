@@ -29,7 +29,7 @@ class IdeaSubmitted extends Notification
     public function via(object $notifiable): array
     {
         return [
-            // PusherChannel::class,
+            PusherChannel::class,
             // 'mail',
             'database',
         ];
@@ -66,10 +66,15 @@ class IdeaSubmitted extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        return $this->getData($this->idea);
+    }
+
+    public static function getData(Idea $idea): array
+    {
         return [
             'title' => 'New Idea Submitted',
-            'message' => "A new idea has been submitted by {$this->idea->staff->name}.",
-            'link' => '/ideas/'.$this->idea->slug,
+            'message' => "A new idea has been submitted by {$idea->staff->name}.",
+            'link' => '/ideas/'.$idea->slug,
             'icon' => 'message-circle-question',
         ];
     }

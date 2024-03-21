@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Idea;
+use App\Notifications\IdeaSubmitted;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<\App\Models\Idea>
@@ -83,7 +84,14 @@ final class IdeaFactory extends Factory
                 $query->where('roles.name', 'QA Coordinator');
             })->get();
 
-            Notification::send($coordinators, new \App\Notifications\IdeaSubmitted($idea));
+            foreach ($coordinators as $coordinator) {
+                $coordinator->notifications()->create([
+                    'id' => Str::uuid(),
+                    'type' => IdeaSubmitted::class,
+                    'data' => IdeaSubmitted::getData($idea),
+                    'created_at' => $idea->created_at,
+                ]);
+            }
         });
     }
 }

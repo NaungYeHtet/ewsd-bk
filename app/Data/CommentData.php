@@ -36,7 +36,7 @@ class CommentData extends Data
             $comment->content,
             $comment->is_anonymous,
             Lazy::create(fn () => $comment->is_anonymous ? null : StaffData::from($comment->staff)->only('name', 'avatar')),
-            $comment->created_at->shortRelativeDiffForHumans(),
+            $comment->created_at->shortAbsoluteDiffForHumans(),
             $comment->getMorphClass(),
             $comment->reactions_count,
             $comment->current_reaction,

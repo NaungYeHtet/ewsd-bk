@@ -49,10 +49,15 @@ class ReportSubmitted extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        return $this->getData($this->report);
+    }
+
+    public static function getData(Report $report): array
+    {
         return [
             'title' => 'Report Submitted',
-            'body' => "A report has been submitted by {$this->report->staff->name}.",
-            'link' => '/reports/'.$this->report->uuid,
+            'body' => "A report has been submitted by {$report->staff->name}.",
+            'link' => '/reports/'.$report->uuid,
             'icon' => 'circle-alert',
         ];
     }

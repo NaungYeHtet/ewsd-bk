@@ -23,7 +23,7 @@ class NotificationData extends Data
         return new self(
             $notification->id,
             (bool) $notification->read_at,
-            $notification->created_at->shortRelativeDiffForHumans(),
+            $notification->created_at->shortAbsoluteDiffForHumans(),
             $notification->data['title'],
             $notification->data['body'],
             config('app.frontend_url').$notification->data['link'],

@@ -65,10 +65,15 @@ class CommentSubmitted extends Notification
      */
     public function toArray(object $notifiable): array
     {
+        return $this->getData($this->comment);
+    }
+
+    public static function getData(Comment $comment): array
+    {
         return [
             'title' => 'New Comment Submitted',
-            'body' => "{$this->comment->staff->name} commented your idea.",
-            'link' => '/ideas/'.$this->comment->commentable->slug.'/comments#'.$this->comment->uuid,
+            'body' => "{$comment->staff->name} commented your idea.",
+            'link' => '/ideas/'.$comment->commentable->slug.'/comments#'.$comment->uuid,
             'icon' => 'message-circle-more',
         ];
     }

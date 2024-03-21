@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Comment;
+use App\Notifications\CommentSubmitted;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<\App\Models\Comment>
@@ -49,7 +50,12 @@ final class CommentFactory extends Factory
                 'created_at' => fake()->dateTimeBetween($comment->created_at, $comment->created_at->addMonth()),
             ]);
 
-            Notification::send($comment->commentable->staff, new \App\Notifications\CommentSubmitted($comment));
+            $comment->commentable->staff->notifications()->create([
+                'id' => Str::uuid(),
+                'type' => CommentSubmitted::class,
+                'data' => CommentSubmitted::getData($comment),
+                'created_at' => $comment->created_at,
+            ]);
         });
     }
 }

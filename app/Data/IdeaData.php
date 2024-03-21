@@ -54,7 +54,7 @@ class IdeaData extends Data
             $idea->comments_count,
             $idea->current_reaction,
             Lazy::create(fn () => CategoryData::from($idea->categories()->first())),
-            $idea->created_at->shortRelativeDiffForHumans(),
+            $idea->created_at->shortAbsoluteDiffForHumans(),
             $idea->getMorphClass(),
             Lazy::create(fn () => AcademicData::from($idea->academic)->only('name'))
         );
