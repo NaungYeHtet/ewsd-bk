@@ -34,6 +34,8 @@ class IdeaController extends Controller
             'sort' => ['string', 'in:popular,views'],
             'staff' => ['exists:staffs,uuid'],
             'category' => ['exists:categories,slug'],
+            'without_comment' => ['boolean'],
+            'anonymous' => ['boolean'],
         ]);
 
         $ideas = Idea::query()
@@ -50,6 +52,14 @@ class IdeaController extends Controller
                 if ($request->has('category')) {
                     $category = Category::findBySlug($request->category);
                     $query->whereRelation('categories', 'category_id', $category->id);
+                }
+
+                if ($request->has('without_comment') && (bool) $request->without_comment) {
+                    $query->whereDoesntHave('comments');
+                }
+
+                if ($request->has('anonymous') && (bool) $request->anonymous) {
+                    $query->where('is_anonymous', 1);
                 }
             })
             ->when($request->has('sort'), function (Builder $query) use ($request) {
