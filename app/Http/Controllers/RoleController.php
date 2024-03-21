@@ -6,7 +6,6 @@ use App\Data\RoleData;
 use App\Http\Requests\IndexRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Spatie\LaravelData\PaginatedDataCollection;
 use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller

@@ -18,8 +18,8 @@ class CategoryController extends Controller
         $categories = Category::where(function (Builder $query) use ($request) {
             $query->where('name', 'like', '%'.$request->search.'%');
         })
-        ->orderBy('created_at', 'desc')
-        ->paginate($request->perpage ?? 5);
+            ->orderBy('created_at', 'desc')
+            ->paginate($request->perpage ?? 5);
 
         return $this->responseSuccess([
             'results' => CategoryData::collect($categories, PaginatedDataCollection::class)->include('ideasCount'),

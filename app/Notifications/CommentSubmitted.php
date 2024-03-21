@@ -30,8 +30,8 @@ class CommentSubmitted extends Notification
     {
         return [
             PusherChannel::class,
-            // 'mail', 
-            'database'
+            // 'mail',
+            'database',
         ];
     }
 

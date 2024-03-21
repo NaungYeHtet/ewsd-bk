@@ -48,8 +48,6 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
     });
     Route::prefix('ideas')->controller(IdeaController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Idea::class);
-        // Route::get('/export', 'export')->can('export', Idea::class);
-        // Route::get('/download-files', 'downloadFiles')->can('export', Idea::class);
         Route::post('/', 'store')->can('create', Idea::class);
         Route::get('/{idea}', 'show')->can('viewAny', Idea::class);
         Route::post('/{idea}/report', 'report')->can('create', Report::class);
@@ -57,12 +55,11 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::delete('/{idea}', 'destroy')->can('delete', 'idea');
         Route::get('/{idea}/react', 'react')->can('react', 'idea');
     });
-    Route::prefix('notifications')->controller(NotificationController::class)->group(function() {
+    Route::prefix('notifications')->controller(NotificationController::class)->group(function () {
         Route::get('/', 'index');
         Route::get('/read', 'read');
         Route::get('/read-all', 'readAll');
     });
-    // Route::get('/comments/export', [IdeaCommentController::class, 'export'])->can('export', Comment::class);
     Route::prefix('ideas/{idea}/comments')->controller(IdeaCommentController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Comment::class);
         Route::post('/', 'store')->can('create', Comment::class);
@@ -89,14 +86,12 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::put('/{staff}', 'update')->can('update', 'staff');
         Route::get('/{staff}/disable', 'disable')->can('update', 'staff');
         Route::get('/{staff}/enable', 'enable')->can('update', 'staff');
-        // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
     });
     Route::prefix('academics')->controller(AcademicController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Academic::class);
         Route::post('/', 'store')->can('create', Academic::class);
         Route::put('/{academic}', 'update')->can('update', 'academic');
         Route::delete('/{academic}', 'destroy')->can('delete', 'academic');
-        // Route::delete('/{staff}', 'destroy')->can('delete', 'staff');
     });
     Route::prefix('academics')->controller(ExportController::class)->group(function () {
         Route::get('/{academic}/export-data', 'data')->can('export academic data');
