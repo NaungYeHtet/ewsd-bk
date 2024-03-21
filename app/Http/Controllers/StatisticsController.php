@@ -8,7 +8,6 @@ use App\Data\Statistics\Dataset;
 use App\Data\Statistics\Stat;
 use App\Enums\ChartType;
 use App\Models\Academic;
-use App\Models\Comment;
 use App\Models\Department;
 use App\Models\Idea;
 use Exception;

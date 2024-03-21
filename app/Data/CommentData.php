@@ -2,6 +2,7 @@
 
 namespace App\Data;
 
+use App\Enums\ReactionType;
 use App\Models\Comment;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\Validation\Rule;
@@ -22,6 +23,9 @@ class CommentData extends Data
         public Lazy|StaffData|Optional $staff,
         public string|Optional $submittedAt,
         public Lazy|string|Optional $type,
+        public array|Optional $reactionsCount,
+        public null|ReactionType|Optional $currentReaction,
+
     ) {
     }
 
@@ -34,6 +38,8 @@ class CommentData extends Data
             Lazy::create(fn () => $comment->is_anonymous ? null : StaffData::from($comment->staff)->only('name', 'avatar')),
             $comment->created_at->shortRelativeDiffForHumans(),
             $comment->getMorphClass(),
+            $comment->reactions_count,
+            $comment->current_reaction,
         );
     }
 }

@@ -27,7 +27,7 @@ class Idea extends Model
         'content',
         'file',
         'is_anonymous',
-        'reactions_count',
+        // 'reactions_count',
         'department_id',
         'academic_uuid',
     ];

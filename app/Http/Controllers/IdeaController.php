@@ -17,6 +17,7 @@ use App\Models\Staff;
 use App\Traits\Zippable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelData\PaginatedDataCollection;
 
@@ -180,10 +181,12 @@ class IdeaController extends Controller
                 'staff_id' => $staff->id,
             ]);
 
-            $idea->reports()->create([
+            $report = $idea->reports()->create([
                 'staff_id' => $staff->id,
                 'reason' => $request->reason,
             ]);
+
+            Notification::send(Staff::whereRelation('roles', 'name', '=', 'Admin')->get(), new \App\Notifications\ReportSubmitted($report->refresh()));
         });
 
         return $this->responseSuccess([], 'Idea reported successfully');
@@ -202,12 +205,6 @@ class IdeaController extends Controller
                 'staff_id' => auth()->id(),
                 'type' => $request->type,
             ]);
-
-            $currentReactionsCount = $idea->reactions_count;
-
-            $currentReactionsCount[$request->type] = $exist ? $currentReactionsCount[$request->type] - 1 : $currentReactionsCount[$request->type] + 1;
-            $idea->reactions_count = $currentReactionsCount;
-            $idea->save();
         });
 
         return $this->responseSuccess([

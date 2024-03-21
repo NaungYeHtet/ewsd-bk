@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * @extends Factory<\App\Models\Comment>
@@ -42,7 +43,13 @@ final class CommentFactory extends Factory
                 ]);
             }
 
-            // IdeaSubmitted::dispatch($idea);
+            \App\Models\Reaction::factory()->count(rand(0, 20))->create([
+                'reactionable_id' => $comment->id,
+                'reactionable_type' => $comment->getMorphClass(),
+                'created_at' => fake()->dateTimeBetween($comment->created_at, $comment->created_at->addMonth()),
+            ]);
+
+            Notification::send($comment->commentable->staff, new \App\Notifications\CommentSubmitted($comment));
         });
     }
 }

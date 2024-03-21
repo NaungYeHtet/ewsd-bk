@@ -6,6 +6,8 @@ use App\Models\Comment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\PusherPushNotifications\PusherChannel;
+use NotificationChannels\PusherPushNotifications\PusherMessage;
 
 class CommentSubmitted extends Notification
 {
@@ -26,7 +28,21 @@ class CommentSubmitted extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return [
+            PusherChannel::class,
+            // 'mail', 
+            'database'
+        ];
+    }
+
+    public function toPushNotification($notifiable)
+    {
+        return PusherMessage::create()
+            ->web()
+            ->badge(1)
+            ->sound('success')
+            ->title("{$this->comment->staff->name} commented your idea.")
+            ->body($this->comment->content);
     }
 
     /**
@@ -35,8 +51,10 @@ class CommentSubmitted extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('A new comment for your idea.')
-            ->action('See Comment', config('app.frontend_url').'/ideas/'.$this->comment->commentable->slug.'/comments#'.$this->comment->uuid)
+            ->subject('New Comment Submitted')
+            ->greeting("Hello {$notifiable->name} | {$notifiable->department->name}")
+            ->line("{$this->comment->staff->name} commented your idea.")
+            ->action('View Comment', config('app.frontend_url').'/ideas/'.$this->comment->commentable->slug.'/comments#'.$this->comment->uuid)
             ->line($this->comment->content);
     }
 
@@ -48,7 +66,10 @@ class CommentSubmitted extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'title' => 'New Comment Submitted',
+            'body' => "{$this->comment->staff->name} commented your idea.",
+            'link' => config('app.frontend_url').'/ideas/'.$this->comment->commentable->slug.'/comments#'.$this->comment->uuid,
+            'icon' => 'message-circle-more',
         ];
     }
 }

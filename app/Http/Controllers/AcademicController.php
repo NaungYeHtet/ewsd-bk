@@ -127,6 +127,10 @@ class AcademicController extends Controller
      */
     public function destroy(Academic $academic)
     {
+        if ($academic->ideas()->exists()) {
+            return $this->responseError("Unable to delete academic {$academic->name} because it has ideas submitted", code: 400);
+        }
+
         $academic->delete();
 
         return $this->responseSuccess([], 'Academic deleted successfully');

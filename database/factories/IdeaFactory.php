@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Enums\ReactionType;
 use App\Events\IdeaSubmitted;
 use App\Models\Idea;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Notification;
 
 /**
  * @extends Factory<\App\Models\Idea>
@@ -57,11 +58,6 @@ final class IdeaFactory extends Factory
                 'created_at' => fake()->dateTimeBetween($academic->start_date, $academic->final_closure_date),
             ]);
 
-            $reactionsCount = [];
-            foreach (ReactionType::cases() as $reactionType) {
-                $reactionsCount[$reactionType->value] = $idea->reactions()->where('type', $reactionType->value)->count();
-            }
-            $idea->reactions_count = $reactionsCount;
             $idea->save();
 
             \App\Models\Comment::factory()->count(rand(0, 10))->create([
@@ -84,7 +80,11 @@ final class IdeaFactory extends Factory
                 ]);
             }
 
-            // IdeaSubmitted::dispatch($idea);
+            $coordinators = $department->staffs()->whereHas('roles', function (Builder $query) {
+                $query->where('roles.name', 'QA Coordinator');
+            })->get();
+
+            Notification::send($coordinators, new \App\Notifications\IdeaSubmitted($idea));
         });
     }
 }

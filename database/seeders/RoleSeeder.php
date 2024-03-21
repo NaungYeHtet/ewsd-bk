@@ -23,6 +23,7 @@ class RoleSeeder extends Seeder
             'create comment',
             'update comment',
             'delete comment',
+            'react comment',
             'create report',
         ];
 
@@ -30,6 +31,7 @@ class RoleSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'permissions' => [
+                    'list statistics',
                     'list staff',
                     'create staff',
                     'update staff',
@@ -52,6 +54,7 @@ class RoleSeeder extends Seeder
             [
                 'name' => 'QA Manager',
                 'permissions' => [
+                    'list statistics',
                     'list category',
                     'create category',
                     'update category',

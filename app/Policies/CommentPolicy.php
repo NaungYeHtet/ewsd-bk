@@ -25,6 +25,14 @@ class CommentPolicy
     }
 
     /**
+     * Determine whether the user can react the comment.
+     */
+    public function react(Staff $staff, Comment $comment): bool
+    {
+        return $staff->can('react comment') && Academic::isDateBetweenStartAndFinalClosureDate();
+    }
+
+    /**
      * Determine whether the user can react the idea.
      */
     public function export(Staff $staff): bool

@@ -6,6 +6,8 @@ use App\Models\Idea;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\PusherPushNotifications\PusherChannel;
+use NotificationChannels\PusherPushNotifications\PusherMessage;
 
 class IdeaSubmitted extends Notification
 {
@@ -26,7 +28,21 @@ class IdeaSubmitted extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return [
+            // PusherChannel::class,
+            // 'mail',
+            'database',
+        ];
+    }
+
+    public function toPushNotification($notifiable)
+    {
+        return PusherMessage::create()
+            ->web()
+            ->badge(1)
+            ->sound('success')
+            ->title("A new idea has been submitted by {$this->idea->staff->name}.")
+            ->body($this->idea->title);
     }
 
     /**
@@ -51,7 +67,10 @@ class IdeaSubmitted extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'title' => 'New Idea Submitted',
+            'message' => "A new idea has been submitted by {$this->idea->staff->name}.",
+            'link' => config('app.frontend_url').'/ideas/'.$this->idea->slug,
+            'icon' => 'message-circle-question',
         ];
     }
 }

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Data\CommentData;
 use App\Events\CommentSubmitted;
 use App\Http\Requests\IndexRequest;
+use App\Http\Requests\ReactIdeaRequest;
 use App\Http\Requests\ReportRequest;
 use App\Models\Comment;
 use App\Models\Idea;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class IdeaCommentController extends Controller
@@ -29,13 +31,29 @@ class IdeaCommentController extends Controller
         ]);
     }
 
+    public function react(Idea $idea, Comment $comment, ReactIdeaRequest $request)
+    {
+        DB::transaction(function () use ($request, $comment) {
+            $exist = $comment->reactions()->where('staff_id', auth()->id())->where('type', $request->type)->first();
+
+            $exist ? $exist->delete() : $comment->reactions()->create([
+                'staff_id' => auth()->id(),
+                'type' => $request->type,
+            ]);
+        });
+
+        return $this->responseSuccess([
+            'result' => CommentData::from($comment),
+        ], 'React successfully');
+    }
+
     public function store(Idea $idea, CommentData $data)
     {
         $comment = DB::transaction(function () use ($idea, $data) {
             $staff = Staff::find(auth()->id());
 
             $idea->views()->firstOrCreate([
-                'staff_id' => $staff->id(),
+                'staff_id' => $staff->id,
             ]);
 
             $comment = $idea->comments()->create([
@@ -65,10 +83,12 @@ class IdeaCommentController extends Controller
         }
 
         DB::transaction(function () use ($staff, $request, $comment) {
-            $comment->reports()->create([
+            $report = $comment->reports()->create([
                 'staff_id' => $staff->id,
                 'reason' => $request->reason,
             ]);
+
+            Notification::send(Staff::whereRelation('roles', 'name', '=', 'Admin')->get(), new \App\Notifications\ReportSubmitted($report->refresh()));
         });
 
         return $this->responseSuccess([], 'Comment reported successfully');

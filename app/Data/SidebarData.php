@@ -70,7 +70,7 @@ class SidebarData extends Data
                 'url' => '/staffs',
                 'permissions' => self::getCrudPermissions('staff', $staff),
             ], [
-                'title' => 'Report',
+                'title' => 'Reports',
                 'icon' => 'circle-alert',
                 'url' => '/reports',
                 'permissions' => self::getCrudPermissions('report', $staff),

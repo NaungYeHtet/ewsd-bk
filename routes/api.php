@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\IdeaCommentController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PasswordRuleController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
@@ -39,7 +40,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function () {
-    Route::get('statistics', StatisticsController::class);
+    Route::get('statistics', StatisticsController::class)->can('list statistics');
     Route::get('roles', RoleController::class);
     Route::prefix('profile')->controller(ProfileController::class)->group(function () {
         Route::get('/', 'index');
@@ -56,6 +57,11 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::delete('/{idea}', 'destroy')->can('delete', 'idea');
         Route::get('/{idea}/react', 'react')->can('react', 'idea');
     });
+    Route::prefix('notifications')->controller(NotificationController::class)->group(function() {
+        Route::get('/', 'index');
+        Route::get('/read', 'read');
+        Route::get('/read-all', 'readAll');
+    });
     // Route::get('/comments/export', [IdeaCommentController::class, 'export'])->can('export', Comment::class);
     Route::prefix('ideas/{idea}/comments')->controller(IdeaCommentController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Comment::class);
@@ -63,6 +69,7 @@ Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function ()
         Route::put('/{comment}', 'update')->can('update', 'comment');
         Route::post('/{comment}/report', 'report')->can('create', Report::class);
         Route::delete('/{comment}', 'destroy')->can('delete', 'comment');
+        Route::get('/{comment}/react', 'react')->can('react', 'comment');
     })->scopeBindings();
     Route::prefix('departments')->controller(DepartmentController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Department::class);
