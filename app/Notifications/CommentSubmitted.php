@@ -29,7 +29,7 @@ class CommentSubmitted extends Notification
     public function via(object $notifiable): array
     {
         return [
-            // PusherChannel::class,
+            PusherChannel::class,
             // 'mail', 
             'database'
         ];
