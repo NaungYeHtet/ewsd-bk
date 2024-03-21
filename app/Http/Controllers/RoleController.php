@@ -18,10 +18,10 @@ class RoleController extends Controller
     {
         $roles = Role::where(function (Builder $query) use ($request) {
             $query->where('name', 'like', '%'.$request->search.'%');
-        })->paginate($request->perpage ?? 5);
+        })->get();
 
         return $this->responseSuccess([
-            'results' => RoleData::collect($roles, PaginatedDataCollection::class),
+            'results' => RoleData::collect($roles),
         ]);
     }
 }
