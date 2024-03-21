@@ -28,7 +28,7 @@ class ReportSubmitted extends Notification
     public function via(object $notifiable): array
     {
         return [
-            PusherChannel::class,
+            // PusherChannel::class,
             'database',
         ];
     }
