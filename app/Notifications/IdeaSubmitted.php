@@ -69,7 +69,7 @@ class IdeaSubmitted extends Notification
         return [
             'title' => 'New Idea Submitted',
             'message' => "A new idea has been submitted by {$this->idea->staff->name}.",
-            'link' => config('app.frontend_url').'/ideas/'.$this->idea->slug,
+            'link' => '/ideas/'.$this->idea->slug,
             'icon' => 'message-circle-question',
         ];
     }

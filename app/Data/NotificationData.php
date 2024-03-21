@@ -26,7 +26,7 @@ class NotificationData extends Data
             $notification->created_at->shortRelativeDiffForHumans(),
             $notification->data['title'],
             $notification->data['body'],
-            $notification->data['link'],
+            config('app.frontend_url').$notification->data['link'],
             $notification->data['icon'],
         );
     }

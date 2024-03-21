@@ -28,7 +28,7 @@ class ReportSubmitted extends Notification
     public function via(object $notifiable): array
     {
         return [
-            PusherChannel::class,
+            // PusherChannel::class,
             'database',
         ];
     }
@@ -52,7 +52,7 @@ class ReportSubmitted extends Notification
         return [
             'title' => 'Report Submitted',
             'body' => "A report has been submitted by {$this->report->staff->name}.",
-            'link' => config('app.frontend_url').'/reports/'.$this->report->uuid,
+            'link' => '/reports/'.$this->report->uuid,
             'icon' => 'circle-alert',
         ];
     }

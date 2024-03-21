@@ -29,7 +29,7 @@ class CommentSubmitted extends Notification
     public function via(object $notifiable): array
     {
         return [
-            PusherChannel::class,
+            // PusherChannel::class,
             // 'mail', 
             'database'
         ];
@@ -68,7 +68,7 @@ class CommentSubmitted extends Notification
         return [
             'title' => 'New Comment Submitted',
             'body' => "{$this->comment->staff->name} commented your idea.",
-            'link' => config('app.frontend_url').'/ideas/'.$this->comment->commentable->slug.'/comments#'.$this->comment->uuid,
+            'link' => '/ideas/'.$this->comment->commentable->slug.'/comments#'.$this->comment->uuid,
             'icon' => 'message-circle-more',
         ];
     }
