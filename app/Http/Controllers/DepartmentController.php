@@ -17,7 +17,9 @@ class DepartmentController extends Controller
     {
         $categories = Department::where(function (Builder $query) use ($request) {
             $query->where('name', 'like', '%'.$request->search.'%');
-        })->paginate($request->perpage ?? 5);
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate($request->perpage ?? 5);
 
         return $this->responseSuccess([
             'results' => DepartmentData::collect($categories, PaginatedDataCollection::class)->include('staffsCount'),

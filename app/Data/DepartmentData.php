@@ -15,7 +15,8 @@ class DepartmentData extends Data
         public string|Optional $slug,
         #[Rule(['required', 'string', 'min:5', 'max:255'])]
         public string $name,
-        public Lazy|int $staffsCount
+        public Lazy|int|Optional $staffsCount,
+        public string|Optional $createdAt
     ) {
     }
 
@@ -25,6 +26,7 @@ class DepartmentData extends Data
             $department->slug,
             $department->name,
             Lazy::create(fn () => $department->staffs()->count()),
+            $department->created_at->format('Y-m-d H:i:s'),
         );
     }
 }

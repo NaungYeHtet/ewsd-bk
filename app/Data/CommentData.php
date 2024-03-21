@@ -21,7 +21,7 @@ class CommentData extends Data
         public bool|Optional $isAnonymous,
         public Lazy|StaffData|Optional $staff,
         public string|Optional $submittedAt,
-        public Lazy|string $type,
+        public Lazy|string|Optional $type,
     ) {
     }
 

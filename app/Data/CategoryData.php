@@ -15,7 +15,8 @@ class CategoryData extends Data
         public string|Optional $slug,
         #[Rule(['required', 'string', 'min:5', 'max:255'])]
         public string $name,
-        public Lazy|int $ideasCount
+        public Lazy|int|Optional $ideasCount,
+        public string|Optional $createdAt
     ) {
     }
 
@@ -25,6 +26,7 @@ class CategoryData extends Data
             $category->slug,
             $category->name,
             Lazy::create(fn () => $category->ideas()->count()),
+            $category->created_at->format('Y-m-d H:i:s'),
         );
     }
 }
