@@ -23,7 +23,7 @@ class StaffData extends Data
         #[MapInputName('disabled_at')]
         public ?Carbon $disabledAt,
         #[MapInputName('last_logged_in_at')]
-        public ?Carbon $lastLoggedInAt,
+        public ?string $lastLoggedInAt,
         public Lazy|string $role,
         public Lazy|DepartmentData $department,
     ) {
@@ -38,7 +38,7 @@ class StaffData extends Data
             $staff->username,
             $staff->avatar ? url('/').Storage::url($staff->avatar) : url('/').Storage::url('public/images/default-avatar.png'),
             $staff->disabled_at,
-            $staff->last_logged_in_at,
+            $staff->last_logged_in_at ? $staff->last_logged_in_at->format('Y-m-d H:i:s') : null,
             Lazy::create(fn () => RoleData::from($staff->roles()->first())->name),
             Lazy::create(fn () => DepartmentData::from($staff->department))
         );

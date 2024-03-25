@@ -38,7 +38,7 @@ class IdeaController extends Controller
             'anonymous' => ['boolean'],
         ]);
 
-        $ideas = Idea::query()
+        $ideas = Idea::select('ideas.*')
             ->where(function (Builder $query) use ($request) {
                 if ($request->has('search')) {
                     $query->where('title', 'like', '%'.$request->search.'%')
@@ -64,11 +64,13 @@ class IdeaController extends Controller
             })
             ->when($request->has('sort'), function (Builder $query) use ($request) {
                 if ($request->sort == 'popular') {
-                    $query->orderBy(DB::raw('JSON_EXTRACT(reactions_count, "$.THUMBS_UP") - JSON_EXTRACT(reactions_count, "$.THUMBS_DOWN")'), 'desc');
+                    $query->selectRaw('(SELECT COUNT(*) FROM reactions WHERE reactionable_id = ideas.id AND reactionable_type = "idea" AND type = "THUMBS_UP") - 
+                    (SELECT COUNT(*) FROM reactions WHERE reactionable_id = ideas.id AND reactionable_type = "idea" AND type = "THUMBS_DOWN") AS point')
+                    ->orderBy('point', 'desc');
                 }
 
                 if ($request->sort == 'views') {
-                    $query->orderBy('views_count', 'desc');
+                    $query->withCount('views')->orderBy('views_count', 'desc');
                 }
             })
             ->when(! $request->has('sort'), function (Builder $query) {
