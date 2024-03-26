@@ -53,7 +53,7 @@ class StatisticsController extends Controller
             $totalIdeasAcrossAllDepartments = Idea::count();
             $percentage = ($totalIdeasAcrossAllDepartments > 0) ? ($totalIdeas / $totalIdeasAcrossAllDepartments) * 100 : 0;
             $percentageOfIdeaPerDepartment['labels'][] = $department->name;
-            $percentageOfIdeaPerDepartment['datasets'][0]->data[] = round($percentage, 2).'%';
+            $percentageOfIdeaPerDepartment['datasets'][0]->data[] = round($percentage, 2);
         }
 
         return $this->responseSuccess([
