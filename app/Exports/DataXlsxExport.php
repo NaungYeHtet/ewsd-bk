@@ -14,7 +14,7 @@ class DataXlsxExport implements WithMultipleSheets
 
     public function __construct(protected ?Academic $academic = null)
     {
-        $this->academic = $academic ?? Academic::orderBy('final_closure_date', 'desc')->first();
+        $this->academic = $academic ?? Academic::isActive()->first();
     }
 
     public function sheets(): array
