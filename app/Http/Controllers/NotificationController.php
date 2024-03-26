@@ -14,8 +14,11 @@ class NotificationController extends Controller
      */
     public function index(Request $request)
     {
+        $staff = Staff::find(auth()->id());
+
         return $this->responseSuccess([
-            'notifications' => NotificationData::collect(Staff::find(auth()->id())->notifications()->paginate(10), PaginatedDataCollection::class),
+            'unread_count' => $staff->unreadNotifications()->count(),
+            'notifications' => NotificationData::collect($staff->notifications()->paginate(10), PaginatedDataCollection::class),
         ]);
     }
 
