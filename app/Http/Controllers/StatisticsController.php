@@ -8,6 +8,7 @@ use App\Data\Statistics\Dataset;
 use App\Data\Statistics\Stat;
 use App\Enums\ChartType;
 use App\Models\Academic;
+use App\Models\Comment;
 use App\Models\Department;
 use App\Models\Idea;
 use Exception;
@@ -82,7 +83,7 @@ class StatisticsController extends Controller
                 ]),
                 'anonymous_comments_count' => Stat::from([
                     'label' => 'Anonymous Comments',
-                    'value' => number_format(Idea::where('is_anonymous', 1)->count()),
+                    'value' => number_format(Comment::where('is_anonymous', 1)->count()),
                 ]),
             ],
         ]);
