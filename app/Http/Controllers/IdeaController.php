@@ -41,8 +41,13 @@ class IdeaController extends Controller
         $ideas = Idea::select('ideas.*')
             ->where(function (Builder $query) use ($request) {
                 if ($request->has('search')) {
-                    $query->where('title', 'like', '%'.$request->search.'%')
-                        ->orWhere('content', 'like', '%'.$request->search.'%');
+                    $keywords = explode(' ', $request->search);
+
+                    foreach ($keywords as $keyword) {
+                        $query->where('title', 'like', '%'.$keyword.'%')
+                            ->orWhere('content', 'like', '%'.$keyword.'%');
+                    }
+
                 }
                 if ($request->has('staff')) {
                     $staff = Staff::where('uuid', $request->staff)->first();
@@ -66,7 +71,7 @@ class IdeaController extends Controller
                 if ($request->sort == 'popular') {
                     $query->selectRaw('(SELECT COUNT(*) FROM reactions WHERE reactionable_id = ideas.id AND reactionable_type = "idea" AND type = "THUMBS_UP") - 
                     (SELECT COUNT(*) FROM reactions WHERE reactionable_id = ideas.id AND reactionable_type = "idea" AND type = "THUMBS_DOWN") AS point')
-                    ->orderBy('point', 'desc');
+                        ->orderBy('point', 'desc');
                 }
 
                 if ($request->sort == 'views') {
