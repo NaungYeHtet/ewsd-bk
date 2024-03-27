@@ -73,7 +73,7 @@ class IdeaSubmitted extends Notification
     {
         return [
             'title' => 'New Idea Submitted',
-            'message' => "A new idea has been submitted by {$idea->staff->name}.",
+            'body' => "A new idea has been submitted by {$idea->staff->name}.",
             'link' => '/ideas/'.$idea->slug,
             'icon' => 'message-circle-question',
         ];

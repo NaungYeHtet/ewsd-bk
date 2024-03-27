@@ -35,11 +35,11 @@ use Illuminate\Support\Facades\Route;
 */
 require __DIR__.'/auth.php';
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::middleware(['auth:sanctum', 'auth:staff', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'auth:staff'])->group(function () {
     Route::get('statistics', StatisticsController::class)->can('list statistics');
     Route::get('roles', RoleController::class);
     Route::prefix('profile')->controller(ProfileController::class)->group(function () {
