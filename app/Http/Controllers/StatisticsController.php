@@ -50,11 +50,13 @@ class StatisticsController extends Controller
 
             $numberOfIdeaPerDepartment['labels'][] = $department->name;
             $numberOfIdeaPerDepartment['datasets'][0]->data[] = $totalIdeas;
-
+            $numberOfIdeaPerDepartment['datasets'][0]->backgroundColor[] = $department->color_code;
+            
             $totalIdeasAcrossAllDepartments = Idea::count();
             $percentage = ($totalIdeasAcrossAllDepartments > 0) ? ($totalIdeas / $totalIdeasAcrossAllDepartments) * 100 : 0;
             $percentageOfIdeaPerDepartment['labels'][] = $department->name;
             $percentageOfIdeaPerDepartment['datasets'][0]->data[] = round($percentage, 2);
+            $percentageOfIdeaPerDepartment['datasets'][0]->backgroundColor[] = $department->color_code;
         }
 
         return $this->responseSuccess([

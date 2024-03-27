@@ -13,7 +13,7 @@ class Department extends Model
     use HasFactory;
     use HasSlug;
 
-    public $fillable = ['name'];
+    public $fillable = ['name', 'color_code'];
 
     /**
      * Get the options for generating the slug.

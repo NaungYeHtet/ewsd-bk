@@ -26,6 +26,7 @@ final class DepartmentFactory extends Factory
     {
         return [
             'name' => fake()->word,
+            'color_code' => fake()->rgbCssColor,
         ];
     }
 

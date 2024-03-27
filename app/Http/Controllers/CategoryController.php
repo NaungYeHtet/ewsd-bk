@@ -31,7 +31,10 @@ class CategoryController extends Controller
      */
     public function store(CategoryData $data)
     {
-        $category = Category::create($data->all());
+        $category = Category::create([
+            ...$data->all(),
+            'color_code' => fake()->rgbCssColor,
+        ]);
 
         return $this->responseSuccess([
             'result' => CategoryData::from($category),

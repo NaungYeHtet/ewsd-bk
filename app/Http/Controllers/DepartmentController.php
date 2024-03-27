@@ -31,7 +31,10 @@ class DepartmentController extends Controller
      */
     public function store(DepartmentData $data)
     {
-        $department = Department::create($data->all());
+        $department = Department::create([
+            ...$data->all(),
+            'color_code' => fake()->rgbCssColor,
+        ]);
 
         return $this->responseSuccess([
             'result' => DepartmentData::from($department),
