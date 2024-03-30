@@ -17,7 +17,7 @@ class ReportSubmitted extends Notification
      */
     public function __construct(public Report $report)
     {
-        //
+        
     }
 
     /**

@@ -14,24 +14,27 @@ class StaffSeeder extends Seeder
         $admins = [
             [
                 'username' => 'naungyehtet_am',
-                'name' => 'Naung Ye Htet (Admin)',
-                'email' => 'naungyehtet.admin@gmail.com',
+                'name' => 'Naung Ye Htet (AM)',
+                'email' => 'naungyehtet717@gmail.com',
             ],
         ];
 
         foreach ($admins as $admin) {
             $admin['password'] = bcrypt('password@123');
             $admin['department_id'] = \App\Models\Department::inRandomOrder()->first()->id;
-            $admin = \App\Models\Staff::factory()->create($admin);
+            $admin = \App\Models\Staff::factory()->create([
+                ...$admin,
+                'email_verified_at' => now()
+            ]);
             $admin->refresh();
             $admin->assignRole('Admin');
         }
 
         $qaManagers = [
             [
-                'username' => 'naungyehtet_qam',
-                'name' => 'Naung Ye Htet (QA Manager)',
-                'email' => 'naungyehtet.qam@gmail.com',
+                'username' => 'aungmyatkaung_qam',
+                'name' => 'Aung Myat Kaung (QAM)',
+                'email' => 'amkaung1@kmd.edu.mm',
             ],
         ];
 
@@ -45,9 +48,14 @@ class StaffSeeder extends Seeder
 
         $qaCoordinators = [
             [
-                'username' => 'naungyehtet_qac',
-                'name' => 'Naung Ye Htet (QA Coordinator)',
-                'email' => 'naungyehtet717@gmail.com',
+                'username' => 'heinhtetaung',
+                'name' => 'Naung Ye Htet (QAC)',
+                'email' => 'rickylin103@gmail.com',
+            ],
+            [
+                'username' => 'khantkyawswar',
+                'name' => 'Khant Kyaw Swar (QAC)',
+                'email' => 'kkswar1@kmd.edu.mm',
             ],
         ];
 
@@ -61,9 +69,19 @@ class StaffSeeder extends Seeder
 
         $staffs = [
             [
-                'username' => 'naungyehtet',
-                'name' => 'Naung Ye Htet',
-                'email' => 'naungyehtet@gmail.com',
+                'username' => 'naythuaung',
+                'name' => 'Nay Thu Aung (SP/AS)',
+                'email' => 'ntaung1@kmd.edu.mm',
+            ],
+            [
+                'username' => 'thawzinhtoo',
+                'name' => 'Thaw Zin Htoo (SP/AS)',
+                'email' => 'thawzin99777@gmail.com',
+            ],
+            [
+                'username' => 'yumonkyaw',
+                'name' => 'Yu Mon Kyaw (SP/AS)',
+                'email' => 'yumonkyaw921@gmail.com',
             ],
         ];
 

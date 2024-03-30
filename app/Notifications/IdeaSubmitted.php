@@ -28,11 +28,16 @@ class IdeaSubmitted extends Notification
      */
     public function via(object $notifiable): array
     {
-        return [
+        $data = [
             PusherChannel::class,
-            // 'mail',
             'database',
         ];
+
+        if ($notifiable->hasVerifiedEmail()) {
+            $data[] = 'mail';
+        }
+
+        return $data;
     }
 
     public function toPushNotification($notifiable)
