@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\DepartmentData;
 use App\Http\Requests\IndexRequest;
+use App\Http\Requests\StoreDepartmentRequest;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\LaravelData\PaginatedDataCollection;
@@ -29,10 +30,10 @@ class DepartmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DepartmentData $data)
+    public function store(StoreDepartmentRequest $request)
     {
         $department = Department::create([
-            ...$data->all(),
+            ...$request->validated(),
             'color_code' => fake()->rgbCssColor,
         ]);
 
@@ -52,9 +53,9 @@ class DepartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(DepartmentData $data, Department $department)
+    public function update(StoreDepartmentRequest $request, Department $department)
     {
-        $department->update($data->all());
+        $department->update($request->validated());
 
         return $this->responseSuccess([
             'result' => DepartmentData::from($department->refresh()),
