@@ -43,7 +43,8 @@ final class IdeaFactory extends Factory
             $academic = $idea->academic;
             $department = $idea->staff->department;
 
-            $randDate = fake()->dateTimeBetween($academic->start_date, $academic->closure_date);
+            $closureDate = $academic->closure_date > now() ? now() : $academic->closure_date;
+            $randDate = fake()->dateTimeBetween($academic->start_date, $closureDate);
             $idea->created_at = $randDate;
             $idea->updated_at = $randDate;
             $idea->department_id = $department->id;
@@ -52,10 +53,12 @@ final class IdeaFactory extends Factory
 
             $idea->categories()->attach($categories);
 
+            $finalClosureDate = $academic->final_closure_date > now() ? now() : $academic->final_closure_date;
+
             \App\Models\Reaction::factory()->count(rand(0, 20))->create([
                 'reactionable_id' => $idea->id,
                 'reactionable_type' => $idea->getMorphClass(),
-                'created_at' => fake()->dateTimeBetween($academic->start_date, $academic->final_closure_date),
+                'created_at' => fake()->dateTimeBetween($academic->start_date, $finalClosureDate),
             ]);
 
             $idea->save();
@@ -63,20 +66,20 @@ final class IdeaFactory extends Factory
             \App\Models\Comment::factory()->count(rand(0, 10))->create([
                 'commentable_id' => $idea->id,
                 'commentable_type' => $idea->getMorphClass(),
-                'created_at' => fake()->dateTimeBetween($academic->start_date, $academic->final_closure_date),
+                'created_at' => fake()->dateTimeBetween($academic->start_date, $finalClosureDate),
             ]);
 
             \App\Models\View::factory()->count(rand(0, 10))->create([
                 'viewable_id' => $idea->id,
                 'viewable_type' => $idea->getMorphClass(),
-                'created_at' => fake()->dateTimeBetween($academic->start_date, $academic->final_closure_date),
+                'created_at' => fake()->dateTimeBetween($academic->start_date, $finalClosureDate),
             ]);
 
             if (rand(0, 3) == 3) {
                 \App\Models\Report::factory()->count(rand(0, 5))->create([
                     'reportable_id' => $idea->id,
                     'reportable_type' => $idea->getMorphClass(),
-                    'created_at' => fake()->dateTimeBetween($idea->created_at, $academic->final_closure_date),
+                    'created_at' => fake()->dateTimeBetween($idea->created_at, $finalClosureDate),
                 ]);
             }
 
