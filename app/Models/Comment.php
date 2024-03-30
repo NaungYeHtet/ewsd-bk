@@ -15,7 +15,7 @@ class Comment extends Model
 {
     use HasFactory, HasUuids;
 
-    public $fillable = ['content', 'staff_id', 'is_anonymous'];
+    protected $fillable = ['content', 'staff_id', 'is_anonymous'];
 
     /**
      * Get the route key for the model.

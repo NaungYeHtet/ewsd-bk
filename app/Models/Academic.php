@@ -12,7 +12,7 @@ class Academic extends Model
 {
     use HasFactory, HasUuids;
 
-    public $fillable = ['name', 'start_date', 'closure_date', 'final_closure_date'];
+    protected $fillable = ['name', 'start_date', 'closure_date', 'final_closure_date'];
 
     protected $primaryKey = 'uuid';
 
