@@ -33,7 +33,7 @@ class DepartmentController extends Controller
     public function store(StoreDepartmentRequest $request)
     {
         $department = Department::create([
-            ...$request->validated(),
+            'name' => $request->name,
             'color_code' => fake()->rgbCssColor,
         ]);
 
@@ -55,7 +55,9 @@ class DepartmentController extends Controller
      */
     public function update(StoreDepartmentRequest $request, Department $department)
     {
-        $department->update($request->validated());
+        $department->update([
+            'name' => $request->name,
+        ]);
 
         return $this->responseSuccess([
             'result' => DepartmentData::from($department->refresh()),
