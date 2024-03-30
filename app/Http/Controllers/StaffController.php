@@ -68,7 +68,7 @@ class StaffController extends Controller
             }
 
             $staff = Staff::create([
-                'department_id' => Department::findBySlug($request->department),
+                'department_id' => Department::findBySlug($request->department)->id,
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
