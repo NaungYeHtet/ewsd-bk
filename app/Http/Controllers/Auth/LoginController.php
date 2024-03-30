@@ -25,13 +25,19 @@ class LoginController extends Controller
     {
         $staff = Staff::where('email', $request->email)->first();
 
+        if (! $staff) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
         if ((bool) $staff->disabled_at) {
             throw ValidationException::withMessages([
                 'email' => __('auth.disabled'),
             ]);
         }
 
-        if (! $staff || ! Hash::check($request->password, optional($staff)->password)) {
+        if (! Hash::check($request->password, optional($staff)->password)) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);

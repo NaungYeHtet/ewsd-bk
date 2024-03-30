@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Data\NotificationData;
+use App\Http\Requests\IndexRequest;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use Spatie\LaravelData\PaginatedDataCollection;
@@ -12,13 +13,13 @@ class NotificationController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function index(Request $request)
+    public function index(IndexRequest $request)
     {
         $staff = Staff::find(auth()->id());
 
         return $this->responseSuccess([
             'unread_count' => $staff->unreadNotifications()->count(),
-            'notifications' => NotificationData::collect($staff->notifications()->paginate(10), PaginatedDataCollection::class),
+            'notifications' => NotificationData::collect($staff->notifications()->paginate($request->perpage ?? 10), PaginatedDataCollection::class),
         ]);
     }
 

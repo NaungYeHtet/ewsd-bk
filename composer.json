@@ -20,6 +20,7 @@
         "taylornetwork/laravel-username-generator": "^2.8"
     },
     "require-dev": {
+        "beyondcode/laravel-er-diagram-generator": "^3.0",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.28",
         "laravel/pint": "^1.14",
