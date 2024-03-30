@@ -41,7 +41,7 @@ class StaffData extends Data
             $staff->disabled_at,
             $staff->last_logged_in_at ? $staff->last_logged_in_at->format('Y-m-d H:i:s') : null,
             Lazy::create(fn () => RoleData::from($staff->roles()->first())->name),
-            Lazy::create(fn () => DepartmentData::from($staff->department))->include('staffsCount'),
+            Lazy::create(fn () => DepartmentData::fromModel($staff->department))->include('staffsCount'),
             $staff->unreadNotifications()->count(),
         );
     }
