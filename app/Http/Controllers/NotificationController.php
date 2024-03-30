@@ -19,7 +19,7 @@ class NotificationController extends Controller
 
         return $this->responseSuccess([
             'unread_count' => $staff->unreadNotifications()->count(),
-            'notifications' => NotificationData::collect($staff->notifications()->paginate($request->perpage ?? 10), PaginatedDataCollection::class),
+            'notifications' => NotificationData::collect($staff->notifications()->orderBy('created_at', 'desc')->paginate($request->perpage ?? 10), PaginatedDataCollection::class),
         ]);
     }
 
