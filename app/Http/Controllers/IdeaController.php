@@ -31,7 +31,7 @@ class IdeaController extends Controller
     public function index(IndexRequest $request)
     {
         $request->validate([
-            'sort' => ['string', 'in:popular,views'],
+            'sort' => ['string', 'in:popular,views,comments'],
             'staff' => ['exists:staffs,uuid'],
             'category' => ['exists:categories,slug'],
             'without_comment' => ['boolean'],
@@ -76,6 +76,10 @@ class IdeaController extends Controller
 
                 if ($request->sort == 'views') {
                     $query->withCount('views')->orderBy('views_count', 'desc');
+                }
+
+                if ($request->sort == 'comments') {
+                    $query->withCount('comments')->orderBy('comments_count', 'desc');
                 }
             })
             ->when(! $request->has('sort'), function (Builder $query) {

@@ -24,19 +24,19 @@ class DatabaseSeeder extends Seeder
         // }
 
         $this->command->info('Seeding Department factory...');
-        \App\Models\Department::factory(3)->create();
+        \App\Models\Department::factory(5)->create();
         $this->command->info('Department factory seeded.');
 
         $this->call([
             StaffSeeder::class,
         ]);
 
-        // $this->command->info('Seeding Staff factory...');
-        // \App\Models\Staff::factory(50)->assignRole()->create();
-        // $this->command->info('Staff factory seeded.');
+        $this->command->info('Seeding Staff factory...');
+        \App\Models\Staff::factory(50)->assignRole()->create();
+        $this->command->info('Staff factory seeded.');
 
         $this->command->info('Seeding Category factory...');
-        \App\Models\Category::factory(30)->create();
+        \App\Models\Category::factory(20)->create();
         $this->command->info('Category factory seeded.');
 
         $this->command->info('Seeding Idea factory...');

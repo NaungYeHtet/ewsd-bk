@@ -47,6 +47,8 @@ class RoleSeeder extends Seeder
                     'create academic',
                     'update academic',
                     'delete academic',
+                    'export academic data',
+                    'export academic files',
                     'list password rule',
                     'update password rule',
                 ],
@@ -60,9 +62,6 @@ class RoleSeeder extends Seeder
                     'update category',
                     'delete category',
                     'list department',
-                    'list academic',
-                    'export academic data',
-                    'export academic files',
                 ],
             ],
             [
