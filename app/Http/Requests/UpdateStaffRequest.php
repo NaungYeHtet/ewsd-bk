@@ -24,7 +24,7 @@ class UpdateStaffRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:5', 'max:255'],
-            'role' => ['required', 'string', 'exists:role,name'],
+            'role' => ['required', 'string', 'exists:roles,name'],
             'department' => ['required', 'string', 'exists:departments,slug'],
             'password' => ['string', 'confirmed', Password::defaults()],
         ];
