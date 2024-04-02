@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Staff::class)->constrained('staffs')->cascadeOnDelete();
             $table->morphs('reportable');
             $table->string('reason');
+            $table->dateTime('action_at')->nullable();
             $table->timestamps();
         });
     }

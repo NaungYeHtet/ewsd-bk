@@ -22,6 +22,11 @@ class Report extends Model
     protected $fillable = [
         'staff_id',
         'reason',
+        'action_at',
+    ];
+
+    protected $casts = [
+        'action_at' => 'datetime',
     ];
 
     /**

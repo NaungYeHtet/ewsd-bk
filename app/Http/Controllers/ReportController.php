@@ -7,6 +7,7 @@ use App\Http\Requests\IndexRequest;
 use App\Models\Report;
 use App\Models\Staff;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\DB;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class ReportController extends Controller
@@ -45,5 +46,27 @@ class ReportController extends Controller
         $report->delete();
 
         return $this->responseSuccess(message: 'Report deleted successfully');
+    }
+
+    public function action(Report $report)
+    {
+        if ((bool) $report->action_at) {
+            return $this->responseError('An action has already made to this report.');
+        }
+
+        DB::transaction(function () use ($report) {
+            $report->update([
+                'action_at' => now(),
+            ]);
+            $staff = $report->reportable->staff;
+            $staff->update([
+                'disabled_at' => now(),
+            ]);
+            $staff->tokens()->delete();
+
+            $report->reportable->delete();
+        });
+
+        return $this->responseSuccess(message: ucfirst($report->reportable->getMorphClass().' deleted and staff disabled successfully.'));
     }
 }

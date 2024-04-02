@@ -4,6 +4,7 @@ namespace App\Data;
 
 use App\Models\Idea;
 use App\Models\Staff;
+use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\Optional;
@@ -22,7 +23,7 @@ class SidebarData extends Data
     ) {
     }
 
-    public static function getData(Staff $staff): DataCollection|array
+    public static function getData(Staff $staff): DataCollection|Collection|array
     {
         $exportPermissions = [];
 
@@ -32,6 +33,12 @@ class SidebarData extends Data
 
         if ($staff->can('export academic files')) {
             $exportPermissions[] = '/export-files';
+        }
+
+        $reportPermissions = self::getCrudPermissions('report', $staff);
+
+        if ($staff->can('action report')) {
+            $reportPermissions[] = '/action';
         }
 
         return self::collect([
@@ -73,7 +80,7 @@ class SidebarData extends Data
                 'title' => 'Reports',
                 'icon' => 'circle-alert',
                 'url' => '/reports',
-                'permissions' => self::getCrudPermissions('report', $staff),
+                'permissions' => $reportPermissions,
             ],
         ], DataCollection::class)->except('key');
     }

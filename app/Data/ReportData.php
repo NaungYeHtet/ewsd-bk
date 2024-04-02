@@ -16,9 +16,10 @@ class ReportData extends Data
         public string $id,
         #[Rule(['required', 'string', 'min:5', 'max:255'])]
         public string $reason,
-        public Lazy|IdeaData|CommentData $target,
+        public Lazy|IdeaData|CommentData|array $target,
         public Lazy|StaffData $reportedBy,
-        public Lazy|StaffData $reportedTo,
+        public Lazy|StaffData|null $reportedTo,
+        public ?string $actionAt,
         public string $reportedAt,
     ) {
     }
@@ -29,7 +30,7 @@ class ReportData extends Data
             $report->uuid,
             $report->reason,
             Lazy::create(function () use ($report) {
-                $dataInfo = match ($report->reportable->getMorphClass()) {
+                $dataInfo = match ($report->reportable()->getRelated()->getMorphClass()) {
                     'idea' => [
                         'class' => IdeaData::class,
                         'only' => '{type, title, content}',
@@ -40,10 +41,17 @@ class ReportData extends Data
                     ],
                 };
 
-                return $dataInfo['class']::from($report->reportable)->only($dataInfo['only']);
+                if($report->reportable){
+                    return $dataInfo['class']::from($report->reportable)->only($dataInfo['only']);
+                }
+
+                return [
+                    'type' => $report->reportable()->getRelated()->getMorphClass(),
+                ];
             }),
             Lazy::create(fn () => StaffData::from($report->staff)->only('id', 'name')),
-            Lazy::create(fn () => StaffData::from($report->reportable->staff)->only('id', 'name')),
+            Lazy::create(fn () => $report->reportable ? StaffData::from($report->reportable->staff)->only('id', 'name') : null),
+            $report->action_at ? $report->action_at->format('Y-m-d H:i:s') : null,
             $report->created_at->format('Y-m-d H:i:s'),
         );
     }

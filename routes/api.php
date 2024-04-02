@@ -100,6 +100,7 @@ Route::middleware(['auth:sanctum', 'verified', 'auth:staff'])->group(function ()
     Route::prefix('reports')->controller(ReportController::class)->group(function () {
         Route::get('/', 'index');
         Route::delete('/{report}', 'destroy')->can('delete', 'report');
+        Route::get('/{report}/action', 'action')->can('action', Report::class);
     });
     Route::prefix('password-rules')->controller(PasswordRuleController::class)->group(function () {
         Route::get('/', 'index')->can('list password rule');

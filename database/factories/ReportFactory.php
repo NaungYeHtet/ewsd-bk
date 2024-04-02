@@ -23,12 +23,17 @@ class ReportFactory extends Factory
         return [
             'staff_id' => \App\Models\Staff::all()->random(),
             'reason' => fake()->sentence(),
+            'action_at' => fake()->optional()->dateTimeBetween('-1 year', 'now'),
         ];
     }
 
     public function configure(): static
     {
         return $this->afterCreating(function (Report $report) {
+
+            $report->update([
+                'action_at' => fake()->optional()->dateTimeBetween($report->created_at, $report->created_at->addYear()),
+            ]);
 
             $admins = Staff::whereRelation('roles', 'name', '=', 'Admin')->get();
             foreach ($admins as $admin) {

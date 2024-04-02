@@ -38,4 +38,9 @@ class ReportPolicy
     {
         return $staff->can('delete report');
     }
+
+    public function action(Staff $staff): bool
+    {
+        return $staff->can('action report');
+    }
 }

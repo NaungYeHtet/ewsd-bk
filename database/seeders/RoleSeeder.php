@@ -39,6 +39,7 @@ class RoleSeeder extends Seeder
                     'view staff',
                     'list report',
                     'delete report',
+                    'action report',
                     'list department',
                     'create department',
                     'update department',
