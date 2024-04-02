@@ -51,7 +51,7 @@ class ReportController extends Controller
     public function action(Report $report)
     {
         if ((bool) $report->action_at) {
-            return $this->responseError('An action has already made to this report.');
+            return $this->responseError('An action has already made to this report.', code: 400);
         }
 
         DB::transaction(function () use ($report) {
