@@ -43,12 +43,18 @@ class IdeaData extends Data
             $file = new FileType(url('/').Storage::url($idea->file), File::extension($idea->file));
         }
 
+        if ($idea->is_anonymous && $idea->staff->id != auth()->id()) {
+            $staffData = null;
+        } else {
+            $staffData = StaffData::from($idea->staff)->only('id', 'name', 'avatar');
+        }
+
         return new self(
             $idea->slug,
             $idea->title,
             $idea->content,
             $file,
-            Lazy::create(fn () => $idea->is_anonymous ? null : StaffData::from($idea->staff)->only('name', 'avatar')),
+            Lazy::create(fn () => $staffData),
             $idea->reactions_count,
             Lazy::create(fn () => $idea->views()->count()),
             $idea->comments_count,
