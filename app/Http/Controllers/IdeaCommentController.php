@@ -13,6 +13,7 @@ use App\Models\Staff;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class IdeaCommentController extends Controller
@@ -24,10 +25,10 @@ class IdeaCommentController extends Controller
                 $query->orWhere('content', 'like', '%'.$request->search.'%');
             })
             ->orderBy('created_at', 'desc')
-            ->paginate($request->perpage ?? 5);
+            ->get();
 
         return $this->responseSuccess([
-            'results' => CommentData::collect($ideas, PaginatedDataCollection::class)->include('staff'),
+            'results' => CommentData::collect($ideas, DataCollection::class)->include('staff'),
         ]);
     }
 

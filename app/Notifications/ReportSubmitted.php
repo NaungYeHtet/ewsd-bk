@@ -57,7 +57,7 @@ class ReportSubmitted extends Notification
         return [
             'title' => 'Report Submitted',
             'body' => "A report has been submitted by {$report->staff->name}.",
-            'link' => '/reports/'.$report->uuid,
+            'link' => '/reports',
             'icon' => 'circle-alert',
         ];
     }

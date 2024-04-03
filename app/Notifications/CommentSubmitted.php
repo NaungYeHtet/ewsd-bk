@@ -59,7 +59,7 @@ class CommentSubmitted extends Notification
             ->subject('New Comment Submitted')
             ->greeting("Hello {$notifiable->name} | {$notifiable->department->name}")
             ->line("{$this->comment->staff->name} commented your idea.")
-            ->action('View Comment', config('app.frontend_url').'/ideas/'.$this->comment->commentable->slug.'/comments#'.$this->comment->uuid)
+            ->action('View Comment', config('app.frontend_url').'/ideas/'.$this->comment->commentable->slug)
             ->line($this->comment->content);
     }
 
