@@ -19,6 +19,7 @@ class CommentData extends Data
         #[Rule(['required', 'string', 'min:5', 'max:500'])]
         public string $content,
         #[MapInputName('is_anonymous')]
+        public bool|Optional $isOwner,
         public bool|Optional $isAnonymous,
         public Lazy|StaffData|Optional $staff,
         public string|Optional $submittedAt,
@@ -34,6 +35,7 @@ class CommentData extends Data
         return new self(
             $comment->uuid,
             $comment->content,
+            auth()->id() === $comment->staff->id,
             $comment->is_anonymous,
             Lazy::create(fn () => $comment->is_anonymous ? null : StaffData::from($comment->staff)->only('id', 'name', 'avatar')),
             $comment->created_at->shortAbsoluteDiffForHumans(),

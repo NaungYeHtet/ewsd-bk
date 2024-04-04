@@ -23,6 +23,7 @@ class IdeaData extends Data
         public string $content,
         #[Mimes('jpg', 'png', 'jpeg', 'pdf', 'doc', 'docx')]
         public ?FileType $file,
+        public bool $isOwner,
         public Lazy|StaffData $staff,
         public array $reactionsCount,
         public Lazy|int $viewsCount,
@@ -48,6 +49,7 @@ class IdeaData extends Data
             $idea->title,
             $idea->content,
             $file,
+            auth()->id() === $idea->staff->id,
             Lazy::create(fn () => $idea->is_anonymous ? null : StaffData::from($idea->staff)->only('id', 'name', 'avatar')),
             $idea->reactions_count,
             Lazy::create(fn () => $idea->views()->count()),
