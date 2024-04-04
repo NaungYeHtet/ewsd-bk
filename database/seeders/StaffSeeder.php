@@ -11,7 +11,7 @@ class StaffSeeder extends Seeder
      */
     public function run(): void
     {
-        $departments = \App\Models\Department::inRandomOrder()->limit(2)->get();
+        $departments = \App\Models\Department::inRandomOrder()->limit(3)->get();
 
         $admins = [
             [
