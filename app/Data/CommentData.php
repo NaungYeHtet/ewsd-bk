@@ -31,17 +31,11 @@ class CommentData extends Data
 
     public static function fromModel(Comment $comment): self
     {
-        if ($comment->is_anonymous && $comment->staff->id != auth()->id()) {
-            $staffData = null;
-        } else {
-            $staffData = StaffData::from($comment->staff)->only('id', 'name', 'avatar');
-        }
-
         return new self(
             $comment->uuid,
             $comment->content,
             $comment->is_anonymous,
-            Lazy::create(fn () => $staffData),
+            Lazy::create(fn () => $comment->is_anonymous ? null : StaffData::from($comment->staff)->only('id', 'name', 'avatar')),
             $comment->created_at->shortAbsoluteDiffForHumans(),
             $comment->getMorphClass(),
             $comment->reactions_count,

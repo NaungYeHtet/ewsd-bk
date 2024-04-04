@@ -98,29 +98,29 @@ class AcademicController extends Controller
         ], 'Academic updated successfully');
     }
 
-    /**
-     * Handle the incoming request.
-     */
-    public function data(ExportRequest $request, Academic $academic)
-    {
-        return match ($request->type) {
-            'xlsx' => (new DataXlsxExport($academic))->download('all_idea.xlsx'),
-            'csv' => (new DataCsvExport($academic))->download('all_idea.csv'),
-        };
-    }
+    // /**
+    //  * Handle the incoming request.
+    //  */
+    // public function data(ExportRequest $request, Academic $academic)
+    // {
+    //     return match ($request->type) {
+    //         'xlsx' => (new DataXlsxExport($academic))->download('all_idea.xlsx'),
+    //         'csv' => (new DataCsvExport($academic))->download('all_idea.csv'),
+    //     };
+    // }
 
-    public function files(Academic $academic)
-    {
-        $fileNames = $academic->ideas()
-            ->whereNotNull('file')
-            ->pluck('file')->toArray();
+    // public function files(Academic $academic)
+    // {
+    //     $fileNames = $academic->ideas()
+    //         ->whereNotNull('file')
+    //         ->pluck('file')->toArray();
 
-        if (! count($fileNames)) {
-            return $this->responseError("No files within academic {$academic->name}", code: 200);
-        }
+    //     if (! count($fileNames)) {
+    //         return $this->responseError("No files within academic {$academic->name}", code: 200);
+    //     }
 
-        return response()->download($this->getZippableFileName($fileNames, 'idea-uploads'))->deleteFileAfterSend(true);
-    }
+    //     return response()->download($this->getZippableFileName($fileNames, 'idea-uploads'))->deleteFileAfterSend(true);
+    // }
 
     /**
      * Remove the specified resource from storage.

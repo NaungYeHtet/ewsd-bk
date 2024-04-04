@@ -24,6 +24,9 @@ class AcademicData extends Data
         #[MapInputName('final_closure_date'), WithCast(DateTimeInterfaceCast::class)]
         public Carbon $finalClosureDate,
         public bool|Optional $isActive,
+        public string $dataDownloadCsvUrl,
+        public string $dataDownloadXlsxUrl,
+        public string $fileExportUrl,
     ) {
     }
 
@@ -45,7 +48,10 @@ class AcademicData extends Data
             $academic->start_date,
             $academic->closure_date,
             $academic->final_closure_date,
-            now()->between($academic->start_date, $academic->final_closure_date)
+            now()->between($academic->start_date, $academic->final_closure_date),
+            url('/'). '/api/academics/' . $academic->uuid . '/export-data?type=csv',
+            url('/'). '/api/academics/' . $academic->uuid . '/export-data?type=xlsx',
+            url('/'). '/api/academics/' . $academic->uuid . '/export-files',
         );
     }
 }

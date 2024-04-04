@@ -39,6 +39,12 @@ require __DIR__.'/auth.php';
 //     return $request->user();
 // });
 
+
+Route::prefix('academics')->controller(ExportController::class)->group(function () {
+    Route::get('/{academic}/export-data', 'data');
+    Route::get('/{academic}/export-files', 'files');
+});
+
 Route::middleware(['auth:sanctum', 'verified', 'auth:staff'])->group(function () {
     Route::get('statistics', StatisticsController::class)->can('list statistics');
     Route::get('roles', RoleController::class);
@@ -92,10 +98,6 @@ Route::middleware(['auth:sanctum', 'verified', 'auth:staff'])->group(function ()
         Route::post('/', 'store')->can('create', Academic::class);
         Route::put('/{academic}', 'update')->can('update', 'academic');
         Route::delete('/{academic}', 'destroy')->can('delete', 'academic');
-    });
-    Route::prefix('academics')->controller(ExportController::class)->group(function () {
-        Route::get('/{academic}/export-data', 'data')->can('export academic data');
-        Route::get('/{academic}/export-files', 'files')->can('export academic files');
     });
     Route::prefix('reports')->controller(ReportController::class)->group(function () {
         Route::get('/', 'index');
