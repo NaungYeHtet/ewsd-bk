@@ -40,7 +40,7 @@ class StaffData extends Data
             $staff->avatar ? url('/').Storage::url($staff->avatar) : url('/').Storage::url('public/images/default-avatar.png'),
             $staff->disabled_at,
             // $staff->last_logged_in_at ? $staff->last_logged_in_at->format('Y-m-d H:i:s') : null,
-            '2024-02-25 13:42:33',
+            '2024-02-26 13:42:33',
             Lazy::create(fn () => RoleData::from($staff->roles()->first())->name),
             Lazy::create(fn () => DepartmentData::fromModel($staff->department))->include('staffsCount'),
             $staff->unreadNotifications()->count(),
