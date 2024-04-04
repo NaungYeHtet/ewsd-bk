@@ -24,12 +24,12 @@ class SendIdeaSubmittedNotification
     {
         $department = $event->idea->staff->department;
 
-        $coordinator = $department->staffs()->whereHas('roles', function (Builder $query) {
+        $coordinators = $department->staffs()->whereHas('roles', function (Builder $query) {
             $query->where('roles.name', 'QA Coordinator');
-        })->first();
+        })->get();
 
-        if($coordinator){
-            Notification::send($coordinator, new \App\Notifications\IdeaSubmitted($event->idea));
+        if(count($coordinators)){
+            Notification::send($coordinators, new \App\Notifications\IdeaSubmitted($event->idea));
         }
         // $coordinator = Staff::where('email', 'naungyehtet717@gmail.com')->first();
     }
