@@ -18,15 +18,14 @@ class CommentData extends Data
         public string|Optional $id,
         #[Rule(['required', 'string', 'min:5', 'max:500'])]
         public string $content,
-        #[MapInputName('is_anonymous')]
         public bool|Optional $isOwner,
+        #[MapInputName('is_anonymous')]
         public bool|Optional $isAnonymous,
         public Lazy|StaffData|Optional $staff,
         public string|Optional $submittedAt,
         public Lazy|string|Optional $type,
         public array|Optional $reactionsCount,
         public null|ReactionType|Optional $currentReaction,
-
     ) {
     }
 
