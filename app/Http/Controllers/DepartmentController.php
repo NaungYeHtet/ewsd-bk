@@ -7,6 +7,7 @@ use App\Http\Requests\IndexRequest;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\LaravelData\DataCollection;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class DepartmentController extends Controller
@@ -20,10 +21,10 @@ class DepartmentController extends Controller
             $query->where('name', 'like', '%'.$request->search.'%');
         })
             ->orderBy('created_at', 'desc')
-            ->paginate($request->perpage ?? 5);
+            ->get();
 
         return $this->responseSuccess([
-            'results' => DepartmentData::collect($categories, PaginatedDataCollection::class)->include('staffsCount'),
+            'results' => DepartmentData::collect($categories, DataCollection::class)->include('staffsCount'),
         ]);
     }
 
