@@ -39,6 +39,9 @@ class IdeaController extends Controller
         ]);
 
         $ideas = Idea::select('ideas.*')
+            ->whereHas('staff', function (Builder $q) {
+                $q->whereNull('ideas_hidden_at');
+            })
             ->where(function (Builder $query) use ($request) {
                 if ($request->has('search')) {
                     $keywords = explode(' ', $request->search);
@@ -139,6 +142,10 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
+        if ((bool) $idea->staff->ideas_hidden_at) {
+            abort(404);
+        }
+
         $idea->views()->firstOrCreate([
             'staff_id' => auth()->id(),
         ]);

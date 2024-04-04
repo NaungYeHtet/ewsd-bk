@@ -92,6 +92,8 @@ Route::middleware(['auth:sanctum', 'verified', 'auth:staff'])->group(function ()
         Route::put('/{staff}', 'update')->can('update', 'staff');
         Route::get('/{staff}/disable', 'disable')->can('update', 'staff');
         Route::get('/{staff}/enable', 'enable')->can('update', 'staff');
+        Route::get('/{staff}/toggle-visibility/ideas', 'toggleIdeasVisibility')->can('update', 'staff');
+        Route::get('/{staff}/toggle-visibility/comments', 'toggleCommentsVisibility')->can('update', 'staff');
     });
     Route::prefix('academics')->controller(AcademicController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Academic::class);

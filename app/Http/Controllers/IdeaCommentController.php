@@ -21,6 +21,9 @@ class IdeaCommentController extends Controller
     public function index(Idea $idea, IndexRequest $request)
     {
         $ideas = $idea->comments()
+            ->whereHas('staff', function(Builder $q) {
+                $q->whereNull('comments_hidden_at');
+            })
             ->when($request->has('search'), function (Builder $query) use ($request) {
                 $query->orWhere('content', 'like', '%'.$request->search.'%');
             })

@@ -27,6 +27,8 @@ class StaffData extends Data
         public Lazy|string $role,
         public Lazy|DepartmentData $department,
         public int $unreadNotiCount,
+        public bool|Optional $isIdeasHidden,
+        public bool|Optional $isCommentsHidden,
     ) {
     }
 
@@ -44,6 +46,8 @@ class StaffData extends Data
             Lazy::create(fn () => RoleData::from($staff->roles()->first())->name),
             Lazy::create(fn () => DepartmentData::fromModel($staff->department))->include('staffsCount'),
             $staff->unreadNotifications()->count(),
+            (bool) $staff->ideas_hidden_at,
+            (bool) $staff->comments_hidden_at,
         );
     }
 }

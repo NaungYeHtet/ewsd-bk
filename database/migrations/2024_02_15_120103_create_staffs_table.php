@@ -23,6 +23,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->dateTime('last_logged_in_at')->nullable();
             $table->dateTime('disabled_at')->nullable();
+            $table->datetime('ideas_hidden_at')->nullable();
+            $table->dateTime('comments_hidden_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

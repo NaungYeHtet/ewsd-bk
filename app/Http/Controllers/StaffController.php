@@ -157,6 +157,36 @@ class StaffController extends Controller
         ], 'Staff enabled successfully', 200);
     }
 
+    public function toggleIdeasVisibility(Staff $staff)
+    {
+        $staff->update([
+            'ideas_hidden_at' => (bool) $staff->ideas_hidden_at ? null : now(),
+        ]);
+
+        $staff = $staff->refresh();
+
+        $verb = (bool) $staff->ideas_hidden_at ? 'hidden' : 'shown';
+
+        return $this->responseSuccess([
+            'staff' => StaffData::from($staff),
+        ], "Staff ideas have been {$verb} successfully", 200);
+    }
+
+    public function toggleCommentsVisibility(Staff $staff) 
+    {
+        $staff->update([
+            'comments_hidden_at' => (bool) $staff->comments_hidden_at ? null : now(),
+        ]);
+
+        $staff = $staff->refresh();
+
+        $verb = (bool) $staff->comments_hidden_at ? 'shown' : 'hidden';
+
+        return $this->responseSuccess([
+            'staff' => StaffData::from($staff),
+        ], "Staff comments have been {$verb} successfully", 200);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

@@ -37,6 +37,8 @@ class Staff extends Authenticatable implements MustVerifyEmail
         'last_logged_in_at',
         'department_id',
         'avatar',
+        'ideas_hidden_at',
+        'comments_hidden_at',
     ];
 
     /**
@@ -59,6 +61,8 @@ class Staff extends Authenticatable implements MustVerifyEmail
         'disabled_at' => 'datetime',
         'last_logged_in_at' => 'datetime',
         'password' => 'hashed',
+        'ideas_hidden_at' => 'datetime',
+        'comments_hidden_at' => 'datetime',
     ];
 
     /**
