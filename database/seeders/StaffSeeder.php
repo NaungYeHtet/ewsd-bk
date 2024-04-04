@@ -32,9 +32,9 @@ class StaffSeeder extends Seeder
 
         $qaManagers = [
             [
-                'username' => 'aungmyatkaung_qam',
-                'name' => 'Aung Myat Kaung (QAM)',
-                'email' => 'amkaung1@kmd.edu.mm',
+                'username' => 'khantkyawswar',
+                'name' => 'Khant Kyaw Swar (QAM)',
+                'email' => 'kkswar1@kmd.edu.mm',
                 'email_verified_at' => now(),
             ],
         ];
@@ -55,9 +55,9 @@ class StaffSeeder extends Seeder
                 'email_verified_at' => now(),
             ],
             [
-                'username' => 'khantkyawswar',
-                'name' => 'Khant Kyaw Swar (QAC)',
-                'email' => 'kkswar1@kmd.edu.mm',
+                'username' => 'aungmyatkaung_qam',
+                'name' => 'Aung Myat Kaung (QAM)',
+                'email' => 'amkaung1@kmd.edu.mm',
                 'email_verified_at' => now(),
             ],
         ];
