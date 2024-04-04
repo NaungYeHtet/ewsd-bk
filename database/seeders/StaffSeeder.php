@@ -35,6 +35,7 @@ class StaffSeeder extends Seeder
                 'username' => 'aungmyatkaung_qam',
                 'name' => 'Aung Myat Kaung (QAM)',
                 'email' => 'amkaung1@kmd.edu.mm',
+                'email_verified_at' => now(),
             ],
         ];
 
@@ -51,11 +52,13 @@ class StaffSeeder extends Seeder
                 'username' => 'heinhtetaung',
                 'name' => 'Naung Ye Htet (QAC)',
                 'email' => 'rickylin103@gmail.com',
+                'email_verified_at' => now(),
             ],
             [
                 'username' => 'khantkyawswar',
                 'name' => 'Khant Kyaw Swar (QAC)',
                 'email' => 'kkswar1@kmd.edu.mm',
+                'email_verified_at' => now(),
             ],
         ];
 
@@ -72,16 +75,19 @@ class StaffSeeder extends Seeder
                 'username' => 'naythuaung',
                 'name' => 'Nay Thu Aung (SP/AS)',
                 'email' => 'ntaung1@kmd.edu.mm',
+                'email_verified_at' => now(),
             ],
             [
                 'username' => 'thawzinhtoo',
                 'name' => 'Thaw Zin Htoo (SP/AS)',
                 'email' => 'thawzin99777@gmail.com',
+                'email_verified_at' => now(),
             ],
             [
                 'username' => 'yumonkyaw',
                 'name' => 'Yu Mon Kyaw (SP/AS)',
                 'email' => 'yumonkyaw921@gmail.com',
+                'email_verified_at' => now(),
             ],
         ];
 
