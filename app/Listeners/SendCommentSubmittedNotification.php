@@ -21,10 +21,9 @@ class SendCommentSubmittedNotification
      */
     public function handle(CommentSubmitted $event): void
     {
-        // $staff = $event->comment->commentable->staff;
+        $staff = $event->comment->commentable->staff;
 
-        $staff = Staff::where('email', 'naungyehtet717@gmail.com')->first();
-
+        // $staff = Staff::where('email', 'naungyehtet717@gmail.com')->first();
         Notification::send($staff, new \App\Notifications\CommentSubmitted($event->comment));
     }
 }
