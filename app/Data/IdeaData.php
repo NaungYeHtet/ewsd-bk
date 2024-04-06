@@ -41,7 +41,8 @@ class IdeaData extends Data
         // dd($idea->staff);
         $file = null;
         if ((bool) $idea->file) {
-            $file = new FileType(url('/').Storage::url($idea->file), File::extension($idea->file));
+            $url = config('filesystems.default') == 's3' ? Storage::temporaryUrl($idea->file, now()->addMinutes(3)) : url('/').Storage::url($idea->file);
+            $file = new FileType($url, File::extension($idea->file));
         }
 
         return new self(

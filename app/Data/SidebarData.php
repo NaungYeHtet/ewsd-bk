@@ -41,6 +41,18 @@ class SidebarData extends Data
             $reportPermissions[] = '/action';
         }
 
+        $staffAccountPermissions = [];
+
+        if ($staff->can('enable staff')) {
+            $staffAccountPermissions[] = '/enable';
+        }
+        if ($staff->can('disable staff')) {
+            $staffAccountPermissions[] = '/disable';
+        }
+        if ($staff->can('toggle visibility')) {
+            $staffAccountPermissions[] = '/toggle-visibility';
+        }
+
         return self::collect([
             [
                 'title' => 'Dashboard',
@@ -76,6 +88,7 @@ class SidebarData extends Data
                 'icon' => 'users',
                 'url' => '/staffs',
                 'permissions' => self::getCrudPermissions('staff', $staff),
+                'accountPermissions' => $staffAccountPermissions,
             ], [
                 'title' => 'Reports',
                 'icon' => 'circle-alert',

@@ -11,12 +11,32 @@ use App\Models\Academic;
 use App\Models\Comment;
 use App\Models\Department;
 use App\Models\Idea;
+use App\Models\Staff;
 use Exception;
+use Spatie\Analytics\Facades\Analytics;
+use Spatie\Analytics\Period;
 
 class StatisticsController extends Controller
 {
     public function __invoke()
     {
+        // $startDate = now()->subYear();
+        // $endDate = now();
+
+        // $period = Period::create($startDate, $endDate);
+
+        // // $fetchVisitorsAndPageViews = Analytics::fetchVisitorsAndPageViews($period);
+        // // $fetchTotalVisitorsAndPageViews = Analytics::fetchTotalVisitorsAndPageViews($period);
+        // $fetchMostVisitedPages = Analytics::fetchMostVisitedPages($period);
+        // $mostActiveUsers = Staff::orderBy('last_logged_in_at', 'desc')->limit(10)->get();
+        // $fetchTopBrowsers = Analytics::fetchTopBrowsers($period);
+
+        // dd(
+        //     $fetchMostVisitedPages,
+        //     $fetchUserTypes,
+        //     $fetchTopBrowsers
+        // );
+
         $academic = Academic::isActive()->first() ?? Academic::isPrevious()->first();
 
         if (! $academic) {
@@ -51,7 +71,7 @@ class StatisticsController extends Controller
             $numberOfIdeaPerDepartment['labels'][] = $department->name;
             $numberOfIdeaPerDepartment['datasets'][0]->data[] = $totalIdeas;
             $numberOfIdeaPerDepartment['datasets'][0]->backgroundColor[] = $department->color_code;
-            
+
             $totalIdeasAcrossAllDepartments = Idea::count();
             $percentage = ($totalIdeasAcrossAllDepartments > 0) ? ($totalIdeas / $totalIdeasAcrossAllDepartments) * 100 : 0;
             $percentageOfIdeaPerDepartment['labels'][] = $department->name;

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,6 +26,20 @@ class Academic extends Model
     public function ideas(): HasMany
     {
         return $this->hasMany(Idea::class);
+    }
+
+    protected function dataFileName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => "data-{$this->start_date->format('Y-m-d')}-{$this->final_closure_date->format('Y-m-d')}"
+        );
+    }
+
+    protected function filesFileName(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => "files-{$this->start_date->format('Y-m-d')}-{$this->final_closure_date->format('Y-m-d')}"
+        );
     }
 
     public function scopeIsActive(Builder $query): void

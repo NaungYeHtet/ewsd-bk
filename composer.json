@@ -11,6 +11,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "league/flysystem-ziparchive": "^3.24",
         "maatwebsite/excel": "^3.1",
         "singlestoredb/singlestoredb-laravel": "^1.5",
         "spatie/laravel-analytics": "^5.3",

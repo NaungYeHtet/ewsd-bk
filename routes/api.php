@@ -39,12 +39,6 @@ require __DIR__.'/auth.php';
 //     return $request->user();
 // });
 
-
-Route::prefix('academics')->controller(ExportController::class)->group(function () {
-    Route::get('/{academic}/export-data', 'data');
-    Route::get('/{academic}/export-files', 'files');
-});
-
 Route::middleware(['auth:sanctum', 'verified', 'auth:staff'])->group(function () {
     Route::get('statistics', StatisticsController::class)->can('list statistics');
     Route::get('roles', RoleController::class);
@@ -90,10 +84,10 @@ Route::middleware(['auth:sanctum', 'verified', 'auth:staff'])->group(function ()
         Route::get('/', 'index')->can('viewAny', Staff::class);
         Route::post('/', 'store')->can('create', Staff::class);
         Route::put('/{staff}', 'update')->can('update', 'staff');
-        Route::get('/{staff}/disable', 'disable')->can('update', 'staff');
-        Route::get('/{staff}/enable', 'enable')->can('update', 'staff');
-        Route::get('/{staff}/toggle-visibility/ideas', 'toggleIdeasVisibility')->can('update', 'staff');
-        Route::get('/{staff}/toggle-visibility/comments', 'toggleCommentsVisibility')->can('update', 'staff');
+        Route::get('/{staff}/disable', 'disable')->can('disable', 'staff');
+        Route::get('/{staff}/enable', 'enable')->can('enable', 'staff');
+        Route::get('/{staff}/toggle-visibility/ideas', 'toggleIdeasVisibility')->can('toggleVisibility', 'staff');
+        Route::get('/{staff}/toggle-visibility/comments', 'toggleCommentsVisibility')->can('toggleVisibility', 'staff');
     });
     Route::prefix('academics')->controller(AcademicController::class)->group(function () {
         Route::get('/', 'index')->can('viewAny', Academic::class);

@@ -39,6 +39,30 @@ class StaffPolicy
     }
 
     /**
+     * Determine whether the user can update the model.
+     */
+    public function enable(Staff $user, Staff $staff): bool
+    {
+        return $user->can('enable staff');
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function disable(Staff $user, Staff $staff): bool
+    {
+        return $user->can('disable staff');
+    }
+
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function toogleVisibility(Staff $user, Staff $staff): bool
+    {
+        return $user->can('toggle visibility');
+    }
+
+    /**
      * Determine whether the user can delete the model.
      */
     public function delete(Staff $user, Staff $staff): bool

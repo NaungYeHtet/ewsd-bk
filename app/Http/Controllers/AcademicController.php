@@ -8,15 +8,12 @@ use App\Exports\DataXlsxExport;
 use App\Http\Requests\ExportRequest;
 use App\Http\Requests\IndexRequest;
 use App\Models\Academic;
-use App\Traits\Zippable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\ValidationException;
 use Spatie\LaravelData\PaginatedDataCollection;
 
 class AcademicController extends Controller
 {
-    use Zippable;
-
     /**
      * Display a listing of the resource.
      */
@@ -97,30 +94,6 @@ class AcademicController extends Controller
             'academic' => AcademicData::from($academic),
         ], 'Academic updated successfully');
     }
-
-    // /**
-    //  * Handle the incoming request.
-    //  */
-    // public function data(ExportRequest $request, Academic $academic)
-    // {
-    //     return match ($request->type) {
-    //         'xlsx' => (new DataXlsxExport($academic))->download('all_idea.xlsx'),
-    //         'csv' => (new DataCsvExport($academic))->download('all_idea.csv'),
-    //     };
-    // }
-
-    // public function files(Academic $academic)
-    // {
-    //     $fileNames = $academic->ideas()
-    //         ->whereNotNull('file')
-    //         ->pluck('file')->toArray();
-
-    //     if (! count($fileNames)) {
-    //         return $this->responseError("No files within academic {$academic->name}", code: 200);
-    //     }
-
-    //     return response()->download($this->getZippableFileName($fileNames, 'idea-uploads'))->deleteFileAfterSend(true);
-    // }
 
     /**
      * Remove the specified resource from storage.

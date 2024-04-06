@@ -14,7 +14,6 @@ use App\Models\Academic;
 use App\Models\Category;
 use App\Models\Idea;
 use App\Models\Staff;
-use App\Traits\Zippable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
@@ -23,8 +22,6 @@ use Spatie\LaravelData\PaginatedDataCollection;
 
 class IdeaController extends Controller
 {
-    use Zippable;
-
     /**
      * Display a listing of the resource.
      */
@@ -104,16 +101,17 @@ class IdeaController extends Controller
             $staff = Staff::find(auth()->id());
 
             $fileName = '';
+            $academic = Academic::isActive()->first();
 
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
                 $ext = $file->extension();
-                $fileName = $file->storeAs('/images/files', uniqid().'.'.$ext, ['disk' => 'public']);
+                $fileName = $file->storeAs("/academic/files/{$academic->start_date}-{$academic->final_closure_date}", uniqid().'.'.$ext);
             }
 
             $idea = $staff->ideas()->create([
                 'department_id' => $staff->department_id,
-                'academic_uuid' => Academic::isActive()->first()->uuid,
+                'academic_uuid' => $academic->uuid,
                 'title' => $request->title,
                 'content' => $request->content,
                 'file' => $fileName,
@@ -164,13 +162,14 @@ class IdeaController extends Controller
             $fileName = $idea->file;
 
             if ($request->hasFile('file')) {
-                if ($idea->file) {
-                    Storage::disk('public')->delete($idea->file);
+                if ($idea->file && Storage::exists($idea->file)) {
+                    Storage::delete($idea->file);
                 }
+                $academic = Academic::isActive()->first();
 
                 $file = $request->file('file');
                 $ext = $file->extension();
-                $fileName = $file->storeAs('/images/files', uniqid().'.'.$ext, ['disk' => 'public']);
+                $fileName = $file->storeAs("/academic/files/{$academic->start_date}-{$academic->final_closure_date}", uniqid().'.'.$ext);
             }
 
             $idea->update([
