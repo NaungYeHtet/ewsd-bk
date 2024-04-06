@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\StaffData;
 use App\Data\Statistics\Chart;
 use App\Data\Statistics\ChartData;
 use App\Data\Statistics\Dataset;
@@ -15,27 +16,40 @@ use App\Models\Staff;
 use Exception;
 use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
+use Spatie\LaravelData\DataCollection;
 
 class StatisticsController extends Controller
 {
     public function __invoke()
     {
-        // $startDate = now()->subYear();
-        // $endDate = now();
+        $startDate = now()->subYear();
+        $endDate = now();
 
-        // $period = Period::create($startDate, $endDate);
+        $period = Period::create($startDate, $endDate);
 
-        // // $fetchVisitorsAndPageViews = Analytics::fetchVisitorsAndPageViews($period);
-        // // $fetchTotalVisitorsAndPageViews = Analytics::fetchTotalVisitorsAndPageViews($period);
-        // $fetchMostVisitedPages = Analytics::fetchMostVisitedPages($period);
-        // $mostActiveUsers = Staff::orderBy('last_logged_in_at', 'desc')->limit(10)->get();
-        // $fetchTopBrowsers = Analytics::fetchTopBrowsers($period);
+        // $fetchVisitorsAndPageViews = Analytics::fetchVisitorsAndPageViews($period);
+        // $fetchTotalVisitorsAndPageViews = Analytics::fetchTotalVisitorsAndPageViews($period);
+        $mostActiveUsers = Staff::orderBy('last_logged_in_at', 'desc')->limit(10)->get();
 
-        // dd(
-        //     $fetchMostVisitedPages,
-        //     $fetchUserTypes,
-        //     $fetchTopBrowsers
-        // );
+        $fetchedMostVisited = Analytics::fetchMostVisitedPages($period);
+        $mostVisitedPages = $this->createChartArray('Most visited pages');
+        foreach ($fetchedMostVisited as $page) {
+            $mostVisitedPages['labels'][] = $page['pageTitle'];
+            $mostVisitedPages['datasets'][0]->data[] = $page['screenPageViews'];
+            $mostVisitedPages['datasets'][0]->backgroundColor[] = fake()->hexColor;
+        }
+
+        $fetchedTopBrowsers = Analytics::fetchTopBrowsers($period);
+        $topBrowsers = $this->createChartArray('Top browsers');
+
+        foreach ($fetchedTopBrowsers as $data) {
+            if ($data['browser'] == '(not set)') {
+                continue;
+            }
+            $topBrowsers['labels'][] = $data['browser'];
+            $topBrowsers['datasets'][0]->data[] = $data['screenPageViews'];
+            $topBrowsers['datasets'][0]->backgroundColor[] = fake()->hexColor;
+        }
 
         $academic = Academic::isActive()->first() ?? Academic::isPrevious()->first();
 
@@ -44,26 +58,8 @@ class StatisticsController extends Controller
         }
 
         $departments = Department::withCount('ideas', 'staffs')->get();
-        $numberOfIdeaPerDepartment = [
-            'labels' => [],
-            'datasets' => [
-                Dataset::from([
-                    'label' => 'Number of ideas',
-                    'data' => [],
-                    'backgroundColor' => [],
-                ]),
-            ],
-        ];
-        $percentageOfIdeaPerDepartment = [
-            'labels' => [],
-            'datasets' => [
-                Dataset::from([
-                    'label' => 'Number of ideas',
-                    'data' => [],
-                    'backgroundColor' => [],
-                ]),
-            ],
-        ];
+        $numberOfIdeaPerDepartment = $this->createChartArray('Number of ideas');
+        $percentageOfIdeaPerDepartment = $this->createChartArray('Percentage of ideas');
 
         foreach ($departments as $department) {
             $totalIdeas = Idea::where('department_id', $department->id)->count();
@@ -91,6 +87,16 @@ class StatisticsController extends Controller
                     'type' => ChartType::DOUGHNUT,
                     'data' => ChartData::from($percentageOfIdeaPerDepartment),
                 ]),
+                Chart::from([
+                    'label' => 'Most visited pages',
+                    'type' => ChartType::BAR,
+                    'data' => ChartData::from($mostVisitedPages),
+                ]),
+                Chart::from([
+                    'label' => 'Top browsers',
+                    'type' => ChartType::BAR,
+                    'data' => ChartData::from($topBrowsers),
+                ]),
             ],
             'stats' => [
                 'ideas_count_without_comment' => Stat::from([
@@ -108,6 +114,23 @@ class StatisticsController extends Controller
                     'value' => number_format(Comment::where('is_anonymous', 1)->count()),
                 ]),
             ],
+            'list' => [
+                'most_active_users' => StaffData::collect($mostActiveUsers, DataCollection::class)->include('role')->only('id', 'name', 'avatar', 'email', 'role'),
+            ],
         ]);
+    }
+
+    private function createChartArray(string $datasetLabel): array
+    {
+        return [
+            'labels' => [],
+            'datasets' => [
+                Dataset::from([
+                    'label' => $datasetLabel,
+                    'data' => [],
+                    'backgroundColor' => [],
+                ]),
+            ],
+        ];
     }
 }
