@@ -34,12 +34,22 @@ class StaffData extends Data
 
     public static function fromModel(Staff $staff): self
     {
+        $avatar = '';
+
+        $fileName = $staff->avatar ?? 'images/default-avatar.png';
+
+        if (config('filesystems.default') == 's3') {
+            $avatar = Storage::temporaryUrl($fileName, now()->addMinutes(30));
+        } else {
+            $avatar = url('/').Storage::url('public/'.$fileName);
+        }
+
         return new self(
             $staff->uuid,
             $staff->name,
             $staff->email,
             $staff->username,
-            $staff->avatar ? url('/').Storage::url($staff->avatar) : url('/').Storage::url('public/images/default-avatar.png'),
+            $avatar,
             $staff->disabled_at,
             // $staff->last_logged_in_at ? $staff->last_logged_in_at->format('Y-m-d H:i:s') : null,
             '2024-02-26 13:42:33',

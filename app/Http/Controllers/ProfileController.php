@@ -24,12 +24,12 @@ class ProfileController extends Controller
 
             if ($request->hasFile('avatar')) {
                 if ($staff->avatar) {
-                    Storage::disk('public')->delete($staff->avatar);
+                    Storage::delete($staff->avatar);
                 }
 
                 $file = $request->file('avatar');
                 $ext = $file->extension();
-                $staff->avatar = $file->storeAs('/images/avatars', uniqid().'.'.$ext, ['disk' => 'public']);
+                $staff->avatar = $file->storeAs('/images/avatars', uniqid().'.'.$ext);
             }
 
             $staff->name = $request->name;

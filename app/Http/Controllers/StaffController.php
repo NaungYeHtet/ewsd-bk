@@ -102,11 +102,11 @@ class StaffController extends Controller
     {
         $staff = DB::transaction(function () use ($request, $staff) {
             if ($request->hasFile('avatar')) {
-                Storage::disk('public')->delete($staff->avatar);
+                Storage::delete($staff->avatar);
 
                 $file = $request->file('avatar');
                 $ext = $file->extension();
-                $staff->avatar = $file->storeAs('/images/avatars', uniqid().'.'.$ext, ['disk' => 'public']);
+                $staff->avatar = $file->storeAs('images/avatars', uniqid().'.'.$ext);
             }
 
             $staff->name = $request->name;
@@ -172,7 +172,7 @@ class StaffController extends Controller
         ], "Staff ideas have been {$verb} successfully", 200);
     }
 
-    public function toggleCommentsVisibility(Staff $staff) 
+    public function toggleCommentsVisibility(Staff $staff)
     {
         $staff->update([
             'comments_hidden_at' => (bool) $staff->comments_hidden_at ? null : now(),
