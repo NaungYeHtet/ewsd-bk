@@ -42,6 +42,27 @@ class Academic extends Model
         );
     }
 
+    protected function isActive(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->start_date <= now() && $this->final_closure_date >= now()
+        );
+    }
+
+    protected function isPrevious(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->final_closure_date < now()
+        );
+    }
+
+    protected function isFuture(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->start_date > now()
+        );
+    }
+
     public function scopeIsActive(Builder $query): void
     {
         $query->where('start_date', '<=', now())->where('final_closure_date', '>=', now());

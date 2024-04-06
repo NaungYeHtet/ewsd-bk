@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Data\AcademicData;
-use App\Exports\DataCsvExport;
-use App\Exports\DataXlsxExport;
-use App\Http\Requests\ExportRequest;
 use App\Http\Requests\IndexRequest;
 use App\Models\Academic;
 use Illuminate\Database\Eloquent\Builder;
@@ -80,6 +77,18 @@ class AcademicController extends Controller
         if (Academic::where('start_date', '<=', $data->finalClosureDate)->where('final_closure_date', '>=', $data->finalClosureDate)->where('uuid', '!=', $academic->uuid)->exists()) {
             throw ValidationException::withMessages([
                 'final_closure_date' => ['The final closure date cannot overlap an existing academic year'],
+            ]);
+        }
+
+        if ($academic->is_previous) {
+            throw ValidationException::withMessages([
+                'name' => ['Cannot update a previous academic'],
+            ]);
+        }
+
+        if ($academic->is_active) {
+            throw ValidationException::withMessages([
+                'name' => ['Cannot update an active academic'],
             ]);
         }
 
