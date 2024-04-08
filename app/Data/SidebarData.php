@@ -20,6 +20,9 @@ class SidebarData extends Data
         public array $permissions,
         public array|Optional $reactionPermissions,
         public array|Optional $commentPermissions,
+        public array|Optional $accountPermissions,
+        public array|Optional $reportPermissions,
+        public array|Optional $exportPermissions,
     ) {
     }
 
@@ -52,7 +55,7 @@ class SidebarData extends Data
         if ($staff->can('toggle visibility')) {
             $staffAccountPermissions[] = '/toggle-visibility';
         }
-
+        
         return self::collect([
             [
                 'title' => 'Dashboard',

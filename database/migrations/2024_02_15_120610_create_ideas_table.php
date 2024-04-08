@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Academic::class)->constrained('academics', 'uuid');
 
             $table->string('slug')->unique();
-            $table->string('title');
+            $table->string('title')->index();
             $table->text('content');
             $table->string('file')->nullable();
             // $table->json('reactions_count')->nullable();
