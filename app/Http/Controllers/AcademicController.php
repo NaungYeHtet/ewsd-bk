@@ -80,13 +80,13 @@ class AcademicController extends Controller
             ]);
         }
 
-        if ($academic->is_previous) {
+        if ($academic->is_previous_academic) {
             throw ValidationException::withMessages([
                 'name' => ['Cannot update a previous academic'],
             ]);
         }
 
-        if ($academic->is_active) {
+        if ($academic->is_active_academic) {
             throw ValidationException::withMessages([
                 'name' => ['Cannot update an active academic'],
             ]);

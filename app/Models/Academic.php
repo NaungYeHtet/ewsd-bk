@@ -42,21 +42,21 @@ class Academic extends Model
         );
     }
 
-    protected function isActive(): Attribute
+    protected function isActiveAcademic(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->start_date <= now() && $this->final_closure_date >= now()
         );
     }
 
-    protected function isPrevious(): Attribute
+    protected function isPreviousAcademic(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->final_closure_date < now()
         );
     }
 
-    protected function isFuture(): Attribute
+    protected function isFutureAcademic(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->start_date > now()
