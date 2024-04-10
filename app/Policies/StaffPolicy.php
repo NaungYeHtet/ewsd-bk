@@ -57,7 +57,7 @@ class StaffPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function toogleVisibility(Staff $user, Staff $staff): bool
+    public function toggleVisibility(Staff $user, Staff $staff): bool
     {
         return $user->can('toggle visibility');
     }
