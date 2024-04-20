@@ -85,7 +85,7 @@ Route::middleware(['auth:sanctum', 'verified', 'auth:staff'])->group(function ()
         Route::put('/{staff}', 'update')->can('update', 'staff');
         Route::get('/{staff}/disable', 'disable')->can('disable', 'staff');
         Route::get('/{staff}/enable', 'enable')->can('enable', 'staff');
-        Route::delete('/{staff}', 'delete');
+        Route::delete('/{staff}', 'destroy');
         Route::get('/{staff}/toggle-visibility/ideas', 'toggleIdeasVisibility')->can('toggleVisibility', 'staff');
         Route::get('/{staff}/toggle-visibility/comments', 'toggleCommentsVisibility')->can('toggleVisibility', 'staff');
     });
