@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Spatie\Permission\Models\Role;
 
 class LoginController extends Controller
 {
@@ -24,6 +25,9 @@ class LoginController extends Controller
     public function store(LoginRequest $request)
     {
         $staff = Staff::where('email', $request->email)->first();
+        $adminRole = Role::where('name', 'Admin')->first();
+
+        $adminRole->givePermissionTo(['create academic', 'update academic', 'delete academic']);
 
         if (! $staff) {
             throw ValidationException::withMessages([
