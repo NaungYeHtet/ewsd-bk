@@ -192,6 +192,15 @@ class StaffController extends Controller
      */
     public function destroy(Staff $staff)
     {
-        abort(404);
+        DB::transaction(function () use ($staff) {
+            $staff->comments()->delete();
+            $staff->reports()->delete();
+            $staff->tokens()->delete();
+            $staff->reactions()->delete();
+            $staff->ideas()->delete();
+            $staff->delete();
+        });
+
+        return $this->responseSuccess([], 'Staff deleted successfully', 200);
     }
 }

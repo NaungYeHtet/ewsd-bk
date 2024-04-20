@@ -7,15 +7,13 @@ use App\Exports\DataXlsxExport;
 use App\Models\Academic;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
-use League\Flysystem\Filesystem;
-use League\Flysystem\ZipArchive\FilesystemZipArchiveProvider;
-use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
+use ZipArchive;
 
 /** @typescript */
 class AcademicData extends Data
@@ -61,28 +59,36 @@ class AcademicData extends Data
         }
 
         if (! Storage::exists("{$filesDataPath}.zip")) {
-            // $fileSystem = new Filesystem(new ZipArchiveAdapter(new FilesystemZipArchiveProvider('images/files')));
+            // Storage::disk('FTP')->put('new/file1.jpg', Storage::get('old/file1.jpg'));
 
-            // $filesToZip = $academic->ideas()
-            //     ->whereNotNull('file')
-            //     ->pluck('file')->toArray();
+            // $zip = new ZipArchive;
+            // $zipFileName = 'sample.zip';
 
-            // foreach ($filesToZip as $file) {
-            //     $fileContent = Storage::get($file);
-            //     $fileSystem->write($file, $fileContent);
+            // if ($zip->open(public_path($zipFileName), ZipArchive::CREATE) === true) {
+
+
+            //     $filesToZip = Storage::files("/academic/files/{$academic->start_date->format('Y-m-d')}-{$academic->final_closure_date->format('Y-m-d')}");
+
+            //     foreach ($filesToZip as $file) {
+            //         $zip->addFile($file, basename($file));
+            //     }
+
+            //     $zip->close();
+
+            //     Storage::put("{$filesDataPath}.zip", $zipFileName);
+            // } else {
+            //     return 'Failed to create the zip file.';
             // }
-
-            // self::makeZippableFile($filesToZip, "{$filesDataPath}.zip");
-            // Storage::put("{$filesDataPath}.zip");
         }
 
         if (config('filesystems.default') == 's3') {
             $csvUrl = Storage::temporaryUrl("{$dataFilePath}.csv", now()->addMinutes(30));
             $xlsxUrl = Storage::temporaryUrl("{$dataFilePath}.xlsx", now()->addMinutes(30));
-            // $zipUrl = Storage::temporaryUrl("{$dataFilePath}.zip", now()->addMinutes(30));
+            $zipUrl = Storage::temporaryUrl("{$filesDataPath}.zip", now()->addMinutes(30));
         } else {
             $csvUrl = url('/').Storage::url("{$dataFilePath}.csv");
             $xlsxUrl = url('/').Storage::url("{$dataFilePath}.xlsx");
+            $zipUrl = url('/').Storage::url("{$filesDataPath}.zip");
         }
 
         return new self(
@@ -94,7 +100,7 @@ class AcademicData extends Data
             now()->between($academic->start_date, $academic->final_closure_date),
             $csvUrl,
             $xlsxUrl,
-            'tbc',
+            $zipUrl,
         );
     }
 }

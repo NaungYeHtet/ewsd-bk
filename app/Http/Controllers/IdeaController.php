@@ -106,7 +106,7 @@ class IdeaController extends Controller
             if ($request->hasFile('file')) {
                 $file = $request->file('file');
                 $ext = $file->extension();
-                $fileName = $file->storeAs("/academic/files/{$academic->start_date}-{$academic->final_closure_date}", uniqid().'.'.$ext);
+                $fileName = $file->storeAs("/academic/files/{$academic->start_date->format('Y-m-d')}-{$academic->final_closure_date->format('Y-m-d')}", uniqid().'.'.$ext);
             }
 
             $idea = $staff->ideas()->create([
