@@ -66,7 +66,6 @@ class AcademicData extends Data
 
             // if ($zip->open(public_path($zipFileName), ZipArchive::CREATE) === true) {
 
-
             //     $filesToZip = Storage::files("/academic/files/{$academic->start_date->format('Y-m-d')}-{$academic->final_closure_date->format('Y-m-d')}");
 
             //     foreach ($filesToZip as $file) {
@@ -98,9 +97,9 @@ class AcademicData extends Data
             $academic->closure_date,
             $academic->final_closure_date,
             now()->between($academic->start_date, $academic->final_closure_date),
-            $csvUrl,
-            $xlsxUrl,
-            $zipUrl,
+            $academic->is_previous_academic ? $csvUrl : null,
+            $academic->is_previous_academic ? $xlsxUrl : null,
+            $academic->is_previous_academic ? $zipUrl : null,
         );
     }
 }
