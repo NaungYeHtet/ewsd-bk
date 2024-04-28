@@ -29,9 +29,9 @@ class AcademicData extends Data
         #[MapInputName('final_closure_date'), WithCast(DateTimeInterfaceCast::class)]
         public Carbon $finalClosureDate,
         public bool|Optional $isActive,
-        public string|Optional $dataDownloadCsvUrl,
-        public string|Optional $dataDownloadXlsxUrl,
-        public string|Optional $fileExportUrl,
+        public string|Optional|null $dataDownloadCsvUrl,
+        public string|Optional|null $dataDownloadXlsxUrl,
+        public string|Optional|null $fileExportUrl,
     ) {
     }
 
