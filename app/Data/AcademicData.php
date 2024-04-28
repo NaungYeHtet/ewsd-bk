@@ -97,9 +97,9 @@ class AcademicData extends Data
             $academic->closure_date,
             $academic->final_closure_date,
             now()->between($academic->start_date, $academic->final_closure_date),
-            $academic->is_previous_academic ? $csvUrl : null,
-            $academic->is_previous_academic ? $xlsxUrl : null,
-            $academic->is_previous_academic ? $zipUrl : null,
+            $academic->final_closure_date < now() ? $csvUrl : null,
+            $academic->final_closure_date < now() ? $xlsxUrl : null,
+            $academic->final_closure_date < now() ? $zipUrl : null,
         );
     }
 }

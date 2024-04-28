@@ -52,7 +52,7 @@ class Academic extends Model
     protected function isPreviousAcademic(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->final_closure_date < now()
+            get: fn (): bool => (bool) $this->final_closure_date < now()
         );
     }
 
